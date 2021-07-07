@@ -1,0 +1,112 @@
+.commonAddress_info {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  .g-card {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #ffffff;
+    font-size: 14px;
+  
+    
+    .card-change {
+      float: right;
+      margin-right: 0rem;
+      /*margin-top: .5rem;*/
+      position: absolute;
+      right: .3rem;
+      top: .31rem;
+      color: #ffba26;
+      span {
+        display: inline-block;
+        width: .15rem;
+        height: .24rem;
+        margin-left: .2rem;
+        background: url("./../../common/images/next-btn-yellow.png") no-repeat;
+        background-size: .15rem .24rem;
+      }
+    }
+  }
+
+  .address-card {
+    background: #fff;
+    overflow: hidden;
+    padding: 0 10px;
+    .address-name {
+      display: flex;
+      margin-top: 10px;
+      line-height: 30px;
+      .address-icon {
+        margin: 2px 5px 0 0;
+        img {
+          width: 24px;
+          height: 24px;
+          display: block;
+        }
+      }
+      .address-category {
+        flex: 1;
+        line-height: 30px;
+        font-size: 20px;
+      }
+      .address-add {
+        line-height: 30px !important;
+        width: 20px;
+        font-size: 20px !important;
+      }
+    }
+    .address-item {
+      border: 1px solid #fae3b0;
+      border-radius: 4px;
+      box-shadow: #f8e7bf 0px 0px 10px 1px;
+      margin-top: 10px;
+      font-size: 14px;
+      .noneAddress {
+        text-align: center;
+        line-height: 80px;
+      }
+      .remarks {
+        display: flex;
+        margin: 10px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        .remarks-name {
+          flex: 1;
+          text-align: center;
+          color:#333;
+          font-size: 16px;
+        }
+        .address-delete {
+          font-size: 24px;
+          padding-left: 10px;
+          border-left: 1px solid rgb(221, 221, 221);
+        }
+      }
+      .address {
+        text-align: center;
+        line-height: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+      }
+      .remindBox {
+        display: flex;
+        width: 100%;
+        height: 40px;
+        .remindItem {
+          flex: 1;
+          border-right: 1px solid #eee;
+          text-align: center;
+          line-height: 40px;
+          .remindIcon {
+            vertical-align: middle;
+            margin-right: .2rem;
+          }
+          .remindText{
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}

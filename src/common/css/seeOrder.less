@@ -1,0 +1,85 @@
+.orderCard_info {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  .box-card {
+    width: 100%;
+    .seeorder-list {
+      display: flex;
+      align-items: center;
+      padding: 10px 10px 10px 0;
+      font-size: 12px;
+      background-color: #fff;
+      border-bottom: 1px solid #ebedf0;
+      .seeOrderIcon {
+        margin: 0 10px;
+        font-size: 20px;
+        img{
+          width: .6rem;
+          height: .6rem;
+          display: inline-block;
+        }
+      }
+      .status {
+        width: 50px;
+      }
+      .fail {
+        color:red;
+      }
+      .orderListTitle {
+        flex: 1;
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        span {
+          line-height: 20px;
+        }
+      }
+      .seeOrderListright {
+        display: flex;
+        width: 1.4rem;
+        flex-direction: column;
+        font-size: 12px;
+        text-align: right;
+        color: #777;
+        .see-details {
+          color: #fdab16;
+          line-height: 20px;
+          position: relative;
+          .xq {
+            margin-right: 13px;
+          }
+          .see-icon-xq {
+            line-height: 20px;
+            position: absolute;
+            right: 0;
+          }
+        }
+      }
+    }
+  }
+  .see-order-bottom {
+    position: fixed;
+    display: flex;
+    justify-content: space-around;
+    bottom: 100px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    line-height: 30px;
+    .problem-feedback {
+      background: #eee;
+      border: 1px solid #d2d2d2;
+      border-radius: 20px;
+      padding: 0 20px;
+    }
+    .recharge-amount {
+      background: #fdab16;
+      border: 1px solid #fca300;
+      border-radius: 20px;
+      color: #fff;
+      padding: 0 20px;
+    }
+  }
+}

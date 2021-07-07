@@ -1,0 +1,198 @@
+.van-cell {
+  font-size: 14px;
+  line-height: 30px;
+  padding: 10px;
+}
+.van-cell::after {
+  border-bottom: 1px solid #efefee;
+}
+.applyCard_info {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.applyCard_info .box-card {
+  width: 100%;
+}
+.applyCard_info .red {
+  color: red;
+}
+.applyCard_info .areaTitle {
+  line-height: 40px;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px;
+}
+.applyCard_info .areaContent {
+  font-size: 14px;
+  display: flex;
+  padding: 10px 10px 0 30px;
+  height: 6rem;
+  box-sizing: border-box;
+}
+.applyCard_info .areaContent .areaItem {
+  flex: 1;
+  line-height: 24px;
+}
+.applyCard_info .recharge-content {
+  padding: 10px;
+  background: #fff;
+  margin-top: 5px;
+  margin-bottom: 77px;
+}
+.applyCard_info .recharge-content .tit {
+  height: 20px;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  padding-left: 10px;
+}
+.applyCard_info .recharge-content .tit .borders {
+  display: inline-block;
+  width: 3px;
+  height: 15px;
+  background: #ffb525;
+  margin-right: 10px;
+  position: relative;
+  top: 3px;
+}
+.applyCard_info .recharge-content .flex_content {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 12px;
+}
+.applyCard_info .recharge-content .flex_content .priceItem {
+  flex: 1 1 auto;
+  flex-basis: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.applyCard_info .recharge-content .flex_content .priceItem .item {
+  width: 1.9rem;
+  line-height: 0.78rem;
+  text-align: center;
+  border: 2px solid #ffb525;
+  border-radius: 4px;
+  margin-top: 15px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.applyCard_info .recharge-content .flex_content .priceItem .itemNo {
+  width: 1.9rem;
+  height: 0.78rem;
+  padding: 0.2rem 0.3rem;
+  border: 2px solid #ffb525;
+  color: #cccccc;
+  border-radius: 4px;
+  margin-top: 15px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.applyCard_info .recharge-content .activeClass {
+  background: #ffb525 !important;
+  color: #fff;
+  font-size: 14px;
+}
+.applyCard_info .bottom_content {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  height: auto;
+}
+.applyCard_info .bottom_content .import_info {
+  height: 25px;
+  line-height: 25px;
+  background: #f7f7f7;
+  border: 1px solid #ebeef5;
+  font-size: 10px;
+  text-align: center;
+}
+.applyCard_info .bottom_content .import_info .van-checkbox {
+  display: inline-block;
+  font-size: 10px;
+  vertical-align: middle;
+}
+.applyCard_info .bottom_content .import_info a {
+  color: #ffb525;
+}
+.applyCard_info .bottom_content .pay_content {
+  height: 50px;
+  line-height: 50px;
+  background: #fff;
+  display: flex;
+  font-size: 12px;
+}
+.applyCard_info .bottom_content .pay_content .pay_text {
+  flex: 1;
+  display: inline-block;
+  padding-left: 5px;
+  color: #b3b3b3;
+}
+.applyCard_info .bottom_content .pay_content .chooseItActive {
+  color: #000;
+}
+.applyCard_info .bottom_content .pay_content .money {
+  width: 28%;
+  display: inline-block;
+  text-align: right;
+  color: #e86956;
+  padding-right: 2%;
+}
+.applyCard_info .bottom_content .pay_content .pay_button {
+  width: 30%;
+  display: inline-block;
+  text-align: center;
+  background: #cdcdcd;
+  color: #fff;
+}
+.applyCard_info .bottom_content .pay_content .payItActive {
+  background: #ffb525;
+}
+.applyCard_info .mealContent .list {
+  border-top: 1px #eaeaea solid;
+  height: 50px;
+  line-height: 50px;
+  text-align: left;
+  position: relative;
+  padding: 5px 10px;
+  color: #333;
+  font-size: 14px;
+}
+.applyCard_info .mealContent .list .borders {
+  position: absolute;
+  right: 0;
+  height: 60px;
+  width: 3px;
+  top: 0px;
+  background: #ffb51c;
+  border-radius: 10px;
+}
+.applyCard_info .mealContent .list:last-child {
+  border-bottom: 1px #eaeaea solid;
+}
+.applyCard_info .mealContent .activeList {
+  background: #fdfcdd;
+}
+.applyCard_info .mealContent .price {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  line-height: 25px;
+}
+.applyCard_info .mealContent .price .newP {
+  color: #e86956;
+  font-size: 16px;
+  text-align: right;
+}
+.applyCard_info .mealContent .price .oldP {
+  font-size: 12px;
+  text-align: right;
+  text-decoration: line-through;
+}
+.applyCard_info .successBox {
+  padding: 20px;
+  font-size: 14px;
+}

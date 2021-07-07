@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible"
+        content="IE=edge">
+  <meta http-equiv="Access-Control-Allow-Origin"
+        content="*" />
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=0,minimal-ui">
+  <meta name="browsermode"
+        content="application">
+  <meta name="screen-orientation"
+        content="portrait">
+  <meta name="full-screen"
+        content="yes">
+  <meta name="wap-font-scale"
+        content="no">
+  <meta name="nightmode"
+        content="disable">
+  <meta name="imagemode"
+        content="force">
+  <meta name="x5-page-mode"
+        content="app">
+  <meta name="x5-orientation"
+        content="portrait">
+  <meta name="x5-fullscreen"
+        content="true">
+  <meta name="apple-mobile-web-app-capable"
+        content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent" />
+  <meta name="format-detection" content="telephone=yes" />
+  <link rel="icon"
+        href="<%= BASE_URL %>favicon.ico">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <script type="text/javascript"
+          charset="utf-8"
+          src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script type="text/javascript"
+          charset="utf-8"
+          src="http://map.qq.com/api/js?v=2.exp&key=2CHBZ-RTMRX-OJL4W-TL56C-W4235-SJFXY&libraries=convertor"></script>
+  <!-- 上传图片 go -->
+  <script type="text/javascript"
+          src="js/jquery.js"></script>
+  <script src="js/exif.js"></script>
+  <script src="js/MegaPixImage.js"></script>
+  <script src="js/localResizeIMG.js"></script>
+  <!-- 上传图片 end -->
+  <script>
+    var oHtml = document.getElementsByTagName('html')[0]
+    var screenW = document.documentElement.offsetWidth || document.body.offsetWidth
+    oHtml.style.fontSize = 100 * screenW / 750 + 'px'
+
+    // 扩展API加载完毕后调用onPlusReady回调函数   绑定学霸卡 扫码
+    document.addEventListener('plusready', onPlusReady, false)
+    // 扩展API加载完毕，现在可以正常调用扩展API
+    function onPlusReady() {
+      var e = document.getElementById('scan')
+      e.removeAttribute('disabled')
+    }
+    var scan = null
+  </script>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+      Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
+</html>

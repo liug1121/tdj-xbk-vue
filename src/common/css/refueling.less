@@ -1,0 +1,164 @@
+.refueling_info {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  .g-tips {
+    font-size: .24rem;
+    height: 1rem;
+    line-height: .3rem;
+    padding: .2rem;
+    box-sizing: border-box;
+    width: 100%;
+    color: #ff6124;
+    background-color: #fff4b4;
+    /*text-indent: .3rem;*/
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+  }
+  .g-card {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #ffffff;
+    font-size: 14px;
+    margin-top: 50px;
+    .card-change {
+      float: right;
+      margin-right: 0rem;
+      /*margin-top: .5rem;*/
+      position: absolute;
+      right: .3rem;
+      top: .31rem;
+      color: #ffba26;
+      span {
+        display: inline-block;
+        width: .15rem;
+        height: .24rem;
+        margin-left: .2rem;
+        background: url("./../../common/images/next-btn-yellow.png") no-repeat;
+        background-size: .15rem .24rem;
+      }
+    }
+  }
+  
+  .refueling-box {
+    font-size: 14px;
+    .refueling-item {
+      margin-top: 10px;
+      background: #fff;
+      padding-top:10px;
+      .refueling-title {
+        border-left: 3px solid #FDAB16;
+        padding-left: 10px;
+        margin:10px;
+      }
+      
+    }
+  }
+  .refueling-bottom {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    background: #fff;
+    z-index:9999;
+    .refualing-tx {
+      height: 25px;
+      line-height: 25px;
+      background: #f7f7f7;
+      border: 1px solid #ebeef5;
+      font-size: 10px;
+      text-align: center;
+      color: red;
+    }
+    .pay_content {
+      height: 50px;
+      line-height: 50px;
+      display: flex;
+      font-size: 12px;
+      .price-total {
+        flex: 1;
+        padding-left: 10px;
+        .price-new {
+          color: red;
+          font-size: 16px;
+        }
+        .price-old {
+          color: #737373;
+          font-size: 12px;
+          text-decoration: line-through;
+          margin-left: 5px;
+        }
+      }
+      .shoppingCart {
+        width: 100px;
+        line-height: 50px;
+
+        .shoppingIcon {
+          vertical-align: middle;
+        }
+      }
+      .pay_button {
+        width: 30%;
+        display: inline-block;
+        text-align: center;
+        background: #FDAB16;
+        color: #fff;
+      }
+    }
+  }
+  
+}
+.refueling-list {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+  font-size: 12px;
+  line-height: 40px;
+  .package-category {
+    font-weight: bold;
+    font-size: 18px;
+    flex: 1;
+  }
+  .package-price {
+    width: 100px;
+    .price-new {
+      color: red;
+      font-size: 16px;
+    }
+    .price-old {
+      color: #737373;
+      font-size: 12px;
+      text-decoration: line-through;
+      margin-left: 5px;
+    }
+  }
+  .choice-num {
+    width: 80px;
+    text-align: right;
+    line-height: 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .subtract {
+      width: 0.4rem;
+      height: 0.4rem;
+      background: url('./../../common/images/jian.png') no-repeat;
+      background-size: 100%;
+    }
+    .num {
+      width: 0.6rem;
+      text-align: center;
+      font-size: 0.3rem;
+      margin-top: 0rem;
+    }
+    .add {
+      width: 0.4rem;
+      height: 0.4rem;
+      background: url('./../../common/images/jia.png') no-repeat;
+      background-size: 100%;
+    }
+  }
+}

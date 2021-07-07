@@ -1,0 +1,28 @@
+<div class="noPackageList" v-for="validListItem in validList" :key="validListItem.cardAddPackageBalanceId" v-show="UsageinfosValidNo.length === 0">
+              <div class="package-current">
+                <div class="package-xx">{{validListItem.packageName}}</div>
+                <div class="package-zdxq">自动续期</div>
+                <div class="package-ts" @click="RenewalDescriptionShow">!</div>
+              </div>
+              <div class="package-data">
+                <div class="package-data-text">
+                  <p>生效时间</p>
+                  <p>{{validListItem.startDate}}</p>
+                </div>
+                <div class="package-data-center">至</div>
+                <div class="package-data-text">
+                  <p>失效时间</p>
+                  <p>长期</p>
+                </div>
+              </div>
+              <div class="package-SM" v-if="validListItem.areaType === 0">{{validListItem.province}}省内流量{{validListItem.dataTotal}}M + 语音{{validListItem.voiceTotal}}分钟</div>
+              <div class="package-SM" v-if="validListItem.areaType ===1">全国流量{{validListItem.dataTotal}}M + 语音{{validListItem.voiceTotal}}分钟</div>
+              <!-- <div class="s-change" @click="onClick_changeMeal(validListItem.cardAddPackageBalanceId)">
+                <span></span>
+                更换套餐
+              </div> -->
+              <div class="buttonBox">
+                <div class="changeButoon" @click="onClick_changeMeal(validListItem.cardAddPackageBalanceId)">更换套餐</div>
+                <div class="delButton" @click="onClick_del(validListItem.cardAddPackageBalanceId)">取消订购</div>
+              </div>
+            </div>

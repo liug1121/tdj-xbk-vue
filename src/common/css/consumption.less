@@ -1,0 +1,310 @@
+.consumption_info {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  .cardChangeBox{
+    padding:15px;
+    .cardChangeItem{
+      border-bottom: 1px rgb(234, 234, 234) solid;
+      line-height: 24px;
+      text-align: left;
+      position: relative;
+      padding: 5px 10px;
+      color: #606266;
+      font-size: 14px;
+    }
+    .cardChangeItem:last-child {
+      border-bottom: 0;
+    }
+  }
+  .packageChangeBox {
+    padding: 15px;
+    .packageTitle {
+      font-size: 18px;
+      font-weight: 500;
+      padding-bottom: 15px;
+    }
+    .g_meal {
+      text-align: center;
+      line-height: 40px;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      .change-pak-title {
+        color: #666;
+      }
+    }
+    .err-tips {
+      padding: 15px 0;
+      font-size: 12px;
+      .red {
+        color: red;
+      }
+    }
+    .query-cod-box {
+      height: 50px;
+      position: relative;
+      font-size: 14px;
+      .qr-input {
+        line-height: 40px;
+        width: 100%;
+        box-sizing: border-box;
+        border:1px solid #ccc;
+        padding:0 10px;
+      }
+      .send-btn {
+        position:absolute;
+        top: 0;
+        right: 10px;
+        line-height: 40px; 
+        color: #ffba26;
+      }
+      .second {
+        position:absolute;
+        top: 0;
+        right: 10px;
+        line-height: 40px; 
+        color: #ccc;
+      }
+    }
+  }
+  
+  .g-card {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #ffffff;
+    font-size: 14px;
+
+    .card-change {
+      float: right;
+      margin-right: 0rem;
+      /*margin-top: .5rem;*/
+      position: absolute;
+      right: .3rem;
+      top: .31rem;
+      color: #ffba26;
+      span {
+        display: inline-block;
+        width: .15rem;
+        height: .24rem;
+        margin-left: .2rem;
+        background: url("./../../common/images/next-btn-yellow.png") no-repeat;
+        background-size: .15rem .24rem;
+      }
+    }
+  }
+  .usage-box {
+    text-align: center;
+    background: #fff;
+    position: relative;
+    padding-bottom: .2rem;
+    .usage-item-box {
+      display: flex;
+      .usage-item {
+        flex: 1;
+        display: flex;
+        box-sizing: border-box;
+        justify-content: space-around;
+        align-items: center;   
+        .progressBox {
+          height: 1.6rem;
+          display: flex;
+          flex-direction:column;
+          justify-content: center; 
+          .progressSurplus {
+            font-size: 10px;
+          
+          }
+          .progressTxt {
+            font-size: 10px;
+          }
+        }
+        
+      }
+    }
+    .tips {
+      text-align: center;
+      font-size: .15rem;
+      padding-top: 10px;
+      color:#ff6d4b;
+    }
+  }
+  .usage-tab-box {
+    background: #fff;
+    border-top: 1px solid #eee;
+    min-height: 500px;
+    .package-box {
+      margin: 10px;
+      .package-item {
+        margin-bottom: 10px;
+        font-size: .28rem;
+        .package-surplus-box {
+          display: flex;
+          margin-bottom: 10px;
+          line-height: 20px;
+          .package-total {
+            flex: 1;
+            font-weight: bold;
+            font-size: 18px;
+            span {
+              color: #adadad;
+              font-size: 14px;
+            }
+          }
+          .package-surplus {
+            text-align: right;
+            font-size: 12px;
+            span {
+              color: red;
+              margin-left: 5px;
+            }
+          }
+        }
+      }
+    }
+    .replace-package {
+      .replace-title {
+        font-size: .28rem;
+        height: 44px;
+        line-height: 44px;
+        padding:0 10px;
+        border-bottom: 1px solid #ebedf0;
+        box-sizing: border-box;
+        color: rgb(228, 201, 81);
+        font-weight: 500;
+        margin-bottom: 10px;
+        span{
+          border-bottom: 3px solid rgb(253, 171, 22);
+          width: 30%;
+          padding-bottom: 12px;
+          transform: translateX(52px) translateX(-50%);
+        }
+      }
+      .package-xx {
+        font-size: 16px;
+        margin:0 10px;
+        line-height: 50px;
+      }
+      .s-change {
+        width: 2.36rem;
+        height: .5rem;
+        line-height: .5rem;
+        border: 2px solid #d2d2d2;
+        border-radius: .25rem;
+        margin: 0.3rem auto;
+        font-size: .28rem;
+        span {
+          display: inline-block;
+          width: .28rem;
+          height: .28rem;
+          vertical-align: top;
+          margin: .1rem .15rem 0 .37rem;
+          background: url("../../common/images/change-logo.png") no-repeat;
+          background-size: .28rem;
+        }
+      }
+    }
+    .change-package-box {
+      .usage-tx {
+        color: #ff5e4b;
+        font-size: 12px;
+        margin: 10px;
+      }
+      .tab-tilte{
+        width: 100%;
+        display: flex;
+        border-bottom: 1px solid #d7d7d7;
+        font-size: 16px;
+      }
+      .tab-tilte span{
+        width: 105px;
+        margin:10px 0 -1px 10px;
+        line-height: 34px;
+        text-align: center;
+        background: #d7d7d7;
+        border-radius: 4px 4px 0 0 ;
+        color: #fff;
+      }
+      .tab-tilte .active{
+        background-color: #F59A23;
+        color: #fff;
+        border-bottom: 1px solid #fff;
+      }
+      .usage-item {
+        background: #FEFBD9;
+        padding: .3rem .2rem;
+        border-bottom: 1px solid #e4e4e4;
+        font-size: 12px;
+        font-weight: bold;
+        .usage-item-con {
+          display: flex;
+          align-items: center;
+        }
+        .usage-flowrate {
+          flex: 1;
+          font-size: .28rem;
+          color:#F59A23;
+        }
+        .package-zdxq {
+          font-size: 16px;
+          color: red;
+        }
+        .package-ts {
+          font-size: 14px;
+          color: #fff;
+          background: #f59a23;
+          width: 16px;
+          height: 16px;
+          box-sizing: border-box;
+          margin: 15px 5px;
+          line-height: 16px;
+          text-align: center;
+          border-radius: 50%;
+        }
+        .usage-money-box {
+          display: flex;
+          flex-direction: column;
+          text-align: right;
+          .money-new {
+            color: red;
+            font-size: 16px;
+          }
+          .money-old {
+            text-decoration: line-through;
+            font-size: .24rem;
+          }
+        }
+        .packageTip {
+          font-size: 12px;
+          color:red;
+        }
+      }
+      .usage-item:last-child {
+        border-bottom: 0;
+      }
+    }
+    .amount-recharge-box {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 15px;
+      .priceItem {
+        flex-basis: 100%;
+        flex: 1 1 auto;
+        flex-basis: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .item {
+          width: 1.9rem;
+          line-height: 0.78rem;
+          text-align: center;
+          border: 1px solid #FDAB16;
+          border-radius: 4px;
+          margin-top: 15px;
+          font-size: 14px;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+}
