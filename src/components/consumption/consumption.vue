@@ -366,7 +366,7 @@ export default {
       this.active = 'rechargeTab'
     }
     this.getCardList()
-    // this.getPriceList()
+    this.getPriceList()
   },
   methods: {
     // 获取卡列表数据

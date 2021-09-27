@@ -51,15 +51,15 @@
           上网流量
         </template>
         <div class="XQList" v-infinite-scroll="flowLoadMore" infinite-scroll-disabled="flowLoading" infinite-scroll-immediate-check="false" infinite-scroll-distance="10">
-          <div class="XQitem" v-for="(item,index) in flowData" :key="index" @click="onClick_flowDtl(item)">
+          <div class="XQitem" v-for="(item,index) in flowData" :key="index" >
             <div class="XQitemLeft">
               <div class="phone">{{item.date}}</div>
             </div>
             <div class="XQitemRight">
-              <div class="timeLength">日总时长：{{item.dayDuration}}</div>
-              <div class="time">日总流量：{{item.dayUsage}}MB</div>
+              <!-- <div class="timeLength">日总时长：{{item.dayDuration}}</div> -->
+              <div class="time">日总流量：{{item.dayUsage}}</div>
             </div>
-            <van-icon name="arrow" class="XQitemIcon" />
+            <!-- <van-icon name="arrow" class="XQitemIcon" /> -->
           </div>
           <div class="moreLoading">
             <van-loading class="loading" type="spinner" :color="bodyColor" v-show="flowLoading" />

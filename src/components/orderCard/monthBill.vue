@@ -28,9 +28,9 @@
       </div>
     </div>
     <div class="center">
-      <div class="table_title" v-show="currDate != this.currChild.date ">已出帐金额</div>
-      <div class="table_title" v-show="currDate == this.currChild.date ">未出账金额</div>
-      <div v-show="currDate == this.currChild.date ">
+      <div class="table_title" >帐单金额</div>
+      <!-- <div class="table_title" v-show="currDate == this.currChild.date ">未出账金额</div> -->
+      <!-- <div v-show="currDate == this.currChild.date ">
 
         <div style="width: 100%;height: .4rem;"></div>
 
@@ -41,11 +41,11 @@
           </div>
         </div>
 
-      </div>
+      </div> -->
 
       <div style="width: 100%;height: .2rem;"></div>
-      <div v-show="currDate != this.currChild.date ">
-        <div class="monthBillList" v-for="(item,index) in orderDtlList" v-show="item.type===0" :key="'A' + index">
+      <div >
+        <div class="monthBillList" v-for="(item,index) in orderDtlList" :key="'A' + index">
           <div class="mothbillItemTop">
             <div class="MBTopLeft">扣费合计</div>
             <div class="MBTopRight">合计 -{{item.total}}元</div>
@@ -63,10 +63,14 @@
               <div class="MBIConLeft">加油包购买费用</div>
               <div class="MBIConRight">-{{item.addPackageBilling}}元</div>
             </div>
+            <div class="mothbillItemConList">
+              <div class="MBIConLeft">卡费</div>
+              <div class="MBIConRight">-{{item.cardFee}}元</div>
+            </div>
           </div>
         </div>
       </div>
-      <div v-show="currDate == this.currChild.date ">
+      <!-- <div v-show="currDate == this.currChild.date ">
         <div class="monthBillList" v-for="(item,index) in orderDtlList" v-show="item.type===2" :key="'d' + index">
           <div class="mothbillItemTop">
             <div class="MBTopLeft">扣费合计</div>
@@ -87,9 +91,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="MBline"></div>
+      <!-- <div class="MBline"></div>
 
       <div class="monthBillList" v-for="(item,index) in orderDtlList" v-show="item.type===1" :key="'b' + index">
         <div class="mothbillItemCon">
@@ -98,7 +102,7 @@
             <div class="MBIConRight">{{item.total}}元</div>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
   </div>

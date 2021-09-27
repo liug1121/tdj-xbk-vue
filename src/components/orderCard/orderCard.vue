@@ -28,16 +28,16 @@
 
     <!-- list -->
     <div class="box-card" v-show="isShowAll">
-      <!-- <div class="order-list" @click="onClick_goPage('monthbill')">
+      <div class="order-list" @click="onClick_goPage('monthbill')">
         <van-icon class="orderList-icon-l" name="notes-o" />
         <span class="orderListTitle">月账单</span>
         <van-icon class="orderList-icon-r" name="arrow" :color="bodyColor" />
-      </div> -->
-      <!-- <div class="order-list" @click="onClick_goPage('monthbilldtl')">
+      </div>
+      <div class="order-list" @click="onClick_goPage('monthbilldtl')">
         <van-icon class="orderList-icon-l" name="balance-list-o" />
         <span class="orderListTitle">月详情</span>
         <van-icon class="orderList-icon-r" name="arrow" :color="bodyColor" />
-      </div> -->
+      </div>
       <div class="order-list" @click="onClick_goPage('rechargeList')">
         <van-icon class="orderList-icon-l" name="gold-coin-o" />
         <span class="orderListTitle">充值扣费</span>
