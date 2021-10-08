@@ -366,7 +366,13 @@ export default {
       this.active = 'rechargeTab'
     }
     this.getCardList()
-    this.getPriceList()
+    // this.getPriceList()
+  },
+  mounted() {
+    history.pushState(null, null, document.URL)
+    window.addEventListener('popstate', function () {
+      history.pushState(null, null, document.URL)
+    })
   },
   methods: {
     // 获取卡列表数据

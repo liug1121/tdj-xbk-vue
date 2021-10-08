@@ -81,6 +81,12 @@ export default {
       // Toast({message: $error.resultView});
     })
   },
+  mounted() {
+    history.pushState(null, null, document.URL)
+    window.addEventListener('popstate', function () {
+      history.pushState(null, null, document.URL)
+    })
+  },
   methods: {
     getSelectedFile ($data) {
       const icon = {

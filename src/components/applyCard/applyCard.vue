@@ -209,6 +209,14 @@ export default {
       }
     }
   },
+  mounted() {
+    history.pushState(null, null, document.URL)
+
+    // history.pushState(null, null, document.URL);
+    window.addEventListener('popstate', function () {
+      history.pushState(null, null, document.URL)
+    })
+  },
   methods: {
     // 获取省    ----刘 20200802 省市县 级联，后台数据
     getProvincesList () {

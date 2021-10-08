@@ -90,6 +90,12 @@ export default {
     this.currChild = JSON.parse(sessionStorage.getItem('currChild'))
     this.getMonthList()
   },
+  mounted() {
+    history.pushState(null, null, document.URL)
+    window.addEventListener('popstate', function () {
+      history.pushState(null, null, document.URL)
+    })
+  },
   methods: {
     // 获取卡列表数据
     getCardList () {
@@ -171,14 +177,13 @@ export default {
       sessionStorage.setItem('currDate', JSON.stringify($item))
     },
     onClick_goPage ($router, $type) {
+      const date = '' + this.selectDate.year + '' + this.selectDate.mon
       var currChid = {
         iccid: this.currCard.iccid,
         studentName: this.currCard.studentName,
         iconUrl: this.currCard.iconUrl,
         cardNo: this.currCard.cardNo,
-        // date: `${this.selectDate.year}-${this.selectDate.mon}`
-        date: this.selectDate.year + this.selectDate.mon
-        // remainPrice: this.currCard.remainPrice
+        date: date
       }
 
       sessionStorage.setItem('currChild', '')

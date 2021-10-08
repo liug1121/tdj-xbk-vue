@@ -241,7 +241,12 @@ export default {
   created () {
     this.getCardList()
   },
-
+  mounted() {
+    history.pushState(null, null, document.URL)
+    window.addEventListener('popstate', function () {
+      history.pushState(null, null, document.URL)
+    })
+  },
   methods: {
     // 获取卡列表数据
     getCardList () {

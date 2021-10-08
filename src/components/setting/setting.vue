@@ -104,7 +104,12 @@ export default {
   components: {
     // vHeader
   },
-  mounted () {
+
+  mounted() {
+    history.pushState(null, null, document.URL)
+    window.addEventListener('popstate', function () {
+      history.pushState(null, null, document.URL)
+    })
     this.getCardList()
   },
   methods: {
