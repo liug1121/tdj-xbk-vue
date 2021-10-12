@@ -363,8 +363,12 @@ export default {
     // vHeader
   },
   created () {
+    const status = this.$route.query.status
     if (this.$route.query.status === 2) {
       this.active = 'rechargeTab'
+    }
+    if (status === '3') {
+      this.active = 'editPackage'
     }
     this.getCardList()
     // this.getPriceList()
@@ -388,7 +392,7 @@ export default {
             const provinceId = JSON.parse(sessionStorage.getItem('provinceId'))
             const cardNo = JSON.parse(sessionStorage.getItem('cardNo'))
             if (cardNo === '' || cardNo === null || cardNo === undefined || provinceId === '' || provinceId === null || provinceId === undefined) {
-              sessionStorage.setItem('cardNo', JSON.stringify(res.data[0].cardNo))
+              sessionStorage.setItem('status', JSON.stringify(res.data[0].status))
               const cardNo = JSON.parse(sessionStorage.getItem('cardNo'))
               this.getOrdersDetails(cardNo)
               this.getUsageinfosDetails(cardNo)
@@ -414,6 +418,7 @@ export default {
     cardChange (cardInfo) {
       sessionStorage.setItem('cardNo', JSON.stringify(cardInfo.cardNo))
       sessionStorage.setItem('provinceId', JSON.stringify(cardInfo.province))
+      sessionStorage.setItem('status', JSON.stringify(cardInfo.status))
       // const provinceId = JSON.parse(sessionStorage.getItem('provinceId'))
       const cardNo = JSON.parse(sessionStorage.getItem('cardNo'))
       this.showCardDialog = false
@@ -736,8 +741,12 @@ export default {
       if (tab === 'editPackage') {
         this.cardChangePackageId = null
       }
-
       if (tab === 'refueling') {
+        const status = JSON.parse(sessionStorage.getItem('status'))
+        if (status === 4) {
+          alert('还没有购买套餐，暂时不能购买加油包')
+          return
+        }
         this.$router.push({
           path: '/refueling',
           query: {

@@ -166,6 +166,7 @@
             <div>{{item.studentName}}</div>
             <div v-if="item.status === 0">未实名</div>
             <div v-else-if="item.status === 1">已实名</div>
+            <div v-else-if="item.status === 4">无套餐</div>
             <div v-else>已激活</div>
           </div>
           <div class="cardNumber">
@@ -181,6 +182,12 @@
         现在去<span style="color: rgb(255, 186, 40)" @click="onClick_goPage2('applyCard')">申请</span>或<span style="color: rgb(255, 186, 40);" @click="onClick_goPage2('activation')">激活</span>。
       </div>
     </div>
+    <!-- <div v-show="!isHasPackage" style="text-align: center;height:100%;margin-top: 3rem;font-size: .4rem;line-height: .6rem">
+      <div>您当前卡无套餐,</div>
+      <div>
+        现在去<span style="color: rgb(255, 186, 40)" @click="onClick_goPage2('applyCard')">申请</span>或<span style="color: rgb(255, 186, 40);" @click="onClick_goPage2('activation')">激活</span>。
+      </div>
+    </div> -->
     <!-- <van-loading color="#FDAB16" /> -->
     <div v-show="loadingShow" class="loading">
       <van-loading type="spinner" color="#FDAB16" />
@@ -189,6 +196,11 @@
     <van-dialog v-model="RealnameDialog" show-cancel-button class="mealContent" :beforeClose="RealnameButton">
       <div class="realnameBox">
         您的当前学霸卡还没有实名，请您前往联通官方小程序，进行实名认证，<span style="color:red">若已完成实名认证，请耐心等待系统处理！</span>
+      </div>
+    </van-dialog>
+    <van-dialog v-model="noPackage" show-confirm-button='false' class="mealContent" :beforeClose="toBuyPackage">
+      <div class="realnameBox">
+        您的当前学霸卡还没有购买套餐，请先购买套餐。
       </div>
     </van-dialog>
   </div>
@@ -224,6 +236,7 @@ export default {
       // 切换学霸卡 模态框
       showCardDialog: false,
       isShowAll: true,
+      noPackage: false,
       loadingShow: false,
       CardStatus: null,
       controlType: null,
@@ -271,6 +284,11 @@ export default {
               this.getCardStatus(cardNo)
               this.getOrdersDetails(cardNo)
             }
+            if (res.data[0].status === 4) {
+              this.noPackage = true
+            } else {
+              this.noPackage = false
+            }
             this.CardStatusNO = JSON.parse(sessionStorage.getItem('CardStatusNO'))
             if (this.CardStatusNO === '' || this.CardStatusNO === null) {
               sessionStorage.setItem('CardStatusNO', JSON.stringify(res.data[0].status))
@@ -300,6 +318,11 @@ export default {
     },
     // 点击卡列表
     cardChange (id, $item) {
+      if ($item.status === 4) {
+        this.noPackage = true
+      } else {
+        this.noPackage = false
+      }
       sessionStorage.setItem('studentName', JSON.stringify($item.studentName))
       sessionStorage.setItem('cardNo', JSON.stringify(id))
       sessionStorage.setItem('fwAcccount', JSON.stringify($item.fwAcccount))
@@ -327,6 +350,19 @@ export default {
       if (action === 'confirm') {
         this.$router.push({
           path: '/activateCard'
+        })
+        done() // 关闭
+      } else if (action === 'cancel') {
+        done() // 关闭
+      }
+    },
+    toBuyPackage (action, done) {
+      if (action === 'confirm') {
+        this.$router.push({
+          path: '/consumption',
+          query: {
+            status: 3
+          }
         })
         done() // 关闭
       } else if (action === 'cancel') {
