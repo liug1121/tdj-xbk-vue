@@ -244,7 +244,7 @@
     <!-- 切换学霸卡 弹框 -->
     <van-dialog v-model="showCardDialog" class="mealContent">
       <div class="cardChangeBox">
-        <div class="cardChangeItem" v-for="item in cardList" :key="item.iccid" @click="cardChange(item.cardNo,item.province)">
+        <div class="cardChangeItem" v-for="item in cardList" :key="item.iccid" @click="cardChange(item)">
           <div class="cardImg">
             <img v-if="item.iconUrl === ''" :src="imageUrls" alt="用户头像">
             <img v-else :src="item.iconUrl" alt="">
@@ -253,6 +253,7 @@
             <span>{{item.studentName}} </span>
             <span v-if="item.status === 0">未实名</span>
             <span v-else-if="item.status === 1">已实名</span>
+            <span v-else-if="item.status === 4">无套餐</span>
             <span v-else>已激活</span>
           </div>
           <div class="cardNumber">
@@ -410,9 +411,9 @@ export default {
       this.showCardDialog = true
     },
     // 点击卡列表
-    cardChange (id, $provinceId) {
-      sessionStorage.setItem('cardNo', JSON.stringify(id))
-      sessionStorage.setItem('provinceId', JSON.stringify($provinceId))
+    cardChange (cardInfo) {
+      sessionStorage.setItem('cardNo', JSON.stringify(cardInfo.cardNo))
+      sessionStorage.setItem('provinceId', JSON.stringify(cardInfo.province))
       // const provinceId = JSON.parse(sessionStorage.getItem('provinceId'))
       const cardNo = JSON.parse(sessionStorage.getItem('cardNo'))
       this.showCardDialog = false
@@ -420,6 +421,10 @@ export default {
       this.getUsageinfosDetails(cardNo)
       this.getPackageList(cardNo)
       this.getPriceList(cardNo)
+      if (cardInfo.status === 4) {
+        alert('尚未购买套餐，请先购买套餐')
+        this.active = 'editPackage'
+      }
     },
     // 获取详情数据
     getOrdersDetails ($cardNo) {
@@ -451,6 +456,8 @@ export default {
     // 获取-用量查询-明细
     getUsageinfosDetails ($cardNo) {
       const cardNo = $cardNo
+      this.longTermPackage = []
+      this.UsageinfosValidNo = []
       API.apiUsageinfosDetails(cardNo).then(res => {
         if (res.resultCode === 0) {
           this.UsageinfosDetails = res.data
