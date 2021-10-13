@@ -696,6 +696,7 @@ export default {
           this.getUsageinfosDetails(this.OrdersDetails.cardNo)
           this.isCheckChange = false
           this.active = 'package'
+          this.getCardList()
           done() // 关闭
         } else {
           this.$toast(res.resultInfo)
@@ -714,7 +715,7 @@ export default {
       this.payPrice = $item.price
       this.$dialog.confirm({
         title: '提醒',
-        message: `您确认要充值${this.payPrice}元！`
+        message: `您确认要充值${this.payPrice}元1！`
       }).then(() => {
         ZFAPI.apiOrderOrderId().then(res => {
           const orderId = res.data
@@ -761,6 +762,7 @@ export default {
           alert('还没有购买套餐，暂时不能购买加油包')
           return
         }
+        // OrdersDetails.remainPrice
         this.$router.push({
           path: '/refueling',
           query: {
