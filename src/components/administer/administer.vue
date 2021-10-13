@@ -117,6 +117,7 @@
       <van-cell center title="位置功能开关">
         <template #right-icon>
           <van-switch v-if="CardStatusNO ===0" v-model="cardStatus.positionEnabled" size="16px" active-color="#7ED024" inactive-color="#fff" @click="goRealname" disabled />
+          <van-switch v-else-if="minusPrice < 0" v-model="cardStatus.positionEnabled" size="16px" active-color="#7ED024" inactive-color="#fff" @click="goRecharge" disabled />
           <van-switch v-else v-model="cardStatus.positionEnabled" size="16px" active-color="#7ED024" inactive-color="#fff" @change="positionFunctionClick" />
         </template>
       </van-cell>
@@ -167,6 +168,7 @@
             <div v-if="item.status === 0">未实名</div>
             <div v-else-if="item.status === 1">已实名</div>
             <div v-else-if="item.status === 4">无套餐</div>
+            <div v-else-if="item.status === 5">已欠费</div>
             <div v-else>已激活</div>
           </div>
           <div class="cardNumber">
@@ -615,6 +617,21 @@ export default {
     },
     // 位置功能 切换
     positionFunctionClick () {
+      if (this.minusPrice < 0) {
+        this.$dialog.confirm({
+          title: '提醒',
+          message: '您好，您当前的余额不足，请前往<span style="color:red">学霸卡用量</span>进行充值。'
+        }).then(() => {
+          this.$router.push({
+            path: '/consumption',
+            query: {
+              status: 2
+            }
+          })
+        }).catch(() => {
+        })
+        return
+      }
       if (this.cardStatus.positionEnabled === true) {
         this.positionFuctionIsShow = true
       } else {

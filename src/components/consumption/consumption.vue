@@ -24,7 +24,7 @@
           </div>
           <div class="info-list">
             <div style="text-align: right;width: 1.2rem;float: left;">当前余额:</div>
-            <span>{{OrdersDetails.remainPrice}}</span>
+            <span class="money-dtl">{{OrdersDetails.remainPrice}}</span>
           </div>
         </div>
       </div>
@@ -254,6 +254,7 @@
             <span v-if="item.status === 0">未实名</span>
             <span v-else-if="item.status === 1">已实名</span>
             <span v-else-if="item.status === 4">无套餐</span>
+            <span v-else-if="item.status === 5">已欠费</span>
             <span v-else>已激活</span>
           </div>
           <div class="cardNumber">
@@ -364,7 +365,7 @@ export default {
   },
   created () {
     const status = this.$route.query.status
-    if (this.$route.query.status === 2) {
+    if (this.$route.query.status === '2') {
       this.active = 'rechargeTab'
     }
     if (status === '3') {
@@ -393,6 +394,7 @@ export default {
             const cardNo = JSON.parse(sessionStorage.getItem('cardNo'))
             if (cardNo === '' || cardNo === null || cardNo === undefined || provinceId === '' || provinceId === null || provinceId === undefined) {
               sessionStorage.setItem('status', JSON.stringify(res.data[0].status))
+              sessionStorage.setItem('cardNo', JSON.stringify(res.data[0].cardNo))
               const cardNo = JSON.parse(sessionStorage.getItem('cardNo'))
               this.getOrdersDetails(cardNo)
               this.getUsageinfosDetails(cardNo)
@@ -403,6 +405,11 @@ export default {
               this.getUsageinfosDetails(cardNo)
               this.getPackageList(cardNo)
               this.getPriceList(cardNo)
+            }
+            const status = JSON.parse(sessionStorage.getItem('status'))
+            if (status === 4) {
+              alert('尚未购买套餐，请先购买套餐')
+              this.active = 'editPackage'
             }
           }
         } else {
@@ -635,45 +642,52 @@ export default {
             }
             API.apiPackagesCancel(config).then(res => {
               if (res.resultCode === 0) {
-                this.getApiEditPackage(done)
+                this.getApiEditPackage(this.price, done)
               } else {
                 this.$toast(res.resultInfo)
               }
             })
           } else {
-            this.getApiEditPackage(done)
+            this.getApiEditPackage(this.price, done)
           }
         } else {
-          if (this.minusPrice < this.price) {
-            ZFAPI.apiOrderOrderId().then(res => {
-              const data = {
-                body: '订购套餐',
-                out_trade_no: res.data,
-                total_fee: Number(this.selectePackage.price) * 100
-              }
-              ZFAPI.apiWXprepay(data).then(res => {
-                if (res.resultCode === 0) {
-                  this.weixinTradePay(res.data, () => {
-                    this.getApiEditPackage(done)
-                  })
-                } else {
-                  this.$toast(res.resultInfo)
-                }
-              })
-            })
-          } else {
-            this.getApiEditPackage(done)
-          }
+          this.getApiEditPackage(this.price, done)
+          // if (this.minusPrice < this.price) {
+          //   // ZFAPI.apiOrderOrderId().then(res => {
+          //   //   const data = {
+          //   //     body: '订购套餐',
+          //   //     out_trade_no: res.data,
+          //   //     total_fee: Number(this.selectePackage.price) * 100
+          //   //   }
+          //   //   ZFAPI.apiWXprepay(data).then(res => {
+          //   //     if (res.resultCode === 0) {
+          //   //       this.weixinTradePay(res.data, () => {
+          //   //         this.getApiEditPackage(done)
+          //   //       })
+          //   //     } else {
+          //   //       this.$toast(res.resultInfo)
+          //   //     }
+          //   //   })
+          //   // })
+          // } else {
+          //   this.getApiEditPackage(price, done)
+          // }
+        }
+        if (this.minusPrice < this.price) {
+          alert('您当前的余额不足以抵扣当前要订购的套餐，请先充值')
+          this.active = 'rechargeTab'
+          done()
         }
       } else if (action === 'cancel') {
         done() // 关闭
       }
     },
-    getApiEditPackage (done) {
+    getApiEditPackage (price, done) {
       const config = {
         cardNo: this.OrdersDetails.cardNo,
         packageId: this.packageId,
-        cardAddPackageBalanceId: this.cardCurrentPackageId
+        cardAddPackageBalanceId: this.cardCurrentPackageId,
+        price: price
       }
       API.apiEditPackage(config).then(res => {
         if (res.resultCode === 0) {
