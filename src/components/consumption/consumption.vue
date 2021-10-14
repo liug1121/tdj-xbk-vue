@@ -695,7 +695,11 @@ export default {
           this.getOrdersDetails(this.OrdersDetails.cardNo)
           this.getUsageinfosDetails(this.OrdersDetails.cardNo)
           this.isCheckChange = false
-          this.active = 'package'
+          // if (this.minusPrice < this.price) {
+          //   this.active = 'rechargeTab'
+          // } else {
+          //   this.active = 'package'
+          // }
           this.getCardList()
           done() // 关闭
         } else {

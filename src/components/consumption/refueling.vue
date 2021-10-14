@@ -167,6 +167,7 @@ export default {
       isreload: true,
       xAllAmount: 0,
       yAllAmount: 0,
+      voiceTotal: 0,
       allNum: 0,
       isShowallPkg: false,
       typeShow: 0
@@ -239,6 +240,7 @@ export default {
       addPackageIds.shift($item.goodId)
       // console.log(addPackageIds)
       this.xAllAmount = this.xAllAmount - Number($item.price)
+      this.voiceTotal = this.voiceTotal - Number($item.voiceTotal)
       this.yAllAmount = this.yAllAmount - Number($item.originalPrice)
       if (this.xAllAmount === 0) {
         this.isShowallPkg = false
@@ -277,6 +279,11 @@ export default {
 
       addPackageIds.unshift($item.goodId)
       // console.log(addPackageIds)
+      this.voiceTotal = this.voiceTotal + Number($item.voiceTotal)
+      if (this.voiceTotal + this.OrdersDetails.intVoiceBalance > 100) {
+        this.$toast('语音可用总量不能超过100分钟')
+        return
+      }
       this.allNum++
       this.xAllAmount = this.xAllAmount + Number($item.price)
       this.yAllAmount = this.yAllAmount + Number($item.originalPrice)
