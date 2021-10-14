@@ -303,7 +303,7 @@
 // import vHeader from '../header.vue'
 import imageUrls from 'common/images/icon-user.png'
 import API from 'api/consumption'
-import ZFAPI from 'api/applyCard'
+// import ZFAPI from 'api/applyCard'
 import Toast from 'vant'
 export default {
   data () {
@@ -715,38 +715,52 @@ export default {
       this.payPrice = $item.price
       this.$dialog.confirm({
         title: '提醒',
-        message: `您确认要充值${this.payPrice}元1！`
+        message: `您确认要充值${this.payPrice}元！`
       }).then(() => {
-        ZFAPI.apiOrderOrderId().then(res => {
-          const orderId = res.data
-          const data = {
-            body: '余额充值',
-            out_trade_no: res.data,
-            total_fee: Number(this.payPrice) * 100
+        const config = {
+          cardNo: this.OrdersDetails.cardNo,
+          payPrice: this.payPrice,
+          orderId: 'asasasas'
+        }
+        API.apipayPrice(config).then(res => {
+          if (res.resultCode === 0) {
+            this.$toast('充值成功！')
+            this.getOrdersDetails(this.OrdersDetails.cardNo)
+            this.getUsageinfosDetails(this.OrdersDetails.cardNo)
+          } else {
+            this.$toast(res.resultInfo)
           }
-          ZFAPI.apiWXprepay(data).then(res => {
-            if (res.resultCode === 0) {
-              this.weixinTradePay(res.data, () => {
-                const config = {
-                  cardNo: this.OrdersDetails.cardNo,
-                  payPrice: this.payPrice,
-                  orderId: orderId
-                }
-                API.apipayPrice(config).then(res => {
-                  if (res.resultCode === 0) {
-                    this.$toast('充值成功！')
-                    this.getOrdersDetails(this.OrdersDetails.cardNo)
-                    this.getUsageinfosDetails(this.OrdersDetails.cardNo)
-                  } else {
-                    this.$toast(res.resultInfo)
-                  }
-                })
-              })
-            } else {
-              this.$toast(res.resultInfo)
-            }
-          })
         })
+        // ZFAPI.apiOrderOrderId().then(res => {
+        //   const orderId = res.data
+        //   const data = {
+        //     body: '余额充值',
+        //     out_trade_no: res.data,
+        //     total_fee: Number(this.payPrice) * 100
+        //   }
+        //   ZFAPI.apiWXprepay(data).then(res => {
+        //     if (res.resultCode === 0) {
+        //       this.weixinTradePay(res.data, () => {
+        //         const config = {
+        //           cardNo: this.OrdersDetails.cardNo,
+        //           payPrice: this.payPrice,
+        //           orderId: orderId
+        //         }
+        //         API.apipayPrice(config).then(res => {
+        //           if (res.resultCode === 0) {
+        //             this.$toast('充值成功！')
+        //             this.getOrdersDetails(this.OrdersDetails.cardNo)
+        //             this.getUsageinfosDetails(this.OrdersDetails.cardNo)
+        //           } else {
+        //             this.$toast(res.resultInfo)
+        //           }
+        //         })
+        //       })
+        //     } else {
+        //       this.$toast(res.resultInfo)
+        //     }
+        //   })
+        // })
       }).catch(() => {
       })
     },
