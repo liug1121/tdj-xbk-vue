@@ -276,14 +276,13 @@ export default {
         this.packNumObj[$index].num = 1
       }
       this.packNumObj = this.trimSpace(this.packNumObj)
-
-      addPackageIds.unshift($item.goodId)
-      // console.log(addPackageIds)
-      this.voiceTotal = this.voiceTotal + Number($item.voiceTotal)
-      if (this.voiceTotal + this.OrdersDetails.intVoiceBalance > 100) {
+      const voiceTotal = this.voiceTotal + Number($item.voiceTotal)
+      if (voiceTotal + this.OrdersDetails.intVoiceBalance > 100) {
         this.$toast('语音可用总量不能超过100分钟')
         return
       }
+      addPackageIds.unshift($item.goodId)
+      this.voiceTotal = this.voiceTotal + Number($item.voiceTotal)
       this.allNum++
       this.xAllAmount = this.xAllAmount + Number($item.price)
       this.yAllAmount = this.yAllAmount + Number($item.originalPrice)
