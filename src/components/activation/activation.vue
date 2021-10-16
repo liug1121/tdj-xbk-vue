@@ -29,6 +29,9 @@
       <p class="title">您收到的学霸卡</p>
       <div class="card-demo"></div>
     </div>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 
@@ -42,6 +45,7 @@ export default {
   data () {
     return {
       ruleForm: {
+        loadingShow: false,
         studentName: '',
         orderPhone: '',
         iccid: '',
@@ -221,6 +225,7 @@ export default {
         this.$toast('您输入的ICCID号不足19位，请重新输入')
         return false
       } else {
+        this.loadingShow = true
         if (this.oldIconUrl) {
           const config = {
             studentName: this.ruleForm.studentName,
@@ -230,6 +235,7 @@ export default {
           }
           API.apiAddaActivation(config).then(res => {
             if (res.resultCode === 0) {
+              this.loadingShow = false
               this.$toast('学霸卡绑定成功！')
               const cardNo = res.data.cardNo
               sessionStorage.setItem('cardNo', JSON.stringify(cardNo))
@@ -243,6 +249,7 @@ export default {
                 })
               }
             } else {
+              this.loadingShow = false
               this.$toast(res.resultInfo)
             }
           })
@@ -255,6 +262,7 @@ export default {
           }
           API.apiAddaActivation(config).then(res => {
             if (res.resultCode === 0) {
+              this.loadingShow = false
               this.$toast('学霸卡绑定成功！')
               const cardNo = res.data.cardNo
               sessionStorage.setItem('cardNo', JSON.stringify(cardNo))
@@ -268,6 +276,7 @@ export default {
                 })
               }
             } else {
+              this.loadingShow = false
               this.$toast(res.resultInfo)
             }
           })
@@ -280,6 +289,17 @@ export default {
 
 <style lang="less" scoped>
 @import url(../../common/css/activation.less);
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
 .user-icon {
   position: relative;
   width: 1.5rem;
