@@ -691,7 +691,7 @@ export default {
       }
       API.apiEditPackage(config).then(res => {
         if (res.resultCode === 0) {
-          this.$toast('更改成功')
+          this.$toast('套餐购买成功')
           this.getOrdersDetails(this.OrdersDetails.cardNo)
           this.getUsageinfosDetails(this.OrdersDetails.cardNo)
           this.isCheckChange = false

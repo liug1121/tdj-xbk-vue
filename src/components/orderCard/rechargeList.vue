@@ -35,7 +35,8 @@ export default {
   data () {
     return {
       // headerName: '充值扣费',
-      rechargeList: {}
+      rechargeList: {},
+      currChild: {}
     }
   },
   components: {
@@ -46,6 +47,7 @@ export default {
   },
   methods: {
     getRechargeList () {
+      this.currChild = JSON.parse(sessionStorage.getItem('currChild'))
       this.$axios({
         method: 'POST',
         url: 'wechat/v1.0/users/payrecords',
@@ -54,7 +56,7 @@ export default {
         },
         data: JSON.stringify({
           cardNo: this.$route.query.cardNo,
-          // date: this.currChild.date
+          date: this.currChild.date,
           page: 0,
           pageSize: 0
         })

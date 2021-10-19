@@ -63,7 +63,8 @@ export default {
   data () {
     return {
       // headerName: '卡订购&套餐变更',
-      cardOrderList: {}
+      cardOrderList: {},
+      currChild: {}
     }
   },
   components: {
@@ -74,6 +75,7 @@ export default {
   },
   methods: {
     getCardOrderList () {
+      this.currChild = JSON.parse(sessionStorage.getItem('currChild'))
       this.$axios({
         method: 'POST',
         url: 'wechat/v1.0/users/packagechanges',
@@ -82,7 +84,7 @@ export default {
         },
         data: JSON.stringify({
           cardNo: this.$route.query.cardNo,
-          // date: this.currChild.date
+          date: this.currChild.date,
           page: 0,
           pageSize: 0
         })
