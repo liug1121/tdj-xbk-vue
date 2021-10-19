@@ -99,6 +99,7 @@ export default {
           this.TipsAddDialog = true
         }
         this.addWhileDialog = false
+        done()
       } else {
         done()
       }
@@ -128,7 +129,11 @@ export default {
           this.addWhileDialog = false
           this.$emit('addSucess')
         } else {
-          this.$toast(res.resultInfo)
+          this.$toast('失败:' + res.resultInfo)
+          this.whitePhoneNum = ''
+          this.nickName = ''
+          this.addWhileDialog = false
+          this.$emit('addSucess')
         }
       })
     },

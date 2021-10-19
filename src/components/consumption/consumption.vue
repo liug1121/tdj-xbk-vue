@@ -674,7 +674,7 @@ export default {
           // }
         }
         if (this.minusPrice < this.price) {
-          alert('您当前的余额不足以抵扣当前要订购的套餐，请先充值')
+          // alert('您当前的余额不足以抵扣当前要订购的套餐，请先充值')
           this.active = 'rechargeTab'
           done()
         }

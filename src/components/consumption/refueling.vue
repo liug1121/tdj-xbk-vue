@@ -33,7 +33,7 @@
 
     <!-- 语音、短信、全国流量等列表 -->
     <div class="refueling-box">
-      <div class="refueling-item" v-show="typeShow === 3 && packList.length!==0">
+      <!-- <div class="refueling-item" v-show="typeVoiceShow === 1 && packList.length!==0">
         <div class="refueling-title">语音</div>
         <div class="refueling-list" v-for="(item,index) of packList" v-show="item.type===3" :key="index">
           <div class="package-category">{{item.packageName}}</div>
@@ -47,9 +47,9 @@
             <span class="add" @click.stop="onClick_add(index,item)"></span>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="refueling-item" v-show="typeShow === 2 && packList.length!==0">
+      <!-- <div class="refueling-item" v-show="typeShow === 2 && packList.length!==0">
         <div class="refueling-title">短信</div>
         <div class="refueling-list" v-for="(item,index) of packList" v-show="item.type===2" :key="index">
           <div class="package-category">{{item.packageName}}</div>
@@ -63,11 +63,11 @@
             <span class="add" @click.stop="onClick_add(index,item)"></span>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="refueling-item" v-show="typeShow === 1 && packList.length!==0">
-        <div class="refueling-title">全国流量</div>
-        <div class="refueling-list" v-for="(item,index) of packList" v-show="item.type===1" :key="index">
+      <div class="refueling-item" v-show="packList.length!==0">
+        <div class="refueling-title">可订购的加油包</div>
+        <div class="refueling-list" v-for="(item,index) of packList" :key="index">
           <div class="package-category">{{item.packageName}}</div>
           <div class="package-price">
             <span class="price-new">￥{{item.price}}</span>
@@ -81,10 +81,9 @@
         </div>
       </div>
 
-      <div class="refueling-item" v-show="typeShow === 0 && packList.length!==0">
+      <!-- <div class="refueling-item" v-show="typeProvinceDataShow === 1 && packList.length!==0">
         <div class="refueling-title">省内流量</div>
         <div class="refueling-list" v-for="(item,index) of packList" v-show="item.type===0" :key="index">
-          <!-- <div class="package-category">{{item.areaName}}{{item.packageName}}</div> -->
           <div class="package-category">{{item.packageName}}</div>
           <div class="package-price">
             <span class="price-new">￥{{item.price}}</span>
@@ -96,7 +95,7 @@
             <span class="add" @click.stop="onClick_add(index,item)"></span>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
 
@@ -169,8 +168,7 @@ export default {
       yAllAmount: 0,
       voiceTotal: 0,
       allNum: 0,
-      isShowallPkg: false,
-      typeShow: 0
+      isShowallPkg: false
     }
   },
   components: {
@@ -211,7 +209,6 @@ export default {
       API.apiPackList(params).then(res => {
         if (res.resultCode === 0) {
           this.packList = res.data
-          this.typeShow = res.data[0].type
           this.packNumObj = {}
           this.addPackageIds = []
         } else {
@@ -266,6 +263,14 @@ export default {
     // 增加
     onClick_add ($index, $item) {
       // console.log($index)
+      if (Number($item.voiceTotal) > 0) {
+        const voiceTotal = this.voiceTotal + Number($item.voiceTotal)
+        if (voiceTotal + this.OrdersDetails.intVoiceBalance > 100) {
+          this.$toast('语音可用总量不能超过100分钟')
+          return
+        }
+        this.voiceTotal = this.voiceTotal + Number($item.voiceTotal)
+      }
       if (!this.packNumObj[$index]) {
         $item.num = 0
         this.packNumObj[$index] = $item
@@ -276,14 +281,6 @@ export default {
         this.packNumObj[$index].num = 1
       }
       this.packNumObj = this.trimSpace(this.packNumObj)
-      if (Number($item.voiceTotal) > 0) {
-        const voiceTotal = this.voiceTotal + Number($item.voiceTotal)
-        if (voiceTotal + this.OrdersDetails.intVoiceBalance > 100) {
-          this.$toast('语音可用总量不能超过100分钟')
-          return
-        }
-        this.voiceTotal = this.voiceTotal + Number($item.voiceTotal)
-      }
       addPackageIds.unshift($item.goodId)
       this.allNum++
       this.xAllAmount = this.xAllAmount + Number($item.price)
