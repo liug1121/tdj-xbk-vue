@@ -303,6 +303,7 @@
 // import vHeader from '../header.vue'
 import imageUrls from 'common/images/icon-user.png'
 import API from 'api/consumption'
+import utils from '../../utils/utils'
 // import ZFAPI from 'api/applyCard'
 import Toast from 'vant'
 export default {
@@ -371,6 +372,7 @@ export default {
     if (status === '3') {
       this.active = 'editPackage'
     }
+    // this.initSessionStorage()
     this.getCardList()
     // this.getPriceList()
   },
@@ -393,8 +395,18 @@ export default {
             const provinceId = JSON.parse(sessionStorage.getItem('provinceId'))
             const cardNo = JSON.parse(sessionStorage.getItem('cardNo'))
             if (cardNo === '' || cardNo === null || cardNo === undefined || provinceId === '' || provinceId === null || provinceId === undefined) {
-              sessionStorage.setItem('status', JSON.stringify(res.data[0].status))
-              sessionStorage.setItem('cardNo', JSON.stringify(res.data[0].cardNo))
+              var index = 0
+              var adminCardNo = utils.getLocalStorageWithExpiry('adminCard')
+              if (adminCardNo !== '' && adminCardNo !== undefined && adminCardNo !== null) {
+                for (var i = 0; i < res.data.length; i++) {
+                  if (res.data[i].cardNo === adminCardNo) {
+                    index = i
+                    break
+                  }
+                }
+              }
+              sessionStorage.setItem('status', JSON.stringify(res.data[index].status))
+              sessionStorage.setItem('cardNo', JSON.stringify(res.data[index].cardNo))
               const cardNo = JSON.parse(sessionStorage.getItem('cardNo'))
               this.getOrdersDetails(cardNo)
               this.getUsageinfosDetails(cardNo)
@@ -421,8 +433,21 @@ export default {
     xbkChange () {
       this.showCardDialog = true
     },
+    // initSessionStorage () {
+    //   var cardNo = utils.getLocalStorageWithExpiry('adminCard')
+    //   if (cardNo !== null && cardNo !== '' && cardNo !== undefined) {
+    //     var consumCard = utils.getLocalStorageWithExpiry(cardNo + '-consum')
+    //     if (consumCard !== null && consumCard !== '' && consumCard !== undefined) {
+    //       sessionStorage.setItem('cardNo', JSON.stringify(consumCard.cardNo))
+    //       sessionStorage.setItem('provinceId', JSON.stringify(consumCard.province))
+    //       sessionStorage.setItem('status', JSON.stringify(consumCard.status))
+    //     }
+    //   }
+    // },
     // 点击卡列表
     cardChange (cardInfo) {
+      // utils.setLocalStorageWithExpiry(cardInfo.cardNo + '-consum', cardInfo)
+      utils.setLocalStorageWithExpiry('adminCard', cardInfo.cardNo)
       sessionStorage.setItem('cardNo', JSON.stringify(cardInfo.cardNo))
       sessionStorage.setItem('provinceId', JSON.stringify(cardInfo.province))
       sessionStorage.setItem('status', JSON.stringify(cardInfo.status))

@@ -211,6 +211,7 @@
 <script>
 // import { Dialog } from 'vant'
 // import vHeader from '../header.vue'
+import utils from '../../utils/utils'
 import imageUrls from 'common/images/icon-user.png'
 import API from 'api/administer'
 export default {
@@ -254,6 +255,7 @@ export default {
     // vHeader
   },
   created () {
+    // this.initSessionStorage()
     this.getCardList()
   },
   mounted() {
@@ -263,6 +265,19 @@ export default {
     })
   },
   methods: {
+    // initSessionStorage () {
+    //   var cardNo = utils.getLocalStorageWithExpiry('adminCard')
+    //   if (cardNo !== null && cardNo !== '' && cardNo !== undefined) {
+    //     var adminCard = utils.getLocalStorageWithExpiry(cardNo + '-admin')
+    //     if (adminCard !== null && adminCard !== '' && adminCard !== undefined) {
+    //       sessionStorage.setItem('studentName', JSON.stringify(adminCard.studentName))
+    //       sessionStorage.setItem('cardNo', JSON.stringify(adminCard.cardNo))
+    //       sessionStorage.setItem('fwAcccount', JSON.stringify(adminCard.fwAcccount))
+    //       sessionStorage.setItem('CardStatusNO', JSON.stringify(adminCard.status))
+    //       sessionStorage.setItem('controlType', JSON.stringify(adminCard.controlType))
+    //     }
+    //   }
+    // },
     // 获取卡列表数据
     getCardList () {
       API.apiCardList().then(res => {
@@ -276,9 +291,19 @@ export default {
             const studentName = JSON.parse(sessionStorage.getItem('studentName'))
             const fwAcccount = JSON.parse(sessionStorage.getItem('fwAcccount'))
             if (cardNo === '' || cardNo === null || cardNo === undefined || studentName === '' || studentName === null || studentName === undefined || fwAcccount === '' || fwAcccount === null || fwAcccount === undefined) {
-              sessionStorage.setItem('studentName', JSON.stringify(res.data[0].studentName))
-              sessionStorage.setItem('cardNo', JSON.stringify(res.data[0].cardNo))
-              sessionStorage.setItem('fwAcccount', JSON.stringify(res.data[0].fwAcccount))
+              var index = 0
+              var adminCardNo = utils.getLocalStorageWithExpiry('adminCard')
+              if (adminCardNo !== '' && adminCardNo !== undefined && adminCardNo !== null) {
+                for (var i = 0; i < res.data.length; i++) {
+                  if (res.data[i].cardNo === adminCardNo) {
+                    index = i
+                    break
+                  }
+                }
+              }
+              sessionStorage.setItem('studentName', JSON.stringify(res.data[index].studentName))
+              sessionStorage.setItem('cardNo', JSON.stringify(res.data[index].cardNo))
+              sessionStorage.setItem('fwAcccount', JSON.stringify(res.data[index].fwAcccount))
               const cardNo = JSON.parse(sessionStorage.getItem('cardNo'))
               this.getCardStatus(cardNo)
               this.getOrdersDetails(cardNo)
@@ -325,6 +350,8 @@ export default {
       } else {
         this.noPackage = false
       }
+      // utils.setLocalStorageWithExpiry(id + '-admin', $item)
+      utils.setLocalStorageWithExpiry('adminCard', id)
       sessionStorage.setItem('studentName', JSON.stringify($item.studentName))
       sessionStorage.setItem('cardNo', JSON.stringify(id))
       sessionStorage.setItem('fwAcccount', JSON.stringify($item.fwAcccount))
