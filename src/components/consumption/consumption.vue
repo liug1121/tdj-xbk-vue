@@ -372,7 +372,6 @@ export default {
     if (status === '3') {
       this.active = 'editPackage'
     }
-    // this.initSessionStorage()
     this.getCardList()
     // this.getPriceList()
   },
@@ -433,20 +432,8 @@ export default {
     xbkChange () {
       this.showCardDialog = true
     },
-    // initSessionStorage () {
-    //   var cardNo = utils.getLocalStorageWithExpiry('adminCard')
-    //   if (cardNo !== null && cardNo !== '' && cardNo !== undefined) {
-    //     var consumCard = utils.getLocalStorageWithExpiry(cardNo + '-consum')
-    //     if (consumCard !== null && consumCard !== '' && consumCard !== undefined) {
-    //       sessionStorage.setItem('cardNo', JSON.stringify(consumCard.cardNo))
-    //       sessionStorage.setItem('provinceId', JSON.stringify(consumCard.province))
-    //       sessionStorage.setItem('status', JSON.stringify(consumCard.status))
-    //     }
-    //   }
-    // },
     // 点击卡列表
     cardChange (cardInfo) {
-      // utils.setLocalStorageWithExpiry(cardInfo.cardNo + '-consum', cardInfo)
       utils.setLocalStorageWithExpiry('adminCard', cardInfo.cardNo)
       sessionStorage.setItem('cardNo', JSON.stringify(cardInfo.cardNo))
       sessionStorage.setItem('provinceId', JSON.stringify(cardInfo.province))

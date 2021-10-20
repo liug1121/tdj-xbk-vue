@@ -255,7 +255,6 @@ export default {
     // vHeader
   },
   created () {
-    // this.initSessionStorage()
     this.getCardList()
   },
   mounted() {
@@ -265,19 +264,6 @@ export default {
     })
   },
   methods: {
-    // initSessionStorage () {
-    //   var cardNo = utils.getLocalStorageWithExpiry('adminCard')
-    //   if (cardNo !== null && cardNo !== '' && cardNo !== undefined) {
-    //     var adminCard = utils.getLocalStorageWithExpiry(cardNo + '-admin')
-    //     if (adminCard !== null && adminCard !== '' && adminCard !== undefined) {
-    //       sessionStorage.setItem('studentName', JSON.stringify(adminCard.studentName))
-    //       sessionStorage.setItem('cardNo', JSON.stringify(adminCard.cardNo))
-    //       sessionStorage.setItem('fwAcccount', JSON.stringify(adminCard.fwAcccount))
-    //       sessionStorage.setItem('CardStatusNO', JSON.stringify(adminCard.status))
-    //       sessionStorage.setItem('controlType', JSON.stringify(adminCard.controlType))
-    //     }
-    //   }
-    // },
     // 获取卡列表数据
     getCardList () {
       API.apiCardList().then(res => {
@@ -350,7 +336,6 @@ export default {
       } else {
         this.noPackage = false
       }
-      // utils.setLocalStorageWithExpiry(id + '-admin', $item)
       utils.setLocalStorageWithExpiry('adminCard', id)
       sessionStorage.setItem('studentName', JSON.stringify($item.studentName))
       sessionStorage.setItem('cardNo', JSON.stringify(id))
