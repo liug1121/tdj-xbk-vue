@@ -19,7 +19,7 @@
           <div v-show="endTime!=''" class="value_box" @click="onClick_setEndTime">{{endTime}}</div>
           <div class="el-icon-circle-close-outline clear_btn" v-show="endTime!=''" @click="onClick_clearTime(2)"></div>
           <!-- <div class="begin_btn" >开始</div> -->
-          <van-button type="primary" size="small" color="#ffba26" @click="onClick_getPointes">开始</van-button>
+          <van-button type="primary" size="small" color="#ffba26" @click="onClick_getPointes">查询</van-button>
         </div>
       </div>
       <div id="container" style="width:100%;height:16rem;"></div>
@@ -399,7 +399,7 @@ export default {
 .dateTimePicker {
   position: absolute;
   bottom: 0px;
-  height: 500px;
+  height: 200px;
   width: 100%;
 }
 </style>

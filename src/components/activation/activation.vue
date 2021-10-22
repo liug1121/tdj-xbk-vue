@@ -45,7 +45,6 @@ export default {
   data () {
     return {
       ruleForm: {
-        loadingShow: false,
         studentName: '',
         orderPhone: '',
         iccid: '',
@@ -55,7 +54,8 @@ export default {
       oldIconUrl: true,
       newIconUrl: false,
       isShowUpload: true,
-      childrenImage: ''
+      childrenImage: '',
+      loadingShow: false
     }
   },
   components: {

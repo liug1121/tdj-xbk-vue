@@ -59,6 +59,9 @@
         现在去<span style="color: rgb(255, 186, 40)" @click="onClick_goPage2('applyCard')">申请</span>或<span style="color: rgb(255, 186, 40);" @click="onClick_goPage2('activation')">激活</span>。
       </div>
     </div>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 
@@ -68,6 +71,7 @@
 export default {
   data () {
     return {
+      loadingShow: false,
       cardList: [],
       MonthList: [],
       selectDate: {
@@ -99,6 +103,7 @@ export default {
   methods: {
     // 获取卡列表数据
     getCardList () {
+      this.loadingShow = true
       this.$axios({
         method: 'GET',
         url: 'wechat/v1.0/users/cards'
@@ -116,8 +121,10 @@ export default {
           } else {
             this.currCard = this.cardList[0]
           }
+          this.loadingShow = false
         } else {
           this.$toast('加载失败')
+          this.loadingShow = false
         }
       })
     },
@@ -213,4 +220,15 @@ export default {
 
 <style lang="less" scoped>
 @import url(../../common/css/orderCard.less);
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
 </style>
