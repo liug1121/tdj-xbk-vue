@@ -118,8 +118,8 @@
             <div class="replace-title">
               <span>未生效已订购套餐</span>
             </div>
-            <div class="noPackage" v-if="UsageinfosValidNo.length === 0 && longTermPackage.length === 0">暂无未生效套餐，如需要可以去<span class="goPackage" @click="goPackageAdd">订购套餐</span></div>
-            <div class="noPackageList" v-for="validListItem in longTermPackage" :key="validListItem.cardAddPackageBalanceId" v-show="UsageinfosValidNo.length === 0">
+            <div class="noPackage" v-if="UsageinfosValidNo.length === 0">暂无未生效套餐，如需要可以去<span class="goPackage" @click="goPackageAdd">订购套餐</span></div>
+            <!-- <div class="noPackageList" v-for="validListItem in longTermPackage" :key="validListItem.cardAddPackageBalanceId" v-show="UsageinfosValidNo.length === 0">
               <div class="package-current">
                 <div class="package-xx">{{validListItem.packageName}}</div>
                 <div class="package-zdxq">自动续期</div>
@@ -139,15 +139,11 @@
               <div class="package-SM">语音：{{validListItem.voiceTotal}} 分钟/{{validListItem.clearCycle}}个月</div>
               <div class="package-SM" v-if="validListItem.areaType === 0">{{validListItem.province}}省内流量：{{validListItem.dataTotal}} M/{{validListItem.clearCycle}}个月</div>
               <div class="package-SM" v-if="validListItem.areaType === 1">全国流量：{{validListItem.dataTotal}} M/{{validListItem.clearCycle}}个月</div>
-              <!-- <div class="s-change" @click="onClick_changeMeal(validListItem.cardAddPackageBalanceId)">
-                <span></span>
-                更换套餐
-              </div> -->
               <div class="buttonBox">
                 <div class="changeButoon" @click="onClick_changeMeal(validListItem.cardAddPackageBalanceId)">更换套餐</div>
                 <div class="delButton" @click="onClick_del(validListItem.cardAddPackageBalanceId)">取消订购</div>
               </div>
-            </div>
+            </div> -->
             <div class="noPackageList" v-for="ValidNoItem in UsageinfosValidNo" :key="ValidNoItem.cardAddPackageBalanceId">
               <div class="package-current">
                 <div class="package-xx">{{ValidNoItem.packageName}}</div>
