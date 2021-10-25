@@ -195,7 +195,7 @@ export default {
 
       sessionStorage.setItem('currChild', '')
       sessionStorage.setItem('currChild', JSON.stringify(currChid))
-
+      // alert(this.currCard.cardNo)
       this.$router.push({
         path: '/' + $router,
         query: {

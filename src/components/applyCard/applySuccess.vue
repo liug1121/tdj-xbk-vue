@@ -82,6 +82,7 @@ export default {
   methods: {
     getOrderXQ () {
       const orderUUID = this.orderId
+      // alert(orderUUID)
       API.apiOrderXQ(orderUUID).then(res => {
         if (res.resultCode === 0) {
           this.detalhes = res.data

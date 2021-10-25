@@ -42,6 +42,7 @@
           <span v-if="item.status === -1">支付失败</span>
           <span v-if="item.status === 5">已开卡</span>
           <span v-if="item.status === 6">已发货</span>
+          <span v-if="item.status === 7">已完成</span>
         </div>
         <div class="seeOrderListright">
           <span class="see-details" v-show="item.type === 6">
@@ -86,7 +87,7 @@ export default {
           cardNo: this.$route.query.cardNo,
           date: this.currChild.date,
           page: 0,
-          pageSize: 0
+          pageSize: 100
         })
       }).then(res => {
         if (res.data.resultCode === 0) {
@@ -100,6 +101,7 @@ export default {
     routerTo (row, status) {
       // console.log(row)
       const orderId = row.orderUUID
+      // alert(orderId)
       sessionStorage.setItem('orderId', JSON.stringify(orderId))
       if (row.type === 6 && (status === 0 || status === -1)) {
         this.$router.push({
@@ -107,7 +109,7 @@ export default {
           query: { orderId: orderId }
         })
       }
-      if (row.type === 6 && (status === 1 || status === 5 || status === 6)) {
+      if (row.type === 6 && (status === 1 || status === 5 || status === 6 || status === 7)) {
         this.$router.push({
           path: '/applySuccess',
           query: { orderId: orderId }
