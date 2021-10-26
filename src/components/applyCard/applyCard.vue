@@ -374,6 +374,7 @@ export default {
           this.applyCardForm.packageId1 = packageId[0].id
           this.applyCardForm.mealMoney = `${packageId[0].price}元`
           this.applyCardForm.goodId = packageId[0].goodId
+          this.applyCardForm.cardMoney = `${packageId[0].cardPrice}元`
           this.packagePrice = Number(packageId[0].price) + Number(10)
           this.showPackageDialog = false
           done() // 关闭
