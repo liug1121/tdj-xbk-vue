@@ -33,10 +33,10 @@
       当前卡无历史轨迹
     </div>
 
-    <van-datetime-picker class="dateTimePicker" v-model="pickerValue" item-height="30" ref="picker" type="datetime" v-show="pickerVisible" :min-date="startDate" :max-date="endDate" @confirm="handleConfirm"
-      @cancel="handleCancel" visible-item-count="10" />
-    <van-datetime-picker class="dateTimePicker" v-model="pickerValue2" item-height="30" ref="picker" type="datetime" v-show="pickerVisible2" :min-date="startDate" :max-date="endDate" @confirm="handleConfirm2"
-      @cancel="handleCancel2" visible-item-count="10" />
+    <van-datetime-picker class="dateTimePicker" v-model="pickerValue" item-height="20" ref="picker" type="datetime" v-show="pickerVisible" :min-date="startDate" :max-date="endDate" @confirm="handleConfirm"
+      @cancel="handleCancel" visible-item-count="10"  :formatter="formatter"/>
+    <van-datetime-picker class="dateTimePicker" v-model="pickerValue2" item-height="20" ref="picker" type="datetime" v-show="pickerVisible2" :min-date="startDate" :max-date="endDate" @confirm="handleConfirm2"
+      @cancel="handleCancel2" visible-item-count="10" :formatter="formatter"/>
 
     <div :title="'须知'" class="xuzhi" v-show="isShowXZPop" @click="onClick_closePop">
       <div style="margin-left: .2rem;margin-top: .3rem">1.只提供查询48小时内位置数据。</div>
@@ -58,7 +58,7 @@ export default {
       pickerVisible: false,
       startTime: '',
       endTime: '',
-      startDate: new Date(new Date().getTime() - 48 * 60 * 60 * 1000),
+      startDate: new Date(new Date().getTime() - 20 * 24 * 60 * 60 * 1000),
       endDate: new Date(),
       pickerValue2: '',
       pickerVisible2: false,
@@ -76,6 +76,22 @@ export default {
   },
 
   methods: {
+    formatter(type, val) {
+      if (type === 'year') {
+        return `${val}年`
+      } else if (type === 'month') {
+        return `${val}月`
+      } else if (type === 'day') {
+        return `${val}日`
+      } else if (type === 'hour') {
+        return `${val}时`
+      } else if (type === 'minute') {
+        return `${val}分`
+      } else if (type === 'second') {
+        return `${val}秒`
+      }
+      return val
+    },
     init () {
       this.getCurrAddr(($point) => {
         if ($point.length !== 0) {
@@ -399,7 +415,7 @@ export default {
 .dateTimePicker {
   position: absolute;
   bottom: 0px;
-  height: 200px;
+  height: 300px;
   width: 100%;
 }
 </style>
