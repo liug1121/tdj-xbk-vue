@@ -56,7 +56,7 @@
               <div class="MBIConRight">-{{item.packageBilling}}元</div>
             </div>
             <div class="mothbillItemConList">
-              <div class="MB IConLeft">用量超套费用</div>
+              <div class="MBIConLeft">用量超套费用</div>
               <div class="MBIConRight">-{{item.overBilling}}元</div>
             </div>
             <div class="mothbillItemConList">
