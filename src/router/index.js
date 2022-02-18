@@ -217,6 +217,48 @@ const routes = [
     name: '超级学霸卡',
     component: () => import('components/groupControl/ParentalControl.vue'),
     meta: { groupControl: true }
+  },
+  {
+    path: '/SalerUnBind',
+    name: '合伙人未绑定提示',
+    component: () => import('components/saler/unBind.vue'),
+    meta: { groupControl: true }
+  },
+  {
+    path: '/SalerBind',
+    name: '绑定合伙人',
+    component: () => import('components/saler/bind.vue'),
+    meta: { groupControl: true }
+  },
+  {
+    path: '/SalerBindInfo',
+    name: '绑定合伙人',
+    component: () => import('components/saler/bindInfo.vue'),
+    meta: { groupControl: true }
+  },
+  {
+    path: '/ModifySalerBindInfo',
+    name: '绑定合伙人',
+    component: () => import('components/saler/modifyBindInfo.vue'),
+    meta: { groupControl: true }
+  },
+  {
+    path: '/SalerPay',
+    name: '在线支付',
+    component: () => import('components/saler/pay.vue'),
+    meta: { groupControl: true }
+  },
+  {
+    path: '/SalerPaySuccess',
+    name: '在线支付成功',
+    component: () => import('components/saler/paySuccess.vue'),
+    meta: { groupControl: true }
+  },
+  {
+    path: '/SalerPayFaild',
+    name: '在线支付失败',
+    component: () => import('components/saler/payFaild.vue'),
+    meta: { groupControl: true }
   }
 ]
 
