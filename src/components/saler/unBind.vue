@@ -3,7 +3,7 @@
   <div class="activate_content">
     <div class="notice">您尚未成为合伙人</div>
     <div class="activate_con">
-      <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" >绑定手机号</van-button>
+      <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" @click="toBind" >绑定手机号</van-button>
     </div>
   </div>
 </template>
@@ -65,6 +65,12 @@ export default {
     })
   },
   methods: {
+      toBind () {
+          console.log('toBind')
+          this.$router.push({
+            path: '/SalerBind'
+          })
+      }
   }
 }
 </script>

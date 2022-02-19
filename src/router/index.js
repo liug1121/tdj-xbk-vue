@@ -222,43 +222,43 @@ const routes = [
     path: '/SalerUnBind',
     name: '合伙人未绑定提示',
     component: () => import('components/saler/unBind.vue'),
-    meta: { groupControl: true }
+    meta: { saler: true }
   },
   {
     path: '/SalerBind',
     name: '绑定合伙人',
     component: () => import('components/saler/bind.vue'),
-    meta: { groupControl: true }
+    meta: { saler: true }
   },
   {
     path: '/SalerBindInfo',
     name: '绑定合伙人',
     component: () => import('components/saler/bindInfo.vue'),
-    meta: { groupControl: true }
+    meta: { saler: true }
   },
   {
     path: '/ModifySalerBindInfo',
     name: '绑定合伙人',
     component: () => import('components/saler/modifyBindInfo.vue'),
-    meta: { groupControl: true }
+    meta: { saler: true }
   },
   {
     path: '/SalerPay',
     name: '在线支付',
     component: () => import('components/saler/pay.vue'),
-    meta: { groupControl: true }
+    meta: { saler: true }
   },
   {
     path: '/SalerPaySuccess',
     name: '在线支付成功',
     component: () => import('components/saler/paySuccess.vue'),
-    meta: { groupControl: true }
+    meta: { saler: true }
   },
   {
     path: '/SalerPayFaild',
     name: '在线支付失败',
     component: () => import('components/saler/payFaild.vue'),
-    meta: { groupControl: true }
+    meta: { saler: true }
   }
 ]
 
@@ -270,6 +270,7 @@ const router = new VueRouter({
 
 // 全局钩子函数,在跳转之前执行
 router.beforeEach((to, from, next) => {
+  console.log('1:' + JSON.stringify(to.meta))
   document.title = to.name
   if (to.meta.groupControlLogin) {
     if (process.env.VUE_APP_CURRENTMODE === 'production') {
@@ -294,6 +295,7 @@ router.beforeEach((to, from, next) => {
         next()
       }
     } else {
+      console.log('sdsdsd')
       const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvTVdLbDFQQWp4WmRfakp3N3QwTDVjTmFNX19VIiwidHlwZSI6IjQifQ.b9ObQEzABSib2mvHEXSGC6yNjY142QYrtNRd2CANZaqZL6CGkqiquw-wdVTvKsPxumyMjmrIEv4wMcSFzTBaYw'
       if (token) {
         next()
@@ -301,8 +303,10 @@ router.beforeEach((to, from, next) => {
       localStorage.setItem('QKtokenWX', token)
     }
   } else if (to.meta.groupControl) {
+    console.log('2')
     // 群控 登录之外的页面
     if (process.env.VUE_APP_CURRENTMODE === 'production') {
+      console.log('3')
       const token = localStorage.getItem('QKtoken')
       const userName = localStorage.getItem('userName')
       if (token && userName) {
@@ -311,6 +315,51 @@ router.beforeEach((to, from, next) => {
         next('/QKLogin')
       }
     } else {
+      console.log('3')
+      console.log('sdsdsd')
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvUjdwUDFhRnAyZEU4dnhGSmYzanlMbmdVdkpBIiwidHlwZSI6IjMiLCJzY2hvb2xNYW5hZ2VySWQiOjEsInNjaG9vbElkIjoxLCJvcmdhbml6YXRpb25JZHMiOiIxIiwiY29udHJvbEdyb3VwSWRzIjoiNCw1In0.nr6a3_nvQETar7M_4tAaf0J52xFgUJgBvw9toamxh6tbzUR0I1g-8eNPGc-YRrYDsAUBSkq61jIBvHrSoJaowQ'
+      const userName = '测试'
+      localStorage.setItem('QKtoken', token)
+      if (token && userName) {
+        next()
+      } else {
+        next('/QKLogin')
+      }
+    }
+  } else if (to.meta.saler) {
+    console.log('22')
+    console.log('process.env.VUE_APP_CURRENTMODE:' + process.env.VUE_APP_CURRENTMODE)
+    // 群控 登录之外的页面
+    if (!process.env.VUE_APP_CURRENTMODE) {
+      const token = sessionStorage.getItem('token')
+      console.log('token:' + token)
+      if (token === null || token === '' || token === undefined || token === 'null') {
+        // const code = getUrlKey('code')
+        console.log('222code')
+        const code = '1111'
+        if (code === null || code === '') {
+          const urlNow = encodeURIComponent(window.location.href)
+          const appid = 'wx92971625eac3ce35'
+          const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${urlNow}&response_type=code&scope=snsapi_base&state=123#wechat_redirect`
+          window.location.href = url
+        } else {
+          console.log('111apiSalerLogin')
+          WxAPI.apiSalerLogin(code).then(res => {
+            const loginInfo = res.data
+            console.log(JSON.stringify(to))
+            sessionStorage.setItem('token', loginInfo.token)
+            if (!loginInfo.logined && to.path !== '/SalerUnBind' && to.path !== '/SalerBind') {
+              next('/SalerUnBind')
+            } else {
+              next()
+            }
+          })
+        }
+      } else {
+        next()
+      }
+    } else {
+      console.log('32')
       const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvUjdwUDFhRnAyZEU4dnhGSmYzanlMbmdVdkpBIiwidHlwZSI6IjMiLCJzY2hvb2xNYW5hZ2VySWQiOjEsInNjaG9vbElkIjoxLCJvcmdhbml6YXRpb25JZHMiOiIxIiwiY29udHJvbEdyb3VwSWRzIjoiNCw1In0.nr6a3_nvQETar7M_4tAaf0J52xFgUJgBvw9toamxh6tbzUR0I1g-8eNPGc-YRrYDsAUBSkq61jIBvHrSoJaowQ'
       const userName = '测试'
       localStorage.setItem('QKtoken', token)
@@ -405,6 +454,7 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvUjdwUDFhRnAyZEU4dnhGSmYzanlMbmdVdkpBIiwiY2hhbm5lbElkIjoxMjQsInVzZXJJZCI6MTUzLCJ0eXBlIjoiMCJ9.F9U8azpfEHbrRf_-O1mU1ANdGdAdNKlSpq3tc9oEYQS_7hbLIXfZeoD0tJC-Nu9wJi4ETeqN7ATj_9LSipuK0w'
+      console.log('***token:' + token)
       if (token) {
         next()
       }

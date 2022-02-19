@@ -17,5 +17,10 @@ export default {
   // 微信签名授权
   apiSigin: params => {
     return API.POST('wechat/v1.0/sigin', params)
+  },
+  apiSalerLogin: params => {
+    const code = params
+    console.log('apiSalerLogin')
+    return API.GET(`saler/v1.0/users/login/${code}`, params)
   }
 }

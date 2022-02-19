@@ -27,7 +27,8 @@ module.exports = {
     // https: true,
     proxy: {
       '/': {
-        target: 'http://xbk.xuebaka.cn/', // 正式环境
+        target: 'http://localhost:8888/',
+        // target: 'http://xbk.xuebaka.cn/', // 正式环境
         // target: 'http://xbk.tdj.cn/ceshi/', // 测试环境
         // target: 'http://119.29.252.68:9999/', // 调试 群控
         ws: true,
