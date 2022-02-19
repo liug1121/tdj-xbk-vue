@@ -5,5 +5,8 @@ export default {
   },
   apiGetBindSalerInfo: params => {
     return API.GET('saler/v1.0/user/info', params)
+  },
+  apiGetSalerStocks: params => {
+    return API.GET('saler/v1.0/stocks', params)
   }
 }

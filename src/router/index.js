@@ -259,6 +259,12 @@ const routes = [
     name: '在线支付失败',
     component: () => import('components/saler/payFaild.vue'),
     meta: { saler: true }
+  },
+  {
+    path: '/SalerSock',
+    name: '在线支付失败',
+    component: () => import('components/saler/salerSock.vue'),
+    meta: { saler: true }
   }
 ]
 
