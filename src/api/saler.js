@@ -14,5 +14,8 @@ export default {
   },
   apiOrderPayed: params => {
     return API.POST('saler/v1.0/pay/payed', params)
+  },
+  apiGetOrders: params => {
+    return API.GET('saler/v1.0/orders', params)
   }
 }

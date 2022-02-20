@@ -4,7 +4,7 @@
     <div class="notice">支付成功</div>
     <div class="activate_con">
       <van-button class="activate_con_item" type="info" round size="large" color="#FFBA27" style="height:42px;" @click="toStock">查看库存</van-button>
-      <van-button class="activate_con_item" type="info" round size="large" color="#FFBA27" style="height:42px;" >查看订单</van-button>
+      <van-button class="activate_con_item" type="info" round size="large" color="#FFBA27" style="height:42px;" @click="toOrder">查看订单</van-button>
     </div>
   </div>
 </template>
@@ -37,6 +37,11 @@ export default {
       toStock () {
         this.$router.push({
             path: '/SalerSock'
+        })
+      },
+      toOrder () {
+        this.$router.push({
+            path: '/SalerOrder'
         })
       }
   }
