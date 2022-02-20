@@ -262,19 +262,19 @@ const routes = [
   },
   {
     path: '/SalerSock',
-    name: '在线支付失败',
+    name: '我的库存',
     component: () => import('components/saler/salerSock.vue'),
     meta: { saler: true }
   },
   {
     path: '/SalerOrder',
-    name: '销售助手-我的订单',
+    name: '我的订单',
     component: () => import('components/saler/salerOrder.vue'),
     meta: { saler: true }
   },
   {
     path: '/SalerOrderDetail',
-    name: '销售助手-我的订单',
+    name: '订单详情',
     component: () => import('components/saler/orderDetail.vue'),
     meta: { saler: true }
   }
