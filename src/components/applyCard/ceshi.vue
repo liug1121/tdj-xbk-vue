@@ -22,7 +22,7 @@
     </div>
   </div>
 </template>
- 
+
 <script>
 export default {
   props: {
@@ -32,7 +32,7 @@ export default {
     clickNo: {
       type: String,
       default () {
-        return '';
+        return ''
       }
     },
     defultCode: {
@@ -51,7 +51,7 @@ export default {
         { code: '440300', name: '深圳', parentCode: '440000', checked: false },
         { code: '441900', name: '东莞', parentCode: '440000', checked: false },
         { code: '420100', name: '武汉', parentCode: '420000', checked: false },
-        { code: '510100', name: '成都', parentCode: '510000', checked: false },
+        { code: '510100', name: '成都', parentCode: '510000', checked: false }
       ],
       value: '1100000',
       show: false,
@@ -66,124 +66,122 @@ export default {
       province: '',
       city: '',
       district: ''
-    };
+    }
   },
   created () {
-    this.vueAjaxProvince();
+    this.vueAjaxProvince()
   },
   watch: {
     defultCode: function (val) {
       if (val.provinceCode && val.cityCode && val.districtCode) {
-        this.value = val.provinceCode;
-        this.vueAjaxCity(val.provinceCode, val.cityCode);
-        this.value = val.districtCode;
+        this.value = val.provinceCode
+        this.vueAjaxCity(val.provinceCode, val.cityCode)
+        this.value = val.districtCode
       }
     }
   },
   methods: {
     locationProvince () {
-      this.value = this.locationCodeList.code;
-      this.vueAjaxCity(this.locationCodeList.parentCode, this.locationCodeList.code);
+      this.value = this.locationCodeList.code
+      this.vueAjaxCity(this.locationCodeList.parentCode, this.locationCodeList.code)
     },
     clickProvince (list, index) {
-      this.currIndex = index;
-      this.value = list.code;
-      this.vueAjaxCity(list.parentCode, list.code);
+      this.currIndex = index
+      this.value = list.code
+      this.vueAjaxCity(list.parentCode, list.code)
     },
     click () {
-      this.show = true;
+      this.show = true
     },
     vueAjaxProvince () {
-      let that = this;
+      const that = this
       this.$API.queryProvincesCityAreaByCode({ parentCode: 100000 }).then(res => {
-        let result = res.data.data.data;
-        let province_list = {};
+        const result = res.data.data.data
+        const province_list = {}
         for (let i = 0; i < result.length; i++) {
-          province_list[result[i].code] = result[i].name;
+          province_list[result[i].code] = result[i].name
         }
-        that.areaList['province_list'] = province_list;
-        if (that.clickNo === 'send' && that.locationCodeList) {//如果是寄件
-          that.vueAjaxCity(that.locationCodeList.parentCode, that.locationCodeList.code);
+        that.areaList.province_list = province_list
+        if (that.clickNo === 'send' && that.locationCodeList) { // 如果是寄件
+          that.vueAjaxCity(that.locationCodeList.parentCode, that.locationCodeList.code)
         } else {
-          let parentCode = 110000;
-          that.vueAjaxCity(parentCode);
+          const parentCode = 110000
+          that.vueAjaxCity(parentCode)
         }
-
-      });
+      })
     },
     vueAjaxCity (parentCode, code) {
-      let that = this;
+      const that = this
       // this.loading = this.$toast.loading();
       this.$API.queryProvincesCityAreaByCode({ parentCode: parentCode }).then(res => {
-        let result = res.data.data.data;
-        let city_list = {};
+        const result = res.data.data.data
+        const city_list = {}
         for (let i = 0; i < result.length; i++) {
-          city_list[result[i].code] = result[i].name;
+          city_list[result[i].code] = result[i].name
         }
-        that.areaList['city_list'] = city_list;
+        that.areaList.city_list = city_list
         if (code) {
-          parentCode = code;
+          parentCode = code
         } else {
-          parentCode = Object.keys(city_list)[0];
+          parentCode = Object.keys(city_list)[0]
         }
-        that.vueAjaxdirect(parentCode);
-      });
+        that.vueAjaxdirect(parentCode)
+      })
     },
     vueAjaxdirect (parentCode) {
-      let that = this;
+      const that = this
       // this.loading = this.$toast.loading();
       this.$API.queryProvincesCityAreaByCode({ parentCode: parentCode }).then(res => {
-        let result = res.data.data.data;
-        let county_list = {};
+        const result = res.data.data.data
+        const county_list = {}
         for (let i = 0; i < result.length; i++) {
-          county_list[result[i].code] = result[i].name;
+          county_list[result[i].code] = result[i].name
         }
         that.hotCityData.map(function (value, index) {
           if (value.code === parentCode) {
-            that.currIndex = index;
+            that.currIndex = index
           }
-        });
-        that.areaList['county_list'] = county_list;
-      });
+        })
+        that.areaList.county_list = county_list
+      })
     },
-    //点击确定按钮
+    // 点击确定按钮
     onAddrConfirm (e) {
       if (e[0] && e[1] && e[2] && e[1]) {
-        this.province = e[0].name;
-        this.city = e[1].name;
-        this.district = e[2].name;
-        this.provinceCityD = e[0].name + '-' + e[1].name + '-' + e[2].name;
-        if (this.clickNo === 'addressBook') {//地址薄页面
-          this.$emit('provinceData', e);
+        this.province = e[0].name
+        this.city = e[1].name
+        this.district = e[2].name
+        this.provinceCityD = e[0].name + '-' + e[1].name + '-' + e[2].name
+        if (this.clickNo === 'addressBook') { // 地址薄页面
+          this.$emit('provinceData', e)
         } else if (this.clickNo === 'send') {
-          this.$emit('func', this.provinceCityD, e[1].code, e[2].code);
+          this.$emit('func', this.provinceCityD, e[1].code, e[2].code)
         } else {
-          this.$emit('funcild', this.provinceCityD, e[1].code, e[2].code);
+          this.$emit('funcild', this.provinceCityD, e[1].code, e[2].code)
         }
-        this.$emit('update:chooseshow', false);
+        this.$emit('update:chooseshow', false)
       } else {
-        this.$refs.area.reset();
+        this.$refs.area.reset()
       }
-
     },
-    //value=0改变省，1改变市，2改变区
+    // value=0改变省，1改变市，2改变区
     onChange (picker, index, value) {
-      let val = picker.getValues();
+      const val = picker.getValues()
       if (value === 0) {
-        let parentCode = val[0].code;
-        this.value = parentCode;
-        this.vueAjaxCity(parentCode);
+        const parentCode = val[0].code
+        this.value = parentCode
+        this.vueAjaxCity(parentCode)
       } else if (value === 1) {
-        let parentCode = val[value].code;
-        this.value = parentCode;
-        this.vueAjaxdirect(parentCode);
+        const parentCode = val[value].code
+        this.value = parentCode
+        this.vueAjaxdirect(parentCode)
       }
     },
     close () {
-      this.$emit('update:chooseshow', false);
+      this.$emit('update:chooseshow', false)
     }
   }
-};
+}
 </script>
 <style lang='less' scoped>
 .levelLinkage {

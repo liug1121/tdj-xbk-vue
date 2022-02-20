@@ -4,7 +4,7 @@
 
 export default {
   getMetaTypeDesc: $id => {
-    let metaType = {
+    const metaType = {
       1: 'totalswitch',
       2: 'callservice',
       3: 'smsservice',
@@ -17,7 +17,7 @@ export default {
       return $json
     }
     try {
-      let fd = new FormData()
+      const fd = new FormData()
       if (typeof $json === 'string') {
         $json = JSON.parse($json)
       }
@@ -25,8 +25,7 @@ export default {
         fd.append($k, $json[$k])
       })
       return fd
-    }
-    catch (e) {
+    } catch (e) {
       throw e
     }
   },
@@ -43,13 +42,11 @@ export default {
     if (typeof WeixinJSBridge === 'undefined') {
       if (document.addEventListener) {
         document.addEventListener('WeixinJSBridgeReady', callback, false)
-      }
-      else if (document.attachEvent) {
+      } else if (document.attachEvent) {
         document.attachEvent('WeixinJSBridgeReady', callback)
         document.attachEvent('onWeixinJSBridgeReady', callback)
       }
-    }
-    else {
+    } else {
       callback && callback()
     }
   },
@@ -57,12 +54,12 @@ export default {
     this.weixinJSBridgeReady(function () {
       window.WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {
-        "appId": obj.appId, // 公众号名称，由商户传入
-        "timeStamp": obj.timeStamp, // 时间戳，自1970年以来的秒数
-        "nonceStr": obj.nonceStr, // 随机串
-        "package": obj.package,
-        "signType": obj.signType, // 微信签名方式:
-        "paySign": obj.paySign // 微信签名
+        appId: obj.appId, // 公众号名称，由商户传入
+        timeStamp: obj.timeStamp, // 时间戳，自1970年以来的秒数
+        nonceStr: obj.nonceStr, // 随机串
+        package: obj.package,
+        signType: obj.signType, // 微信签名方式:
+        paySign: obj.paySign // 微信签名
       },
         function (result) {
           if (result.err_msg === 'get_brand_wcpay_request:ok') {
@@ -73,7 +70,7 @@ export default {
             Toast('支付失败')
           }
         }
-      );
+      )
     })
   },
   goTo (target) {
@@ -88,8 +85,7 @@ export default {
           clearTimeout(timer)
         }
       }, 20)
-    }
-    else if (scrollT === 0) {
+    } else if (scrollT === 0) {
       var timer = setInterval(function () {
         var scrollT = document.body.scrollTop || document.documentElement.scrollTop
         var step = Math.floor(300 / 3 * 0.7)
@@ -100,19 +96,17 @@ export default {
           clearTimeout(timer)
         }
       }, 20)
-    }
-    else if (scrollT < target) {
+    } else if (scrollT < target) {
       var timer = setInterval(function () {
         var scrollT = document.body.scrollTop || document.documentElement.scrollTop
-        var step = Math.floor(scrollT / 6);
+        var step = Math.floor(scrollT / 6)
         document.documentElement.scrollTop = document.body.scrollTop = step + scrollT
         if (scrollT >= target) {
           document.body.scrollTop = document.documentElement.scrollTop = target
           clearTimeout(timer)
         }
       }, 20)
-    }
-    else if (target == scrollT) {
+    } else if (target == scrollT) {
       return false
     }
   }

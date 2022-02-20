@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true
   },
-  'extends': [
+  extends: [
     'plugin:vue/essential',
     '@vue/standard'
   ],
@@ -11,16 +11,16 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'space-before-function-paren': 0,
-    'indent': 0
+    indent: 0
   },
   parserOptions: {
     parser: 'babel-eslint'
   },
   globals: {
-    "qq": true,
-    'wx': true,
-    'scan': true,
-    'plus': true,
-    '$': true
+    qq: true,
+    wx: true,
+    scan: true,
+    plus: true,
+    $: true
   }
 }

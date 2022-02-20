@@ -18,7 +18,7 @@
               <td>{{p.phone}}</td>
               <td>{{p.packageName}}</td>
               <td>{{p.price}}元</td>
-              <td><div class="to-pay">去支付</div></td>
+              <td><div class="to-pay" @click="toPay(p.id)">去支付</div></td>
           </tr>
       </table>
       <!-- v-for="(p, key) in table_imei_column" -->
@@ -88,6 +88,12 @@ export default {
     this.getSalerStocks()
   },
   methods: {
+      toPay (orderId) {
+          this.$router.push({
+            path: '/SalerPay',
+            query: { orderId: orderId }
+          })
+      },
       getSalerStocks () {
         var params = {}
         API.apiGetSalerStocks(params).then(res => {
