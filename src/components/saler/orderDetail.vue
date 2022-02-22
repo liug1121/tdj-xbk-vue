@@ -20,11 +20,18 @@
         <div class="settingContent">{{orderDetails.price}}元</div>
       </div>
       <div class="settingList">
+        <div class="settingTitle">备注信息</div>
+        <div class="settingContent">{{orderDetails.orderComment}}</div>
+      </div>
+      <div class="settingList">
         <div class="settingTitle">订单时间</div>
         <div class="settingContent">{{orderDetails.orderDateTime}}</div>
       </div>
     </div>
     <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" @click="toBack">返回</van-button>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 
@@ -35,6 +42,7 @@ import API from 'api/saler'
 export default {
   data () {
     return {
+        loadingShow: false,
         orderId: '',
         orderDetails: {}
     }
@@ -85,11 +93,14 @@ export default {
       getOrderDetail () {
           var params = {}
           params.orderId = this.orderId
+          this.loadingShow = true
           API.apiGetOrderDetail(params).then(res => {
               if (res.resultCode === 0) {
                   this.orderDetails = res.data
+                  this.loadingShow = false
               } else {
                   this.$toast(res.resultInfo)
+                  this.loadingShow = false
               }
           })
       }

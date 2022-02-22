@@ -4,7 +4,7 @@
     <div class="info-input">
         <van-field v-model="name" label="合伙人姓名" placeholder="请输入合伙人姓名" />
         <van-field v-model="phone" label="合伙人手机号" placeholder="请输入合伙人手机号" />
-        <van-field v-model="address" label="联系地址" placeholder="请输入联系地址" />
+        <!-- <van-field v-model="address" label="联系地址" placeholder="请输入联系地址" /> -->
         <div class="send-code">
             <van-field class="send-code-item" placeholder="请输入图形验证码" />
             <van-field class="send-code-item" placeholder="图形验证码" />
@@ -16,6 +16,9 @@
     </div>
     <div class="activate_con">
       <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" @click="bind">立即绑定</van-button>
+    </div>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
     </div>
   </div>
 </template>
@@ -29,6 +32,7 @@ import API from 'api/saler'
 export default {
   data () {
     return {
+      loadingShow: false,
       name: '',
       phone: '',
       address: '',
@@ -43,8 +47,7 @@ export default {
       oldIconUrl: true,
       newIconUrl: false,
       isShowUpload: true,
-      childrenImage: '',
-      loadingShow: false
+      childrenImage: ''
     }
   },
   components: {
@@ -91,11 +94,14 @@ export default {
             params.phone = this.phone
             params.address = this.address
             params.smsCode = this.smsCode
+            this.loadingShow = true
             API.apiBindSaler(params).then(res => {
             if (res.resultCode === 0) {
                 this.$toast('绑定成功')
+                this.loadingShow = false
             } else {
                 this.$toast(res.resultInfo)
+                this.loadingShow = false
             }
         })
         }).catch(() => {

@@ -348,6 +348,7 @@ router.beforeEach((to, from, next) => {
     console.log('22')
     console.log('process.env.VUE_APP_CURRENTMODE:' + process.env.VUE_APP_CURRENTMODE)
     // 群控 登录之外的页面
+    // if (process.env.VUE_APP_CURRENTMODE === 'production') {
     if (!process.env.VUE_APP_CURRENTMODE) {
       const token = sessionStorage.getItem('token')
       console.log('token:' + token)
@@ -357,11 +358,11 @@ router.beforeEach((to, from, next) => {
         const code = '1111'
         if (code === null || code === '') {
           const urlNow = encodeURIComponent(window.location.href)
-          const appid = 'wx92971625eac3ce35'
+          const appid = 'wx7dc1d69cc672844c'
           const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${urlNow}&response_type=code&scope=snsapi_base&state=123#wechat_redirect`
           window.location.href = url
         } else {
-          console.log('111apiSalerLogin')
+          console.log('111apiSalerLogin：' + code)
           WxAPI.apiSalerLogin(code).then(res => {
             const loginInfo = res.data
             console.log(JSON.stringify(to))

@@ -19,8 +19,15 @@
         <div class="settingTitle">支付金额</div>
         <div class="settingContent">{{orderDetails.price}}元</div>
       </div>
+      <div class="settingList">
+        <!-- <div class="settingTitle">备注</div> -->
+        <van-field v-model="orderComment" class="send-code-item" placeholder="请输入备注信息"/>
+      </div>
     </div>
     <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" @click="toPay">去支付</van-button>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 
@@ -31,6 +38,8 @@ import API from 'api/saler'
 export default {
   data () {
     return {
+        orderComment: '',
+        loadingShow: false,
         orderId: '',
         orderDetails: {}
     }
@@ -61,14 +70,18 @@ export default {
       order2Payed () {
         var params = {}
         params.orderId = this.orderId
+        params.orderComment = this.orderComment
+        this.loadingShow = true
         API.apiOrderPayed(params).then(res => {
             if (res.resultCode === 0) {
+                this.loadingShow = false
                 // this.$toast('支付成功')
                 this.$router.push({
                     path: '/SalerPaySuccess',
                     query: { orderId: this.orderId }
                 })
             } else {
+                this.loadingShow = false
                 this.$toast(res.resultInfo)
             }
         })
@@ -76,10 +89,13 @@ export default {
       getOrderDetail () {
           var params = {}
           params.orderId = this.orderId
+          this.loadingShow = true
           API.apiGetOrderDetail(params).then(res => {
               if (res.resultCode === 0) {
+                  this.loadingShow = false
                   this.orderDetails = res.data
               } else {
+                  this.loadingShow = false
                   this.$toast(res.resultInfo)
               }
           })

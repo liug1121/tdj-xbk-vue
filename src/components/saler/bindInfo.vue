@@ -11,16 +11,19 @@
         <div class="settingTitle">联系方式</div>
         <div class="settingContent">{{salerInfo.phone}}</div>
       </div>
-      <div class="settingList">
+      <!-- <div class="settingList">
         <div class="settingTitle">地址</div>
         <div class="settingContent">{{salerInfo.address}}</div>
-      </div>
+      </div> -->
       <div class="settingList">
         <div class="settingTitle">渠道</div>
         <div class="settingContent">{{salerInfo.channelName}}</div>
       </div>
     </div>
     <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" >去修改</van-button>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 
@@ -31,6 +34,7 @@ import API from 'api/saler'
 export default {
   data () {
     return {
+      loadingShow: false,
       salerInfo: {},
       // headerName: '设置',
       bodyColor: '#FDAB16',
@@ -57,13 +61,16 @@ export default {
   methods: {
     // 获取卡列表数据
     getSalerInfo () {
+      this.loadingShow = true
       API.apiGetBindSalerInfo().then(res => {
         if (res.resultCode === 0) {
             var salerInfo = res.data
             this.salerInfo = salerInfo
+            this.loadingShow = false
         //   console.log(JSON.stringify(res.data))
         } else {
           this.$toast(res.resultInfo)
+          this.loadingShow = false
         }
       })
     }

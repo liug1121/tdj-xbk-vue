@@ -16,6 +16,9 @@
     <div class="activate_con">
       <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" >确认修改</van-button>
     </div>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 
@@ -28,6 +31,7 @@ import API from 'api/activation'
 export default {
   data () {
     return {
+      loadingShow: false,
       ruleForm: {
         studentName: '',
         orderPhone: '',
@@ -38,8 +42,7 @@ export default {
       oldIconUrl: true,
       newIconUrl: false,
       isShowUpload: true,
-      childrenImage: '',
-      loadingShow: false
+      childrenImage: ''
     }
   },
   components: {

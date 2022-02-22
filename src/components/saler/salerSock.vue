@@ -21,6 +21,10 @@
               <td><div class="to-pay" @click="toPay(p.id)">去支付</div></td>
           </tr>
       </table>
+      <div class="page">
+        <div class="page-btn" @click="toPrePage">上一页</div>
+        <div class="page-btn" @click="toNextPage">下一页</div>
+      </div>
       <!-- v-for="(p, key) in table_imei_column" -->
     <!-- <div class="info-input">
         <van-field v-model="name" label="合伙人姓名" placeholder="请输入合伙人姓名" />
@@ -38,6 +42,9 @@
     <!-- <div class="activate_con">
       <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" @click="bind">立即绑定</van-button>
     </div> -->
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 
@@ -50,6 +57,12 @@ import API from 'api/saler'
 export default {
   data () {
     return {
+      hasNextPage: false,
+      hasPrePage: false,
+      totalStockNum: 0,
+      page: 0,
+      pageSize: 10,
+      loadingShow: false,
       salerStocks: []
     }
   },
@@ -86,8 +99,25 @@ export default {
       history.pushState(null, null, document.URL)
     })
     this.getSalerStocks()
+    // this.page = 0
   },
   methods: {
+      toPrePage () {
+          if (!this.hasPrePage) {
+              this.$toast('已经没有前一页了')
+              return
+          }
+          this.page = this.page - 1
+          this.getSalerStocks()
+      },
+      toNextPage () {
+          if (!this.hasNextPage) {
+              this.$toast('已经没有前一页了')
+              return
+          }
+          this.page = this.page + 1
+          this.getSalerStocks()
+      },
       toPay (orderId) {
           this.$router.push({
             path: '/SalerPay',
@@ -96,10 +126,30 @@ export default {
       },
       getSalerStocks () {
         var params = {}
+        this.loadingShow = true
+        params.page = this.page
+        params.pageSize = this.pageSize
         API.apiGetSalerStocks(params).then(res => {
             if (res.resultCode === 0) {
+                this.loadingShow = false
                 this.salerStocks = res.data
+                this.totalStockNum = res.rowNum
+                var nowNum = (this.page + 1) * this.pageSize
+                if (this.totalStockNum <= nowNum) {
+                    this.hasNextPage = false
+                } else {
+                    this.hasNextPage = true
+                }
+                // this.hasNextPage = true
+                console.log('page:' + this.page)
+                if (this.page <= 0) {
+                    this.hasPrePage = false
+                } else {
+                    this.hasPrePage = true
+                }
+                // this.hasPrePage = true
             } else {
+                this.loadingShow = false
                 this.$toast(res.resultInfo)
             }
         })
@@ -184,5 +234,14 @@ tr{
 }
 .to-pay{
     color: #FFBA27;
+}
+.page{
+    display: flex;
+    font-size: 13px;
+    width: 30%;
+    margin-left: 70%;
+}
+.page-btn{
+    flex: 1;
 }
 </style>
