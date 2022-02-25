@@ -249,6 +249,12 @@ const routes = [
     meta: { saler: true }
   },
   {
+    path: '/SalerPledge',
+    name: '在线支付',
+    component: () => import('components/saler/payPledge.vue'),
+    meta: { saler: true }
+  },
+  {
     path: '/SalerPaySuccess',
     name: '在线支付成功',
     component: () => import('components/saler/paySuccess.vue'),

@@ -13,10 +13,10 @@ import infiniteScroll from 'vue-infinite-scroll'
 Vue.use(infiniteScroll)
 if (process.env.VUE_APP_BASE_URL === 'http://xbk.tdj.cn') {
   /* eslint-disable no-new */
-  new VConsole()
+  // new VConsole()
 }
 /* eslint-disable no-new */
-new VConsole()
+// new VConsole()
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.prototype.wx = wx

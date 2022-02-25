@@ -17,5 +17,11 @@ export default {
   },
   apiGetOrders: params => {
     return API.POST('saler/v1.0/orders', params)
+  },
+  apiOrderPledgePayed: params => {
+    return API.POST('saler/v1.0/pay/pledge/payed', params)
+  },
+  apiApplyPledgeReturn: params => {
+    return API.POST('saler/v1.0/pledge/return/apply', params)
   }
 }

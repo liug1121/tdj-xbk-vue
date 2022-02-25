@@ -27,6 +27,21 @@
         <div class="settingTitle">订单时间</div>
         <div class="settingContent">{{orderDetails.orderDateTime}}</div>
       </div>
+      <div class="settingList">
+        <div class="settingTitle">押金金额</div>
+        <div class="settingContent">{{orderDetails.cash_pledge}}</div>
+      </div>
+      <div class="settingList">
+        <div class="settingTitle">押金退还状态</div>
+        <div v-if="orderDetails.returnPledgeStatus === 0" class="settingContent"><span class="to-pay" @click="applyReturn">申请退押金</span></div>
+        <div v-if="orderDetails.returnPledgeStatus === 1" class="settingContent">押金退还中</div>
+        <div v-if="orderDetails.returnPledgeStatus === 2" class="settingContent">押金已退还</div>
+        <div v-if="orderDetails.returnPledgeStatus === 3" class="settingContent">不能退押金</div>
+      </div>
+      <div class="settingList">
+        <div class="settingTitle">说明</div>
+        <div class="settingContent">{{orderDetails.returnPledgeComment}}</div>
+      </div>
     </div>
     <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" @click="toBack">返回</van-button>
     <div v-show="loadingShow" class="loading">
@@ -103,10 +118,32 @@ export default {
                   this.loadingShow = false
               }
           })
+      },
+      applyReturn () {
+        this.$dialog.confirm({
+            title: '提醒',
+            message: '确认申请退押金吗'
+        }).then(() => {
+            var params = {}
+            params.orderId = this.orderId
+            API.apiApplyPledgeReturn(params).then(res => {
+              if (res.resultCode === 0) {
+                  this.getOrderDetail()
+                  this.loadingShow = false
+              } else {
+                  this.$toast(res.resultInfo)
+                  this.loadingShow = false
+              }
+          })
+        }).catch(() => {
+        })
       }
   }
 }
 </script>
 <style lang="less" scoped>
 @import url(../../common/css/setting.less);
+.to-pay{
+    color: #FFBA27;
+}
 </style>

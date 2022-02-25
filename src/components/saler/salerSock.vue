@@ -18,7 +18,10 @@
               <td>{{p.phone}}</td>
               <td>{{p.packageName}}</td>
               <td>{{p.price}}元</td>
-              <td><div class="to-pay" @click="toPay(p.id)">去支付</div></td>
+              <td>
+                  <div v-if="p.cashPledgePayed === 2 || p.cashPledgePayed === 1" class="to-pay" @click="toPay(p.id)">去支付</div>
+                  <div v-else class="to-pay" @click="toPayPledge(p.id)">交押金</div>
+              </td>
           </tr>
       </table>
       <div class="page">
@@ -121,6 +124,12 @@ export default {
       toPay (orderId) {
           this.$router.push({
             path: '/SalerPay',
+            query: { orderId: orderId }
+          })
+      },
+      toPayPledge (orderId) {
+          this.$router.push({
+            path: '/SalerPledge',
             query: { orderId: orderId }
           })
       },
