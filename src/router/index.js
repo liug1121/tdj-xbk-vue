@@ -354,14 +354,14 @@ router.beforeEach((to, from, next) => {
     console.log('22')
     console.log('process.env.VUE_APP_CURRENTMODE:' + process.env.VUE_APP_CURRENTMODE)
     // 群控 登录之外的页面
-    // if (process.env.VUE_APP_CURRENTMODE === 'production') {
-    if (!process.env.VUE_APP_CURRENTMODE) {
+    if (process.env.VUE_APP_CURRENTMODE === 'production') {
+    // if (!process.env.VUE_APP_CURRENTMODE) {
       const token = sessionStorage.getItem('token')
       console.log('token:' + token)
       if (token === null || token === '' || token === undefined || token === 'null') {
-        // const code = getUrlKey('code')
+        const code = getUrlKey('code')
         console.log('222code')
-        const code = '1111'
+        // const code = '1111'
         if (code === null || code === '') {
           const urlNow = encodeURIComponent(window.location.href)
           const appid = 'wx7dc1d69cc672844c'

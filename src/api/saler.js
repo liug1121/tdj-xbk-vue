@@ -23,5 +23,11 @@ export default {
   },
   apiApplyPledgeReturn: params => {
     return API.POST('saler/v1.0/pledge/return/apply', params)
+  },
+  apiWXprepay: params => {
+    return API.POST('saler/v1.0/pay/wxprepay', params)
+  },
+  apiOrderOrderId: params => {
+    return API.GET('wechat/v1.0/orders/orderid', params)
   }
 }
