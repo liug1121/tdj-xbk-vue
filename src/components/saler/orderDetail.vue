@@ -20,6 +20,10 @@
         <div class="settingContent">{{orderDetails.price}}元</div>
       </div>
       <div class="settingList">
+        <div class="settingTitle">微信支付单号</div>
+        <div class="settingContent">{{orderDetails.payedWechatNo}}</div>
+      </div>
+      <div class="settingList">
         <div class="settingTitle">备注信息</div>
         <div class="settingContent">{{orderDetails.orderComment}}</div>
       </div>
@@ -29,7 +33,11 @@
       </div>
       <div class="settingList">
         <div class="settingTitle">押金金额</div>
-        <div class="settingContent">{{orderDetails.cash_pledge}}</div>
+        <div class="settingContent">{{orderDetails.cash_pledge}}元</div>
+      </div>
+      <div class="settingList">
+        <div class="settingTitle">押金微信单号</div>
+        <div class="settingContent">{{orderDetails.pledgePayedWechatNo}}</div>
       </div>
       <div class="settingList">
         <div class="settingTitle">押金退还状态</div>

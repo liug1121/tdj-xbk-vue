@@ -77,7 +77,7 @@ export default {
                 if (res.resultCode === 0) {
                     console.log('apiWXprepay:' + JSON.stringify(res.data))
                   this.weixinTradePay(res.data, orderId, () => {
-                    this.order2Payed()
+                    this.order2Payed(orderId)
                   }, () => {
                       this.$router.push({
                       path: '/SalerPayFaild',
@@ -144,9 +144,10 @@ export default {
             )
         })
         },
-      order2Payed () {
+      order2Payed (payedTradeNo) {
         var params = {}
         params.orderId = this.orderId
+        params.payedTradeNo = payedTradeNo
         params.orderComment = this.orderComment
         this.loadingShow = true
         API.apiOrderPayed(params).then(res => {
