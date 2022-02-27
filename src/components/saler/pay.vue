@@ -19,10 +19,20 @@
         <div class="settingTitle">支付金额</div>
         <div class="settingContent">{{orderDetails.price}}元</div>
       </div>
+      <div class="note">以下为选填信息</div>
       <div class="settingList">
         <!-- <div class="settingTitle">备注</div> -->
-        <van-field v-model="orderComment" class="send-code-item" placeholder="请输入备注信息"/>
+        <van-field label="联系人" v-model="orderName" class="send-code-item" placeholder="请输入联系人姓名"/>
       </div>
+      <div class="settingList">
+        <!-- <div class="settingTitle">备注</div> -->
+        <van-field label="联系电话" v-model="orderPhone" class="send-code-item" placeholder="请输入联系人电话"/>
+      </div>
+      <div class="settingList">
+        <!-- <div class="settingTitle">备注</div> -->
+        <van-field label="联系地址" v-model="orderAddress" class="send-code-item" placeholder="请输入联系人地址"/>
+      </div>
+
     </div>
     <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" @click="toPay">去支付</van-button>
     <div v-show="loadingShow" class="loading">
@@ -38,6 +48,9 @@ import API from 'api/saler'
 export default {
   data () {
     return {
+        orderName: '',
+        orderPhone: '',
+        orderAddress: '',
         orderComment: '',
         loadingShow: false,
         orderId: '',
@@ -69,7 +82,8 @@ export default {
               const data = {
                 body: '支付押金',
                 out_trade_no: res.data,
-                total_fee: Number(0.01) * 100
+                total_fee: Number(this.orderDetails.price) * 100
+                // total_fee: Number(0.01) * 100
               }
               console.log('orderId:' + orderId)
               console.log('orderId:' + JSON.stringify(data))
@@ -149,6 +163,9 @@ export default {
         params.orderId = this.orderId
         params.payedTradeNo = payedTradeNo
         params.orderComment = this.orderComment
+        params.orderName = this.orderName
+        params.orderPhone = this.orderPhone
+        params.orderAddress = this.orderAddress
         this.loadingShow = true
         API.apiOrderPayed(params).then(res => {
             if (res.resultCode === 0) {
@@ -183,4 +200,9 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url(../../common/css/setting.less);
+.note{
+    color: red;
+    font-size: 15px;
+    margin-top: 5px;
+}
 </style>

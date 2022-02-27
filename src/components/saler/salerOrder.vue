@@ -2,8 +2,8 @@
   <!-- 绑定学霸卡 -->
   <div class="activate_content">
       <div class="query">
-          <van-field class="query-label" label="iccid后7位：" placeholder="iccid后7位" />
-          <van-button class="query-btn" type="info" round size="large" color="#FFBA27">查询</van-button>
+          <van-field class="query-label" v-model="iccidLike" label="iccid后7位：" placeholder="iccid后7位" />
+          <van-button class="query-btn" type="info" round size="large" color="#FFBA27" @click="query">查询</van-button>
       </div>
       <table>
           <tr>
@@ -12,6 +12,7 @@
               <td>套餐</td>
               <!-- <td>订单时间</td> -->
               <td>价格</td>
+              <td>押金状态</td>
           </tr>
           <tr v-for="(p, key) in salerStocks" :key="key" @click="toDetail(p.id)">
               <td>{{p.iccid7}}</td>
@@ -19,6 +20,7 @@
               <td>{{p.packageName}}</td>
               <!-- <td><div class="to-pay">{{p.orderDate}}</div></td> -->
               <td>{{p.price}}元</td>
+              <td>{{p.cashPledgeReturnDesc}}</td>
           </tr>
       </table>
       <div class="page">
@@ -57,6 +59,7 @@ import API from 'api/saler'
 export default {
   data () {
     return {
+      iccidLike: '',
       hasNextPage: false,
       hasPrePage: false,
       totalStockNum: 0,
@@ -101,6 +104,9 @@ export default {
     this.getOrders()
   },
   methods: {
+      query () {
+          this.getOrders()
+      },
       toPrePage () {
           if (!this.hasPrePage) {
               this.$toast('已经没有前一页了')
@@ -127,6 +133,7 @@ export default {
     //   SalerOrderDetail
       getOrders () {
         var params = {}
+        params.iccidLike = this.iccidLike
         params.page = this.page
         params.pageSize = this.pageSize
         this.loadingShow = true
@@ -244,5 +251,16 @@ tr{
 }
 .page-btn{
     flex: 1;
+}
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 </style>

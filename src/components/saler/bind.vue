@@ -5,10 +5,10 @@
         <van-field v-model="name" label="合伙人姓名" placeholder="请输入合伙人姓名" />
         <van-field v-model="phone" label="合伙人手机号" placeholder="请输入合伙人手机号" />
         <!-- <van-field v-model="address" label="联系地址" placeholder="请输入联系地址" /> -->
-        <div class="send-code">
+        <!-- <div class="send-code">
             <van-field class="send-code-item" placeholder="请输入图形验证码" />
             <van-field class="send-code-item" placeholder="图形验证码" />
-        </div>
+        </div> -->
         <div class="send-code">
             <van-field v-model="smsCode" class="send-code-item" label="短信验证码" placeholder="请输入短信验证码"/>
             <button class="send-code-btn">发送短信验证码</button>

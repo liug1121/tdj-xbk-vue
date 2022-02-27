@@ -24,8 +24,16 @@
         <div class="settingContent">{{orderDetails.payedWechatNo}}</div>
       </div>
       <div class="settingList">
-        <div class="settingTitle">备注信息</div>
-        <div class="settingContent">{{orderDetails.orderComment}}</div>
+        <div class="settingTitle">联系姓名</div>
+        <div class="settingContent">{{orderDetails.orderName}}</div>
+      </div>
+      <div class="settingList">
+        <div class="settingTitle">联系电话</div>
+        <div class="settingContent">{{orderDetails.orderPhone}}</div>
+      </div>
+      <div class="settingList">
+        <div class="settingTitle">地址</div>
+        <div class="settingContent">{{orderDetails.orderAddress}}</div>
       </div>
       <div class="settingList">
         <div class="settingTitle">订单时间</div>
@@ -45,6 +53,11 @@
         <div v-if="orderDetails.returnPledgeStatus === 1" class="settingContent">押金退还中</div>
         <div v-if="orderDetails.returnPledgeStatus === 2" class="settingContent">押金已退还</div>
         <div v-if="orderDetails.returnPledgeStatus === 3" class="settingContent">不能退押金</div>
+        <div v-if="orderDetails.returnPledgeStatus === 4" class="settingContent">无押金</div>
+      </div>
+      <div class="settingList">
+        <div class="settingTitle">操作时间</div>
+        <div class="settingContent">{{orderDetails.pledgeReturnOptTime}}</div>
       </div>
       <div class="settingList">
         <div class="settingTitle">说明</div>

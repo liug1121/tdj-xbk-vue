@@ -2,8 +2,8 @@
   <!-- 绑定学霸卡 -->
   <div class="activate_content">
       <div class="query">
-          <van-field class="query-label" label="iccid后7位：" placeholder="iccid后7位" />
-          <van-button class="query-btn" type="info" round size="large" color="#FFBA27">查询</van-button>
+          <van-field class="query-label" label="iccid后7位：" v-model="iccidLike" placeholder="iccid后7位" />
+          <van-button class="query-btn" type="info" round size="large" color="#FFBA27" @click="query">查询</van-button>
       </div>
       <table>
           <tr>
@@ -60,11 +60,12 @@ import API from 'api/saler'
 export default {
   data () {
     return {
+      iccidLike: '',
       hasNextPage: false,
       hasPrePage: false,
       totalStockNum: 0,
       page: 0,
-      pageSize: 10,
+      pageSize: 8,
       loadingShow: false,
       salerStocks: []
     }
@@ -105,6 +106,9 @@ export default {
     // this.page = 0
   },
   methods: {
+      query () {
+          this.getSalerStocks()
+      },
       toPrePage () {
           if (!this.hasPrePage) {
               this.$toast('已经没有前一页了')
@@ -138,6 +142,7 @@ export default {
         this.loadingShow = true
         params.page = this.page
         params.pageSize = this.pageSize
+        params.iccid = this.iccidLike
         API.apiGetSalerStocks(params).then(res => {
             if (res.resultCode === 0) {
                 this.loadingShow = false
@@ -219,6 +224,7 @@ table{
     // margin-top: 10%
 }
 td{
+    width: 20%;
     border: 1px solid #000;
 }
 tr{
@@ -252,5 +258,16 @@ tr{
 }
 .page-btn{
     flex: 1;
+}
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 </style>
