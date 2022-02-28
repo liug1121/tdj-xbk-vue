@@ -8,7 +8,7 @@
       <table>
           <tr>
               <td>iccid后7位</td>
-              <td>卡号</td>
+              <!-- <td>卡号</td> -->
               <td>套餐</td>
               <!-- <td>订单时间</td> -->
               <td>价格</td>
@@ -16,7 +16,7 @@
           </tr>
           <tr v-for="(p, key) in salerStocks" :key="key" @click="toDetail(p.id)">
               <td>{{p.iccid7}}</td>
-              <td>{{p.phone}}</td>
+              <!-- <td>{{p.phone}}</td> -->
               <td>{{p.packageName}}</td>
               <!-- <td><div class="to-pay">{{p.orderDate}}</div></td> -->
               <td>{{p.price}}元</td>

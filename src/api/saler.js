@@ -29,5 +29,8 @@ export default {
   },
   apiOrderOrderId: params => {
     return API.GET('wechat/v1.0/orders/orderid', params)
+  },
+  apiSendSmsCode: params => {
+    return API.GET('saler/v1.0/smscode/send', params)
   }
 }

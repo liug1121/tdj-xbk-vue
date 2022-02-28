@@ -11,13 +11,17 @@
         <div class="settingTitle">卡号</div>
         <div class="settingContent">{{orderDetails.phone}}</div>
       </div>
-      <div class="settingList">
+      <el-select style="width:100%" v-model="selectedProduct" placeholder="请选择产品" @change="selectedProductChange">
+        <el-option v-for="item in orderDetails.productConfigs" :key="item.id" :label="item.product_name" :value="item.id">
+        </el-option>
+      </el-select>
+      <!-- <div class="settingList">
         <div class="settingTitle">卡套餐</div>
         <div class="settingContent">{{orderDetails.packageName}}</div>
-      </div>
+      </div> -->
       <div class="settingList">
         <div class="settingTitle">押金金额</div>
-        <div class="settingContent">{{orderDetails.cash_pledge}}元</div>
+        <div class="settingContent">{{selectedProductPrice}}元</div>
       </div>
     </div>
     <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" @click="toPay">去支付</van-button>
@@ -34,6 +38,8 @@ import API from 'api/saler'
 export default {
   data () {
     return {
+        selectedProductPrice: '',
+        selectedProduct: '',
         orderComment: '',
         loadingShow: false,
         orderId: '',
@@ -54,7 +60,20 @@ export default {
       this.getOrderDetail()
   },
   methods: {
+      selectedProductChange (vId) {
+          console.log('vId:' + vId)
+          var product = this.orderDetails.productConfigs.find((item) => {
+            return item.id === vId
+          })
+          console.log('product:' + JSON.stringify(product))
+          this.selectedProductPrice = product.cash_pledge
+          console.log('selectedProductPriceth:' + this.selectedProductPrice)
+      },
       toPay () {
+        if (this.selectedProductPrice === null || this.selectedProductPrice === undefined || this.selectedProductPrice === '') {
+            this.$toast('请选择相应的产品')
+            return
+        }
         this.$dialog.confirm({
             title: '提醒',
             message: '确认支付吗'
@@ -93,6 +112,7 @@ export default {
         var params = {}
         params.orderId = this.orderId
         params.payedTradeNo = payedTradeNo
+        params.selectedProduct = this.selectedProduct
         // params.orderComment = this.orderComment
         this.loadingShow = true
         API.apiOrderPledgePayed(params).then(res => {

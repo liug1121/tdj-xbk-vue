@@ -8,16 +8,16 @@
       <table>
           <tr>
               <td>iccid后7位</td>
-              <td>卡号</td>
-              <td>套餐</td>
-              <td>价格</td>
+              <!-- <td>卡号</td> -->
+              <!-- <td>套餐</td>
+              <td>价格</td> -->
               <td>操作</td>
           </tr>
           <tr v-for="(p, key) in salerStocks" :key="key">
               <td>{{p.iccid7}}</td>
-              <td>{{p.phone}}</td>
-              <td>{{p.packageName}}</td>
-              <td>{{p.price}}元</td>
+              <!-- <td>{{p.phone}}</td> -->
+              <!-- <td>{{p.packageName}}</td>
+              <td>{{p.price}}元</td> -->
               <td>
                   <div v-if="p.cashPledgePayed === 2 || p.cashPledgePayed === 1" class="to-pay" @click="toPay(p.id)">去支付</div>
                   <div v-else-if="p.cashPledgePayed === 3" class="to-pay" >已被预定</div>

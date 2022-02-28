@@ -11,7 +11,7 @@
         </div> -->
         <div class="send-code">
             <van-field v-model="smsCode" class="send-code-item" label="短信验证码" placeholder="请输入短信验证码"/>
-            <button class="send-code-btn">发送短信验证码</button>
+            <button class="send-code-btn" @click="sendSms">发送短信验证码</button>
         </div>
     </div>
     <div class="activate_con">
@@ -84,6 +84,18 @@ export default {
     })
   },
   methods: {
+      sendSms () {
+         var params = {}
+         API.apiSendSmsCode(params).then(res => {
+            if (res.resultCode === 0) {
+                this.$toast('绑定成功')
+                this.loadingShow = false
+            } else {
+                this.$toast(res.resultInfo)
+                this.loadingShow = false
+            }
+        })
+      },
       bind () {
         this.$dialog.confirm({
             title: '提醒',
