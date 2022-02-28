@@ -20,6 +20,7 @@
               <td>{{p.price}}元</td>
               <td>
                   <div v-if="p.cashPledgePayed === 2 || p.cashPledgePayed === 1" class="to-pay" @click="toPay(p.id)">去支付</div>
+                  <div v-else-if="p.cashPledgePayed === 3" class="to-pay" >已被预定</div>
                   <div v-else class="to-pay" @click="toPayPledge(p.id)">交押金</div>
               </td>
           </tr>

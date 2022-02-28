@@ -20,7 +20,7 @@
         <div class="settingContent">{{salerInfo.channelName}}</div>
       </div>
     </div>
-    <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" >去修改</van-button>
+    <!-- <van-button type="info" round size="large" color="#FFBA27" style="height:42px;" >去修改</van-button> -->
     <div v-show="loadingShow" class="loading">
       <van-loading type="spinner" color="#FDAB16" />
     </div>
