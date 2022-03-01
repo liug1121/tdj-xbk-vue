@@ -10,7 +10,7 @@
             <van-field class="send-code-item" placeholder="图形验证码" />
         </div> -->
         <div class="send-code">
-            <van-field v-model="smsCode" class="send-code-item" label="短信验证码" placeholder="请输入短信验证码"/>
+            <van-field v-model="smsCode" maxlength="6" class="send-code-item" label="短信验证码" placeholder="请输入短信验证码"/>
             <button class="send-code-btn" @click="sendSms">发送短信验证码</button>
         </div>
     </div>
@@ -88,7 +88,7 @@ export default {
          var params = {}
          API.apiSendSmsCode(params).then(res => {
             if (res.resultCode === 0) {
-                this.$toast('绑定成功')
+                this.$toast('短信已发送')
                 this.loadingShow = false
             } else {
                 this.$toast(res.resultInfo)
@@ -97,6 +97,10 @@ export default {
         })
       },
       bind () {
+        if (this.smsCode === null || this.smsCode === '' || this.smsCode === null) {
+            this.$toast('请先输入您收到的短信验证码')
+            return
+        }
         this.$dialog.confirm({
             title: '提醒',
             message: '确认绑定信息吗'

@@ -84,8 +84,8 @@ export default {
               const data = {
                 body: '支付押金',
                 out_trade_no: res.data,
-                // total_fee: Number(this.orderDetails.cash_pledge) * 100
-                total_fee: Number(0.01) * 100
+                total_fee: Number(this.selectedProductPrice) * 100
+                // total_fee: Number(0.01) * 100
               }
               console.log('orderId:' + orderId)
               console.log('orderId:' + JSON.stringify(data))
