@@ -21,7 +21,7 @@
         <div :class="tabAddPackageClass" @click="changeTab(0)">购买套餐</div>
         <div :class="tabPackageClass" @click="changeTab(1)">加油包</div>
       </div>
-      <div class="buys-products" v-if="tabIndex == 1">
+      <!-- <div class="buys-products" v-if="tabIndex == 1">
         <div
           :class="getRowClass(index)"
           v-for="(addpackage, index) in addPackages"
@@ -29,10 +29,6 @@
           @click="selRow(index, addpackage.productCode)"
         >
           <div class="product-icon">
-            <!-- <img
-              class="product-icon-image"
-              src="../../assets/bigflow-buys.jpeg"
-            /> -->
           </div>
           <div class="product-info">
             <div>{{ addpackage.viewName }}</div>
@@ -45,7 +41,7 @@
             <div class="old-price">原价：¥{{ addpackage.originalPrice }}</div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="buys-products" v-if="tabIndex == 0">
         <div
           :class="getRowClass(index)"
@@ -53,15 +49,9 @@
           :key="index"
           @click="selRow(index, pkg.productCode)"
         >
-          <div class="product-icon">
-            <!-- <img
-              class="product-icon-image"
-              src="../../assets/bigflow-buys.jpeg"
-            /> -->
-          </div>
           <div class="product-info">
             <div>{{ pkg.productName }}</div>
-            <div>{{ pkg.memo }}</div>
+            <!-- <div>{{ pkg.memo }}</div> -->
           </div>
           <div class="product-price">
             <div class="price">现价：¥{{ pkg.price }}</div>
@@ -99,8 +89,22 @@ export default {
   created() {
       this.iccid = this.$route.query.iccid
     this.getCardInfos()
+    this.getBuyPackages()
   },
   methods: {
+      getBuyPackages () {
+          var params = {}
+          params.iccid = this.iccid
+          API.apiGetBuyPackages(params).then(res => {
+            if (res.resultCode === 0) {
+                this.packages = res.data
+                this.loadingShow = false
+            } else {
+                this.$toast(res.resultInfo)
+                this.loadingShow = false
+            }
+        })
+      },
       getCardInfos () {
           var params = {}
           params.iccid = this.iccid
@@ -171,19 +175,19 @@ export default {
     //   );
     },
     selRow: function(row, productCode) {
-    //   this.selectedRow = row;
-    //   let product = {};
-    //   product.iccid = this.iccid;
-    //   product.pdCode = productCode;
-    //   product.body = "套餐购买";
-    //   this.product2Buy = product;
+      this.selectedRow = row
+      var product = {}
+      product.iccid = this.iccid
+      product.pdCode = productCode
+      product.body = '套餐购买'
+      this.product2Buy = product
     },
     getRowClass: function(row) {
-    //   if (this.selectedRow == row) {
-    //     return "buys-product-selected";
-    //   } else {
-    //     return "buys-product";
-    //   }
+      if (this.selectedRow === row) {
+        return 'buys-product-selected'
+      } else {
+        return 'buys-product'
+      }
     },
     changeTab: function(tabIndex) {
       this.tabIndex = tabIndex
@@ -282,7 +286,7 @@ export default {
     background: white;
 }
 .buys{
-    height: 70%;
+    height: 90%;
     margin: 30px;
     border-radius: 15px;
     background: white;
@@ -328,13 +332,13 @@ export default {
 }
 .buys-product{
     margin: 5px;
-    height: 110px;
+    height: 50px;
     border-bottom: 1px solid #ddd;
     display: flex;
 }
 .buys-product-selected{
     margin: 5px;
-    height: 110px;
+    height: 50px;
     border-bottom: 1px solid #ddd;
     display: flex;
     background: #fafddb;
@@ -343,12 +347,14 @@ export default {
     flex: 1;
 }
 .product-info{
-    flex: 4;
+    flex: 2;
     border-right: 1px solid #ddd;
+    font-size: 15px;
 }
 .product-price{
-    flex: 2;
+    flex: 1;
     margin-left: 20px;
+    font-size: 15px;
 }
 .product-icon-image{
     width: 80px;
@@ -362,9 +368,9 @@ export default {
 }
 .buy-btn{
     width: 90%;
-    height: 80px;
+    height: 50px;
     text-align: center;
-    line-height: 80px;
+    line-height: 50px;
     margin-left: 5%;
     background: #FFBA27;
     border-radius: 15px;

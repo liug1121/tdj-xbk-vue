@@ -416,10 +416,11 @@ router.beforeEach((to, from, next) => {
     console.log('22')
     console.log('process.env.VUE_APP_CURRENTMODE:' + process.env.VUE_APP_CURRENTMODE)
     // 群控 登录之外的页面
-    if (process.env.VUE_APP_CURRENTMODE === 'production') {
-    // if (!process.env.VUE_APP_CURRENTMODE) {
+    // if (process.env.VUE_APP_CURRENTMODE === 'production') {
+    if (!process.env.VUE_APP_CURRENTMODE) {
       // const token = sessionStorage.getItem('token')
       const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjUifQ.rrVbADQoeGJDJmIxnuz_ABZnamyeQoUxrOrrzaJRY3U2sM72UmaDsAvkHpOQpCCBEbqalhuhYqqj5y_pjyND3w'
+      sessionStorage.setItem('token', token)
       console.log('token:' + token)
       if (token === null || token === '' || token === undefined || token === 'null') {
         const code = getUrlKey('code')
