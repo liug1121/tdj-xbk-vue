@@ -283,6 +283,24 @@ const routes = [
     name: '订单详情',
     component: () => import('components/saler/orderDetail.vue'),
     meta: { saler: true }
+  },
+  {
+    path: '/ZxBind',
+    name: '中兴卡绑定',
+    component: () => import('components/zx/bind.vue'),
+    meta: { zx: true }
+  },
+  {
+    path: '/ZxCardInfo',
+    name: '中兴卡绑定',
+    component: () => import('components/zx/cardInfo.vue'),
+    meta: { zx: true }
+  },
+  {
+    path: '/ZxCardInfoDetail',
+    name: '中兴卡绑定',
+    component: () => import('components/zx/cardInfoDetail.vue'),
+    meta: { zx: true }
   }
 ]
 
@@ -357,6 +375,51 @@ router.beforeEach((to, from, next) => {
     if (process.env.VUE_APP_CURRENTMODE === 'production') {
     // if (!process.env.VUE_APP_CURRENTMODE) {
       const token = sessionStorage.getItem('token')
+      console.log('token:' + token)
+      if (token === null || token === '' || token === undefined || token === 'null') {
+        const code = getUrlKey('code')
+        console.log('222code')
+        // const code = '1111'
+        if (code === null || code === '') {
+          const urlNow = encodeURIComponent(window.location.href)
+          const appid = 'wx7dc1d69cc672844c'
+          const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${urlNow}&response_type=code&scope=snsapi_base&state=123#wechat_redirect`
+          window.location.href = url
+        } else {
+          console.log('111apiSalerLogin：' + code)
+          WxAPI.apiSalerLogin(code).then(res => {
+            const loginInfo = res.data
+            console.log(JSON.stringify(to))
+            sessionStorage.setItem('token', loginInfo.token)
+            if (!loginInfo.logined && to.path !== '/SalerUnBind' && to.path !== '/SalerBind') {
+              next('/SalerUnBind')
+            } else {
+              next()
+            }
+          })
+        }
+      } else {
+        next()
+      }
+    } else {
+      console.log('32')
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvUjdwUDFhRnAyZEU4dnhGSmYzanlMbmdVdkpBIiwidHlwZSI6IjMiLCJzY2hvb2xNYW5hZ2VySWQiOjEsInNjaG9vbElkIjoxLCJvcmdhbml6YXRpb25JZHMiOiIxIiwiY29udHJvbEdyb3VwSWRzIjoiNCw1In0.nr6a3_nvQETar7M_4tAaf0J52xFgUJgBvw9toamxh6tbzUR0I1g-8eNPGc-YRrYDsAUBSkq61jIBvHrSoJaowQ'
+      const userName = '测试'
+      localStorage.setItem('QKtoken', token)
+      if (token && userName) {
+        next()
+      } else {
+        next('/QKLogin')
+      }
+    }
+  } else if (to.meta.zx) {
+    console.log('22')
+    console.log('process.env.VUE_APP_CURRENTMODE:' + process.env.VUE_APP_CURRENTMODE)
+    // 群控 登录之外的页面
+    if (process.env.VUE_APP_CURRENTMODE === 'production') {
+    // if (!process.env.VUE_APP_CURRENTMODE) {
+      // const token = sessionStorage.getItem('token')
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjUifQ.rrVbADQoeGJDJmIxnuz_ABZnamyeQoUxrOrrzaJRY3U2sM72UmaDsAvkHpOQpCCBEbqalhuhYqqj5y_pjyND3w'
       console.log('token:' + token)
       if (token === null || token === '' || token === undefined || token === 'null') {
         const code = getUrlKey('code')

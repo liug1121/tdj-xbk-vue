@@ -19,7 +19,7 @@
         <div class="settingTitle">支付金额</div>
         <div class="settingContent">{{orderDetails.price}}元</div>
       </div>
-      <div class="note">以下为选填信息</div>
+      <div class="note">以下为选填客户信息</div>
       <div class="settingList">
         <!-- <div class="settingTitle">备注</div> -->
         <van-field label="联系人" v-model="orderName" class="send-code-item" placeholder="请输入联系人姓名"/>
@@ -204,5 +204,6 @@ export default {
     color: red;
     font-size: 15px;
     margin-top: 5px;
+    margin-left: 10px;
 }
 </style>

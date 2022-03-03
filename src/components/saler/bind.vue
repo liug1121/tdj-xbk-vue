@@ -86,6 +86,7 @@ export default {
   methods: {
       sendSms () {
          var params = {}
+         params.phone = this.phone
          API.apiSendSmsCode(params).then(res => {
             if (res.resultCode === 0) {
                 this.$toast('短信已发送')
