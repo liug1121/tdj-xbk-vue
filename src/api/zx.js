@@ -8,5 +8,8 @@ export default {
   },
   apiGetBuyPackages: params => {
     return API.POST('zxcard/v1.0/zxcard/buy/packages', params)
+  },
+  apiPackageBuyed: params => {
+    return API.POST('zxcard/v1.0/zxcard/buyed', params)
   }
 }

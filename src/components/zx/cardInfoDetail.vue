@@ -61,7 +61,10 @@
       </div>
     </div>
     <div class="footer">
-      <div class="buy-btn" @click="shouBuy">购买</div>
+      <div class="buy-btn" @click="buy">购买</div>
+    </div>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
     </div>
   </div>
 </template>
@@ -73,6 +76,7 @@ export default {
   },
   data() {
     return {
+      loadingShow: false,
       tabAddPackageClass: 'buys-menu-selected',
       tabPackageClass: 'buys-menu',
       cardDetails: {},
@@ -87,7 +91,7 @@ export default {
     }
   },
   created() {
-      this.iccid = this.$route.query.iccid
+    this.iccid = this.$route.query.iccid
     this.getCardInfos()
     this.getBuyPackages()
   },
@@ -128,13 +132,32 @@ export default {
     hideAlertMsgDlg: function() {
     //   this.showAlertDlg = 0;
     },
-    shouBuy: function() {
-    //   if (this.product2Buy == null) {
-    //     this.alertMsg = "请选择您要购买的商品!";
-    //     this.showAlertDlg = 1;
-    //     return;
-    //   }
-    //   this.showComfirmDlg = 1;
+    buy () {
+      if (this.product2Buy === null || this.product2Buy === undefined) {
+        this.$toast('请选择要购买的套餐')
+        return
+      }
+      this.$dialog.confirm({
+            title: '提醒',
+            message: '确认购买该套餐吗'
+        }).then(() => {
+            var params = {}
+            params.iccid = this.iccid
+            params.orderId = ''
+            params.packageId = this.product2Buy.pdCode
+            this.loadingShow = true
+            API.apiPackageBuyed(params).then(res => {
+            if (res.resultCode === 0) {
+                this.$toast('套餐购买成功')
+                this.getCardInfos()
+                this.loadingShow = false
+            } else {
+                this.$toast(res.resultInfo)
+                this.loadingShow = false
+            }
+        })
+        }).catch(() => {
+        })
     },
     buyProduct: function() {
     //   let buyParams = {};
@@ -175,9 +198,11 @@ export default {
     //   );
     },
     selRow: function(row, productCode) {
+        console.log('selRow')
       this.selectedRow = row
       var product = {}
       product.iccid = this.iccid
+      console.log(product.iccid)
       product.pdCode = productCode
       product.body = '套餐购买'
       this.product2Buy = product
@@ -383,5 +408,16 @@ export default {
 .old-price{
     text-decoration:line-through;
     color: gray;
+}
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 </style>
