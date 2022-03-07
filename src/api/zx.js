@@ -11,5 +11,8 @@ export default {
   },
   apiPackageBuyed: params => {
     return API.POST('zxcard/v1.0/zxcard/buyed', params)
-  }
+  },
+  apiSigin: params => {
+    return API.POST('zxcard/v1.0/sigin', params)
+  },
 }

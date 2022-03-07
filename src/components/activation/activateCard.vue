@@ -7,10 +7,10 @@
     </div>
     <div class="certificationText">
       <div class="textLarge">长按二维码，进入联通官方小程序，进行实名认证,若已完成实名认证，请耐心等待系统处理！</div>
-      <div class="textSmall">
+      <!-- <div class="textSmall">
         <p>认证成功后，在小程序内，添加本卡ICCID，</p>
         <p>完成重新进入<span class="red">超级学霸卡公众号 - 学霸卡管理</span></p>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

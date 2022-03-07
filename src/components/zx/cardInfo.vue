@@ -20,15 +20,17 @@
             <td class="order-info">{{ record.currentMeal }}</td>
           </tr>
           <tr>
-            <td>当月用量：</td>
-            <td class="order-info">{{ record.flowSurplusUsed }}</td>
+            <td>卡状态：</td>
+            <td v-if="record.auth_status === 0" class="order-info">未实名 不可用</td>
+            <td v-else class="order-info">正常</td>
           </tr>
         </table>
-
-        <div class="buttons">
-          <!-- <div class="button-unbind" @click="shwoMsgDlg(record.iccid20)">
-            解绑
-          </div> -->
+        <div v-if="record.auth_status === 0" class="buttons">
+          <div class="button-detail" @click="toReal">
+            去实名
+          </div>
+        </div>
+        <div v-else class="buttons">
           <div class="button-detail" @click="toDetail(record.iccid)">
             详情
           </div>
@@ -37,7 +39,7 @@
       <div class="addcard" @click="toBind">+</div>
     </div>
     <div class="addcardpage" v-else>
-      <div class="note">当前没有绑定任何卡</div>
+      <div class="note">当前没有绑定任何卡，点击绑定</div>
       <div class="addcard" @click="toBind">+</div>
     </div>
     <div v-show="loadingShow" class="loading">
@@ -74,7 +76,7 @@ export default {
                 }
                 this.loadingShow = false
             } else {
-                this.$toast(res.resultInfo)
+                // this.$toast(res.resultInfo)
                 this.loadingShow = false
             }
         })
@@ -88,6 +90,11 @@ export default {
         this.$router.push({
             path: '/ZxCardInfoDetail',
             query: { iccid: iccid }
+          })
+    },
+    toReal () {
+        this.$router.push({
+            path: '/activateCard'
           })
     }
   }
@@ -138,6 +145,19 @@ tr{
     line-height: 60px;
     font-size: 20px;
 }
+.button{
+    background: #FFBA27;
+    width: 90%;
+    height:45px;
+    border-radius: 15px;
+    margin-left :5%;
+    color: white;
+    font-size: 15px;
+    align-items: center;
+    display:  -webkit-flex;
+    justify-content: center;
+    display: -webkit-flex;
+}
 .note{
     text-align: center;
     font-size: 20px;
@@ -161,5 +181,8 @@ tr{
   width: 100%;
   height: 100%;
   margin: 0;
+}
+.to-real-note {
+    color: #FFBA27;
 }
 </style>

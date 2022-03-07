@@ -286,19 +286,19 @@ const routes = [
   },
   {
     path: '/ZxBind',
-    name: '中兴卡绑定',
+    name: '5G至尊卡',
     component: () => import('components/zx/bind.vue'),
     meta: { zx: true }
   },
   {
     path: '/ZxCardInfo',
-    name: '中兴卡绑定',
+    name: '5G至尊卡',
     component: () => import('components/zx/cardInfo.vue'),
     meta: { zx: true }
   },
   {
     path: '/ZxCardInfoDetail',
-    name: '中兴卡绑定',
+    name: '5G至尊卡',
     component: () => import('components/zx/cardInfoDetail.vue'),
     meta: { zx: true }
   }
@@ -416,11 +416,11 @@ router.beforeEach((to, from, next) => {
     console.log('22')
     console.log('process.env.VUE_APP_CURRENTMODE:' + process.env.VUE_APP_CURRENTMODE)
     // 群控 登录之外的页面
-    // if (process.env.VUE_APP_CURRENTMODE === 'production') {
-    //   const token = sessionStorage.getItem('token')
-    if (!process.env.VUE_APP_CURRENTMODE) {
-      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjUifQ.rrVbADQoeGJDJmIxnuz_ABZnamyeQoUxrOrrzaJRY3U2sM72UmaDsAvkHpOQpCCBEbqalhuhYqqj5y_pjyND3w'
-      sessionStorage.setItem('token', token)
+    if (process.env.VUE_APP_CURRENTMODE === 'production') {
+      const token = sessionStorage.getItem('token')
+    // if (!process.env.VUE_APP_CURRENTMODE) {
+    //   const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjUifQ.rrVbADQoeGJDJmIxnuz_ABZnamyeQoUxrOrrzaJRY3U2sM72UmaDsAvkHpOQpCCBEbqalhuhYqqj5y_pjyND3w'
+    //   sessionStorage.setItem('token', token)
       console.log('token:' + token)
       if (token === null || token === '' || token === undefined || token === 'null') {
         const code = getUrlKey('code')
@@ -428,20 +428,22 @@ router.beforeEach((to, from, next) => {
         // const code = '1111'
         if (code === null || code === '') {
           const urlNow = encodeURIComponent(window.location.href)
-          const appid = 'wx1a5096e4befc9e8f'
+          const appid = 'wxd28b159bd97976d0'
           const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${urlNow}&response_type=code&scope=snsapi_base&state=123#wechat_redirect`
           window.location.href = url
         } else {
-          console.log('111apiSalerLogin：' + code)
-          WxAPI.apiSalerLogin(code).then(res => {
+          console.log('111apiZxLogin:' + code)
+          console.log(code)
+          WxAPI.apiZxLogin(code).then(res => {
             const loginInfo = res.data
             console.log(JSON.stringify(to))
             sessionStorage.setItem('token', loginInfo.token)
-            if (!loginInfo.logined && to.path !== '/SalerUnBind' && to.path !== '/SalerBind') {
-              next('/SalerUnBind')
-            } else {
-              next()
-            }
+            next()
+            // if (!loginInfo.logined && to.path !== '/SalerUnBind' && to.path !== '/SalerBind') {
+            //   next('/SalerUnBind')
+            // } else {
+            //   next()
+            // }
           })
         }
       } else {

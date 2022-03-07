@@ -1,25 +1,27 @@
 <template>
   <div class="page">
-    <div class="head">
+    <!-- <div class="head">
       <div class="head-card">
         <div>手机号：{{ cardDetails.phone_number }}</div>
-        <div>ICCIC编码：{{ cardDetails.iccid }}</div>
+        <div>ICCID：{{ cardDetails.iccid }}</div>
       </div>
-    </div>
+    </div> -->
     <div class="detail">
-      <div class="detail-title">套餐详情</div>
-      <div class="detail-button">剩余{{ cardDetails.flowSurplusUsed }}</div>
+      <div class="detail-title">卡详情</div>
+      <!-- <div class="detail-button">剩余{{ cardDetails.flowSurplusUsed }}</div> -->
       <div class="detail-note">
-        <div>您的套餐：{{ cardDetails.currentMeal }}</div>
-        <div>
-          有效期：{{ cardDetails.mealStartDate }}-{{ cardDetails.mealEndDate }}
+        <div class="detail-item">手机号：{{ cardDetails.phone_number }}</div>
+        <div class="detail-item">ICCID：{{ cardDetails.iccid }}</div>
+        <div class="detail-item">您的套餐：{{ cardDetails.currentMeal }}</div>
+        <div class="detail-item">
+          有效期：{{ cardDetails.mealStartDate }} 到 {{ cardDetails.mealEndDate }}
         </div>
       </div>
     </div>
     <div class="buys">
       <div class="buys-menus">
         <div :class="tabAddPackageClass" @click="changeTab(0)">购买套餐</div>
-        <div :class="tabPackageClass" @click="changeTab(1)">加油包</div>
+        <!-- <div :class="tabPackageClass" @click="changeTab(1)">加油包</div> -->
       </div>
       <!-- <div class="buys-products" v-if="tabIndex == 1">
         <div
@@ -304,14 +306,15 @@ export default {
     font-size: 16px;
 }
 .detail{
+    padding: 5px;
     font-size: 20px;
-    height: 200px;
+    height: 160px;
     margin: 30px;
     border-radius: 15px;
     background: white;
 }
 .buys{
-    height: 90%;
+    height: 70%;
     margin: 30px;
     border-radius: 15px;
     background: white;
@@ -328,7 +331,7 @@ export default {
     font-size: 16px;
 }
 .detail-title{
-    font-size: 25px;
+    font-size: 22px;
     margin: 15px;
 }
 .detail-note{
@@ -419,5 +422,8 @@ export default {
   width: 100%;
   height: 100%;
   margin: 0;
+}
+.detail-item {
+    margin: 5px;
 }
 </style>
