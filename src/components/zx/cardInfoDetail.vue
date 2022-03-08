@@ -49,7 +49,7 @@
           :class="getRowClass(index)"
           v-for="(pkg, index) in packages"
           :key="index"
-          @click="selRow(index, pkg.productCode)"
+          @click="selRow(index, pkg)"
         >
           <div class="product-info">
             <div>{{ pkg.productName }}</div>
@@ -141,23 +141,50 @@ export default {
       }
       this.$dialog.confirm({
             title: '提醒',
-            message: '确认购买该套餐吗'
+            message: '确认购买该' + this.product2Buy.productName + '吗？'
         }).then(() => {
-            var params = {}
-            params.iccid = this.iccid
-            params.orderId = ''
-            params.packageId = this.product2Buy.pdCode
-            this.loadingShow = true
-            API.apiPackageBuyed(params).then(res => {
-            if (res.resultCode === 0) {
-                this.$toast('套餐购买成功')
-                this.getCardInfos()
-                this.loadingShow = false
-            } else {
-                this.$toast(res.resultInfo)
-                this.loadingShow = false
-            }
-        })
+            API.apiOrderOrderId().then(res => {
+              console.log('apiOrderOrderId:' + JSON.stringify(res))
+              const orderId = res.data
+              const data = {
+                body: '套餐购买支付',
+                out_trade_no: res.data,
+                // total_fee: Number(this.orderDetails.price) * 100
+                total_fee: Number(0.01) * 100
+              }
+              console.log('orderId:' + orderId)
+              console.log('orderId:' + JSON.stringify(data))
+              API.apiWXprepay(data).then(res => {
+                if (res.resultCode === 0) {
+                    console.log('apiWXprepay:' + JSON.stringify(res.data))
+                  this.weixinTradePay(res.data, orderId, () => {
+                      this.$toast('套餐购买成功')
+                    var params = {}
+                    params.iccid = this.iccid
+                    params.orderId = orderId
+                    params.packageId = this.product2Buy.pdCode
+                    this.loadingShow = true
+                    API.apiPackageBuyed(params).then(res => {
+                        if (res.resultCode === 0) {
+                            this.$toast('套餐购买成功')
+                            this.getCardInfos()
+                            this.loadingShow = false
+                        } else {
+                            this.$toast(res.resultInfo)
+                            this.loadingShow = false
+                        }
+                    })
+                  }, () => {
+                      this.$router.push({
+                      path: '/SalerPayFaild',
+                      query: { orderId: orderId }
+                })
+                  })
+                } else {
+                  this.$toast(res.resultInfo)
+                }
+              })
+            })
         }).catch(() => {
         })
     },
@@ -199,14 +226,66 @@ export default {
     //     }
     //   );
     },
-    selRow: function(row, productCode) {
+    weixinJSBridgeReady (callback) {
+        // 如果jsbridge已经注入则直接调用
+        if (typeof WeixinJSBridge === 'undefined') {
+            if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', callback, false)
+            } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', callback)
+            document.attachEvent('onWeixinJSBridgeReady', callback)
+            }
+        } else {
+            callback && callback()
+        }
+       },
+    weixinTradePay (obj, orderId, $routerFun, $routerFaildFun) {
+        console.log('obj:' + obj)
+        console.log('orderId:' + orderId)
+        console.log('$routerFun:' + $routerFun)
+        console.log('$routerFaildFun:' + $routerFaildFun)
+        const self = this
+        this.weixinJSBridgeReady(function () {
+            window.WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            {
+                appId: obj.appId, // 公众号名称，由商户传入
+                timeStamp: obj.timeStamp, // 时间戳，自1970年以来的秒数
+                nonceStr: obj.nonceStr, // 随机串
+                package: obj.pkg,
+                signType: obj.signType, // 微信签名方式:
+                paySign: obj.paySign // 微信签名
+            },
+            function (result) {
+                if (result.err_msg === 'get_brand_wcpay_request:ok') {
+                    console.log('orderId:' + orderId)
+                $routerFun()
+                } else if (result.err_msg === 'get_brand_wcpay_request:cancel') {
+                self.$dialog.confirm({
+                    title: '提醒',
+                    message: '是否放弃本次支付？',
+                    confirmButtonText: '确定',
+                    cancelButtonText: '继续支付'
+                }).then(() => {
+                    $routerFaildFun()
+                }).catch(() => {
+                })
+                } else {
+                self.$toast('支付失败')
+                }
+            }
+            )
+        })
+        },
+    selRow: function(row, selectedProduct) {
         console.log('selRow')
       this.selectedRow = row
       var product = {}
       product.iccid = this.iccid
       console.log(product.iccid)
-      product.pdCode = productCode
+      product.pdCode = selectedProduct.productCode
       product.body = '套餐购买'
+      product.productName = selectedProduct.productName
       this.product2Buy = product
     },
     getRowClass: function(row) {
@@ -225,50 +304,7 @@ export default {
         this.tabAddPackageClass = 'buys-menu'
         this.tabPackageClass = 'buys-menu-selected'
       }
-    },
-    getDetails: function(iccid) {
-    //   let queryParams = {};
-    //   queryParams.iccid = iccid;
-    //   this.$store.dispatch("card/getCardDetails", queryParams);
-    },
-    getAddPackages: function(iccid) {
-    //   let queryParams = {};
-    //   queryParams.iccid = iccid;
-    //   this.$store.dispatch(
-    //     "bigFlowPackage/callAddPackagesForCard",
-    //     queryParams
-    //   );
-    },
-    getPackages: function(iccid) {
-    //   let queryParams = {};
-    //   queryParams.iccid = iccid;
-    //   this.$store.dispatch("bigFlowPackage/callPackagesForCard", queryParams);
     }
-    //   getCardInfos () {
-    //       var params = {}
-    //       API.apiGetCardsInfo(params).then(res => {
-    //         if (res.resultCode === 0) {
-    //             this.cardInfos = res.data
-    //             if (this.cardInfos.length > 0) {
-    //                 this.bindStatus = 1
-    //             }
-    //             this.loadingShow = false
-    //         } else {
-    //             this.$toast(res.resultInfo)
-    //             this.loadingShow = false
-    //         }
-    //     })
-    //   },
-    // toBind () {
-    //   this.$router.push({
-    //         path: '/ZxBind'
-    //       })
-    // },
-    // toDetail (iccid) {
-    //     this.$router.push({
-    //         path: '/ZxCardInfoDetail'
-    //       })
-    // }
   }
 }
 </script>

@@ -15,4 +15,10 @@ export default {
   apiSigin: params => {
     return API.POST('zxcard/v1.0/sigin', params)
   },
+  apiWXprepay: params => {
+    return API.POST('zxcard/v1.0/pay/wxprepay', params)
+  },
+  apiOrderOrderId: params => {
+    return API.GET('wechat/v1.0/orders/orderid', params)
+  }
 }
