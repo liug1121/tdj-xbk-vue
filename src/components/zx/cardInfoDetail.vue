@@ -21,29 +21,26 @@
     <div class="buys">
       <div class="buys-menus">
         <div :class="tabAddPackageClass" @click="changeTab(0)">购买套餐</div>
-        <!-- <div :class="tabPackageClass" @click="changeTab(1)">加油包</div> -->
+        <div :class="tabPackageClass" @click="changeTab(1)">购买记录</div>
       </div>
-      <!-- <div class="buys-products" v-if="tabIndex == 1">
+      <div class="buys-products" v-if="tabIndex == 1">
         <div
           :class="getRowClass(index)"
-          v-for="(addpackage, index) in addPackages"
+          v-for="(buyedRecord, index) in buyedRecords"
           :key="index"
-          @click="selRow(index, addpackage.productCode)"
         >
-          <div class="product-icon">
-          </div>
           <div class="product-info">
-            <div>{{ addpackage.viewName }}</div>
-            <div>{{ addpackage.memo }}</div>
+            <div>{{ buyedRecord.productName }}</div>
+            <div>{{ buyedRecord.buyedDate }}</div>
           </div>
           <div class="product-price">
             <div>
-              <span class="price">现价：¥{{ addpackage.price }}</span>
+              <span class="record-price">价格：¥{{ buyedRecord.price }}</span>
             </div>
-            <div class="old-price">原价：¥{{ addpackage.originalPrice }}</div>
+            <!-- <div class="old-price">原价：¥{{ addpackage.originalPrice }}</div> -->
           </div>
         </div>
-      </div> -->
+      </div>
       <div class="buys-products" v-if="tabIndex == 0">
         <div
           :class="getRowClass(index)"
@@ -89,15 +86,29 @@ export default {
       tabIndex: 0,
       product2Buy: null,
       packages: [],
-      addPackages: []
+      addPackages: [],
+      buyedRecords: []
     }
   },
   created() {
     this.iccid = this.$route.query.iccid
     this.getCardInfos()
     this.getBuyPackages()
+    this.getBuyedRecords()
   },
   methods: {
+      getBuyedRecords () {
+          var params = {}
+          params.iccid = this.iccid
+          API.apiGetBuyedRecords(params).then(res => {
+            if (res.resultCode === 0) {
+                this.buyedRecords = res.data
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
+      },
       getBuyPackages () {
           var params = {}
           params.iccid = this.iccid
@@ -461,5 +472,9 @@ export default {
 }
 .detail-item {
     margin: 5px;
+}
+.record-price{
+    margin-top: 10px;
+    color: #FFBA27;
 }
 </style>

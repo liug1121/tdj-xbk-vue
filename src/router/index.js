@@ -419,7 +419,7 @@ router.beforeEach((to, from, next) => {
     if (process.env.VUE_APP_CURRENTMODE === 'production') {
       const token = sessionStorage.getItem('token')
     // if (!process.env.VUE_APP_CURRENTMODE) {
-    //   const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjUifQ.rrVbADQoeGJDJmIxnuz_ABZnamyeQoUxrOrrzaJRY3U2sM72UmaDsAvkHpOQpCCBEbqalhuhYqqj5y_pjyND3w'
+    //   const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvd21FODZXV3JCcWNzYkw3S3UxQUptc0p1Z0tJIiwidHlwZSI6IjQifQ.51XSrf6b3wCP8AsSjG1vTadJ73OlHEG_7oAEXL3U5s9nWECAjd6iUf5xlMFnzZXurbl19sA29vo6kNPNXuZeoQ'
     //   sessionStorage.setItem('token', token)
       console.log('token:' + token)
       if (token === null || token === '' || token === undefined || token === 'null') {

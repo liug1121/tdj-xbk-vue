@@ -20,5 +20,8 @@ export default {
   },
   apiOrderOrderId: params => {
     return API.GET('wechat/v1.0/orders/orderid', params)
+  },
+  apiGetBuyedRecords: params => {
+    return API.POST('zxcard/v1.0/zxcard/buyed/records', params)
   }
 }
