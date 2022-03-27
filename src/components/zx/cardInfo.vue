@@ -29,10 +29,16 @@
           <div class="button-detail" @click="toReal">
             去实名
           </div>
+          <div class="button-detail" @click="toUnbind(record.iccid)">
+            解绑
+          </div>
         </div>
         <div v-else class="buttons">
           <div class="button-detail" @click="toDetail(record.iccid)">
             详情
+          </div>
+          <div class="button-detail" @click="toUnbind(record.iccid)">
+            解绑
           </div>
         </div>
       </div>
@@ -78,6 +84,7 @@ export default {
             } else {
                 // this.$toast(res.resultInfo)
                 this.loadingShow = false
+                this.bindStatus = 0
             }
         })
       },
@@ -85,6 +92,28 @@ export default {
       this.$router.push({
             path: '/ZxBind'
           })
+    },
+    toUnbind (iccid) {
+      this.$dialog.confirm({
+            title: '提醒',
+            message: '确认解绑吗'
+        }).then(() => {
+            var params = {}
+            params.iccid = iccid
+            console.log('sdsd')
+            this.loadingShow = true
+            API.apiZxCardUnBind(params).then(res => {
+            if (res.resultCode === 0) {
+                this.getCardInfos()
+                this.$toast('解绑成功')
+                this.loadingShow = false
+            } else {
+                this.$toast(res.resultInfo)
+                this.loadingShow = false
+            }
+        })
+        }).catch(() => {
+        })
     },
     toDetail (iccid) {
         this.$router.push({

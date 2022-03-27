@@ -160,8 +160,8 @@ export default {
               const data = {
                 body: '套餐购买支付',
                 out_trade_no: res.data,
-                // total_fee: Number(this.orderDetails.price) * 100
-                total_fee: Number(0.01) * 100
+                total_fee: Number(this.product2Buy.price) * 100
+                // total_fee: Number(0.01) * 100
               }
               console.log('orderId:' + orderId)
               console.log('orderId:' + JSON.stringify(data))
@@ -297,6 +297,7 @@ export default {
       product.pdCode = selectedProduct.productCode
       product.body = '套餐购买'
       product.productName = selectedProduct.productName
+      product.price = selectedProduct.price
       this.product2Buy = product
     },
     getRowClass: function(row) {

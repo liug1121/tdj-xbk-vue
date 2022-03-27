@@ -3,6 +3,9 @@ export default {
   apiZxCardBind: params => {
     return API.POST('zxcard/v1.0/zxcard/bind', params)
   },
+  apiZxCardUnBind: params => {
+    return API.POST('zxcard/v1.0/zxcard/unbind', params)
+  },
   apiGetCardsInfo: params => {
     return API.POST('zxcard/v1.0/zxcard/infos', params)
   },
