@@ -13,7 +13,7 @@
         <div class="detail-item">手机号：{{ cardDetails.phone_number }}</div>
         <div class="detail-item">ICCID：{{ cardDetails.iccid }}</div>
         <div class="detail-item">您的套餐：{{ cardDetails.currentMeal }}</div>
-        <div class="detail-item">已用量：{{ cardDetails.usage }} GB</div>
+        <div class="detail-item">已用量：{{ cardDetails.usage }}</div>
         <div class="detail-item">
           有效期：{{ cardDetails.mealStartDate }} 到 {{ cardDetails.mealEndDate }}
         </div>
