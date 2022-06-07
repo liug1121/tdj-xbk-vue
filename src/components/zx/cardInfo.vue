@@ -26,8 +26,11 @@
           </tr>
         </table>
         <div v-if="record.auth_status === 0" class="buttons">
-          <div class="button-detail" @click="toReal">
+          <!-- <div class="button-detail" @click="toReal">
             去实名
+          </div> -->
+          <div class="button-detail" @click="toDetail(record.iccid)">
+            详情
           </div>
           <div class="button-detail" @click="toUnbind(record.iccid)">
             解绑
