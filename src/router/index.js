@@ -301,6 +301,26 @@ const routes = [
     name: '5G至尊卡',
     component: () => import('components/zx/cardInfoDetail.vue'),
     meta: { zx: true }
+  },
+  {
+    path: '/bigflowBind',
+    name: '大流量卡绑定',
+    component: () => import('components/bigflow/bind.vue')
+  },
+  {
+    path: '/toCert',
+    name: '联通实名认证',
+    component: () => import('components/bigflow/toCert.vue')
+  },
+  {
+    path: '/usageInfo',
+    name: '卡信息',
+    component: () => import('components/bigflow/usageInfo.vue')
+  },
+  {
+    path: '/usageDetails',
+    name: '用量明细',
+    component: () => import('components/bigflow/usageDetails.vue')
   }
 ]
 
