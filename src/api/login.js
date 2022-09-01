@@ -27,5 +27,12 @@ export default {
     const code = params
     console.log('apiZxLogin')
     return API.GET(`zxcard/v1.0/users/login/${code}`, params)
+  },
+  apiBigflowLogin: params => {
+    const code = params
+    console.log('apiZxLogin')
+    return API.GET(`bigflow/boss/v1.0/users/login/${code}`, params)
   }
+
+  
 }

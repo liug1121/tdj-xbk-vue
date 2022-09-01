@@ -26,5 +26,14 @@ export default {
   },
   apiWxSign: params => {
     return API.POST('bigflow/boss/v1.0/sigin', params)
+  },
+  apiOrderOrderId: params => {
+    return API.GET('wechat/v1.0/orders/orderid', params)
+  },
+  apiWXprepay: params => {
+    return API.POST('bigflow/boss/v1.0/pay/wxprepay', params)
+  },
+  apiBuyed: params => {
+    return API.POST('bigflow/boss/v1.0/buy', params)
   }
 }

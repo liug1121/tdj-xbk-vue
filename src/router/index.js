@@ -305,27 +305,32 @@ const routes = [
   {
     path: '/bigflowBind',
     name: '大流量卡绑定',
-    component: () => import('components/bigflow/bind.vue')
+    component: () => import('components/bigflow/bind.vue'),
+    meta: { bigflow: true }
   },
   {
     path: '/toCert',
     name: '联通实名认证',
-    component: () => import('components/bigflow/toCert.vue')
+    component: () => import('components/bigflow/toCert.vue'),
+    meta: { bigflow: true }
   },
   {
     path: '/usageInfo',
     name: '卡信息',
-    component: () => import('components/bigflow/usageInfo.vue')
+    component: () => import('components/bigflow/usageInfo.vue'),
+    meta: { bigflow: true }
   },
   {
     path: '/usageDetails',
     name: '用量明细',
-    component: () => import('components/bigflow/usageDetails.vue')
+    component: () => import('components/bigflow/usageDetails.vue'),
+    meta: { bigflow: true }
   },
   {
     path: '/buyedRecords',
     name: '购买记录',
-    component: () => import('components/bigflow/buyedRecords.vue')
+    component: () => import('components/bigflow/buyedRecords.vue'),
+    meta: { bigflow: true }
   }
 ]
 
@@ -460,6 +465,54 @@ router.beforeEach((to, from, next) => {
           console.log('111apiZxLogin:' + code)
           console.log(code)
           WxAPI.apiZxLogin(code).then(res => {
+            const loginInfo = res.data
+            console.log(JSON.stringify(to))
+            sessionStorage.setItem('token', loginInfo.token)
+            next()
+            // if (!loginInfo.logined && to.path !== '/SalerUnBind' && to.path !== '/SalerBind') {
+            //   next('/SalerUnBind')
+            // } else {
+            //   next()
+            // }
+          })
+        }
+      } else {
+        next()
+      }
+    } else {
+      console.log('32')
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvUjdwUDFhRnAyZEU4dnhGSmYzanlMbmdVdkpBIiwidHlwZSI6IjMiLCJzY2hvb2xNYW5hZ2VySWQiOjEsInNjaG9vbElkIjoxLCJvcmdhbml6YXRpb25JZHMiOiIxIiwiY29udHJvbEdyb3VwSWRzIjoiNCw1In0.nr6a3_nvQETar7M_4tAaf0J52xFgUJgBvw9toamxh6tbzUR0I1g-8eNPGc-YRrYDsAUBSkq61jIBvHrSoJaowQ'
+      const userName = '测试'
+      localStorage.setItem('QKtoken', token)
+      if (token && userName) {
+        next()
+      } else {
+        next('/QKLogin')
+      }
+    }
+  } else if (to.meta.bigflow) {
+    console.log('22')
+    console.log('process.env.VUE_APP_CURRENTMODE:' + process.env.VUE_APP_CURRENTMODE)
+    // 群控 登录之外的页面
+    if (process.env.VUE_APP_CURRENTMODE === 'production') {
+      const token = sessionStorage.getItem('token')
+    // if (!process.env.VUE_APP_CURRENTMODE) {
+    //   const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvd21FODZXV3JCcWNzYkw3S3UxQUptc0p1Z0tJIiwidHlwZSI6IjQifQ.51XSrf6b3wCP8AsSjG1vTadJ73OlHEG_7oAEXL3U5s9nWECAjd6iUf5xlMFnzZXurbl19sA29vo6kNPNXuZeoQ'
+    //   sessionStorage.setItem('token', token)
+      console.log('token:' + token)
+      if (token === null || token === '' || token === undefined || token === 'null') {
+        const code = getUrlKey('code')
+        console.log('222code')
+        // const code = '1111'
+        if (code === null || code === '') {
+          const urlNow = encodeURIComponent(window.location.href)
+          const appid = 'wx7dc1d69cc672844c'
+          const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${urlNow}&response_type=code&scope=snsapi_base&state=123#wechat_redirect`
+          window.location.href = url
+        } else {
+          console.log('111apiZxLogin:' + code)
+          console.log(code)
+          WxAPI.apiBigflowLogin(code).then(res => {
             const loginInfo = res.data
             console.log(JSON.stringify(to))
             sessionStorage.setItem('token', loginInfo.token)

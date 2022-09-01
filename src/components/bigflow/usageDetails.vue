@@ -74,7 +74,7 @@
       </div>
     </div>
     <div class="footer">
-      <div class="buy-btn">购买</div>
+      <div class="buy-btn" @click="toPay">购买</div>
     </div>
     <div v-show="loadingShow" class="loading">
       <van-loading type="spinner" color="#FDAB16" />
@@ -111,7 +111,7 @@ export default {
       var product = {}
       product.iccid = this.iccid
       product.pdCode = productCode
-      product.body = '套餐购买'
+      product.body = '套餐或加油包购买'
       this.product2Buy = product
     },
     getRowClass: function(row) {
@@ -169,7 +169,107 @@ export default {
                 this.loadingShow = false
             }
         })
-    }
+    },
+    order2Payed: function(product2Buy, orderId) {
+      console.log(orderId)
+      var params = product2Buy
+      params.orderId = orderId
+      API.apiBuyed(params).then(res => {
+        if (res.resultCode === 0) {
+          this.$toast('购买成功')
+          this.getCardDetail()
+        } else {
+          this.$toast(res.resultInfo)
+        }
+      })
+    },
+    toPay () {
+      if (this.product2Buy === null) {
+        this.$toast('请先选择要购买的套餐')
+        return
+      }
+      this.$dialog.confirm({
+          title: '提醒',
+          message: '确认支付吗'
+      }).then(() => {
+        API.apiOrderOrderId().then(res => {
+          console.log('apiOrderOrderId:' + JSON.stringify(res))
+          const orderId = res.data
+          const data = {
+            body: '套餐或加油包购买',
+            out_trade_no: res.data,
+            // total_fee: Number(this.orderDetails.price) * 100
+            total_fee: Number(0.01) * 100
+          }
+          console.log('orderId:' + orderId)
+          console.log('orderId:' + JSON.stringify(data))
+          API.apiWXprepay(data).then(res => {
+            if (res.resultCode === 0) {
+                console.log('apiWXprepay:' + JSON.stringify(res.data))
+              this.weixinTradePay(res.data, orderId, () => {
+                this.order2Payed(this.product2Buy, orderId)
+              }, () => {
+                this.$toast('支付失败')
+              })
+            } else {
+              this.$toast(res.resultInfo)
+            }
+          })
+        })
+        }).catch(() => {
+        })
+      },
+    weixinJSBridgeReady (callback) {
+        // 如果jsbridge已经注入则直接调用
+        if (typeof WeixinJSBridge === 'undefined') {
+            if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', callback, false)
+            } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', callback)
+            document.attachEvent('onWeixinJSBridgeReady', callback)
+            }
+        } else {
+            callback && callback()
+        }
+       },
+      weixinTradePay (obj, orderId, $routerFun, $routerFaildFun) {
+        console.log('obj:' + obj)
+        console.log('orderId:' + orderId)
+        console.log('$routerFun:' + $routerFun)
+        console.log('$routerFaildFun:' + $routerFaildFun)
+        const self = this
+        this.weixinJSBridgeReady(function () {
+            window.WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            {
+                appId: obj.appId, // 公众号名称，由商户传入
+                timeStamp: obj.timeStamp, // 时间戳，自1970年以来的秒数
+                nonceStr: obj.nonceStr, // 随机串
+                package: obj.pkg,
+                signType: obj.signType, // 微信签名方式:
+                paySign: obj.paySign // 微信签名
+            },
+            function (result) {
+                if (result.err_msg === 'get_brand_wcpay_request:ok') {
+                    console.log('orderId:' + orderId)
+                $routerFun()
+                } else if (result.err_msg === 'get_brand_wcpay_request:cancel') {
+                self.$dialog.confirm({
+                    title: '提醒',
+                    message: '是否放弃本次支付？',
+                    confirmButtonText: '确定',
+                    cancelButtonText: '继续支付'
+                }).then(() => {
+                    $routerFaildFun()
+                }).catch(() => {
+                })
+                } else {
+                self.$toast('支付失败')
+                }
+            }
+            )
+        })
+        }
   }
 }
 </script>
