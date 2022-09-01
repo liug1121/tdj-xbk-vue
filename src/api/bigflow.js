@@ -23,5 +23,8 @@ export default {
   },
   apiBind: params => {
     return API.POST('bigflow/boss/v1.0/wechat/card/bind', params)
+  },
+  apiWxSign: params => {
+    return API.POST('bigflow/boss/v1.0/sigin', params)
   }
 }

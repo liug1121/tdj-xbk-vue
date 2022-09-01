@@ -9,7 +9,7 @@
           <td class="col-iccid-input">
             <input class="iccid-input" v-model="iccid19" type="tel"/>
           </td>
-          <td class="col-iccid-scan">
+          <td class="col-iccid-scan" @click="scan">
             <img class="scan" src="../../common/images/scan.jpeg"/>
           </td>
         </tr>
@@ -27,6 +27,7 @@
 </template>
 <script>
 import API from 'api/bigflow'
+import wx from 'weixin-jsapi'
 export default {
   data () {
     return {
@@ -76,19 +77,59 @@ export default {
         this.$router.push({
             path: '/usageInfo'
         })
+    },
+    scan: function() {
+      var params = {}
+      var url = window.location.href.split('#')[0]
+      params.url = url
+      API.apiWxSign(params).then(
+        res => {
+          console.log(JSON.stringify(res))
+          if (res.resultCode === 0) {
+            var wxSign = res.data
+            console.log(JSON.stringify(wxSign))
+            var that = this
+            console.log('1')
+            wx.config({
+              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+              appId: wxSign.appId, // 必填，公众号的唯一标识
+              timestamp: wxSign.timestamp, // 必填，生成签名的时间戳
+              nonceStr: wxSign.nonceStr, // 必填，生成签名的随机串
+              signature: wxSign.signature, // 必填，签名
+              jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表
+            })
+            console.log('2')
+            wx.ready(function() {
+              wx.checkJsApi({
+                jsApiList: ['scanQRCode'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                success: function(res) {
+                  // 以键值对的形式返回，可用的api值true，不可用为false
+                  // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+                  console.log(JSON.stringify(res))
+                  wx.scanQRCode({
+                    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ['barCode'], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function(res) {
+                      // alert(JSON.stringify(res))
+                      var iccid = res.resultStr.split('CODE_128,')[1]
+                      if (!iccid) {
+                        iccid = res.resultStr
+                      }
+                      if (!iccid && iccid.length !== 19) {
+                        return
+                      }
+                      // alert(iccid)
+                      that.iccid19 = iccid
+                    }
+                  })
+                }
+              })
+              wx.hideAllNonBaseMenuItem()
+            })
+          }
+        }
+      )
     }
-    // getBuyRecords: function() {
-    //     var params = {}
-    //     this.loadingShow = true
-    //     API.apiGetBuyRecords(params).then(res => {
-    //         if (res.resultCode === 0) {
-    //             this.buyRecords = res.data
-    //             this.loadingShow = false
-    //         } else {
-    //             this.loadingShow = false
-    //         }
-    //     })
-    // }
   }
 }
 </script>
