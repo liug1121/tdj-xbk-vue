@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div v-if="bindStatus == 1">
-      <div class="useage" v-for="(record, index) in getCardInfos" :key="index">
+      <div class="useage" v-for="(record, index) in cardInfos" :key="index">
         <table>
           <tr>
             <td>设备名称：</td>
@@ -26,10 +26,10 @@
         </table>
 
         <div class="buttons">
-          <div class="button-unbind">
+          <div class="button-unbind" @click="unbind(record.iccid)">
             解绑
           </div>
-          <div class="button-detail">
+          <div class="button-detail" @click="toDetail(record.iccid)">
             详情
           </div>
         </div>
@@ -40,21 +40,63 @@
       <div class="note">当前没有绑定任何卡</div>
       <div class="addcard" >+</div>
     </div>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 <script>
+import API from 'api/bigflow'
 export default {
   data () {
     return {
+      loadingShow: false,
       bindStatus: 1,
-      getCardInfos: [
-        {
-            phoneNumber: '',
-            iccid: '',
-            currentMeal: '',
-            flowSurplusUsed: ''
-        }
-      ]
+      cardInfos: []
+    }
+  },
+  created() {
+    this.getCards()
+  },
+  methods: {
+    unbind: function(iccid) {
+        this.$dialog.confirm({
+            title: '提醒',
+            message: '确认进行该操作吗？'
+        }).then(() => {
+            var params = {}
+            params.iccid = iccid
+            this.loadingShow = true
+            API.apiUnBindCard(params).then(res => {
+                if (res.resultCode === 0) {
+                    this.$toast('解绑成功')
+                    this.loadingShow = false
+                    this.getCards()
+                } else {
+                    this.loadingShow = false
+                    this.$toast('解绑失败')
+                }
+            })
+        }).catch(() => {
+        })
+    },
+    toDetail (iccid) {
+        this.$router.push({
+            path: '/usageDetails',
+            query: { iccid: iccid }
+          })
+    },
+    getCards: function() {
+        var params = {}
+        this.loadingShow = true
+        API.apiGetCards(params).then(res => {
+            if (res.resultCode === 0) {
+                this.cardInfos = res.data
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
     }
   }
 }
@@ -70,7 +112,7 @@ export default {
     border-radius:15px;
     background:white;
     margin:20px;
-    font-size: 20px;
+    font-size: 15px;
 }
 table{
     margin:30px;
@@ -113,5 +155,16 @@ tr{
 }
 .addcardpage{
     padding-top: 20%;
+}
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 </style>

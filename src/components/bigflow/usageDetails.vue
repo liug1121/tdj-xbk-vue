@@ -21,8 +21,8 @@
     </div>
     <div class="buys">
       <div class="buys-menus">
-        <div :class="tabAddPackageClass">购买套餐</div>
-        <div :class="tabPackageClass">加油包</div>
+        <div :class="tabAddPackageClass" @click="changeTab(0)">购买套餐</div>
+        <div :class="tabPackageClass" @click="changeTab(1)">加油包</div>
       </div>
       <div class="buys-products" v-if="tabIndex == 1">
         <div
@@ -39,7 +39,7 @@
           </div>
           <div class="product-info">
             <div>{{ addpackage.viewName }}</div>
-            <div>{{ addpackage.memo }}</div>
+            <div class="meno">{{ addpackage.memo }}</div>
           </div>
           <div class="product-price">
             <div>
@@ -64,7 +64,7 @@
           </div>
           <div class="product-info">
             <div>{{ pkg.productName }}</div>
-            <div>{{ pkg.memo }}</div>
+            <div class="meno">{{ pkg.memo }}</div>
           </div>
           <div class="product-price">
             <div class="price">现价：¥{{ pkg.price }}</div>
@@ -76,12 +76,17 @@
     <div class="footer">
       <div class="buy-btn">购买</div>
     </div>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 <script>
+import API from 'api/bigflow'
 export default {
   data () {
     return {
+      iccid: '',
       addPackages: [],
       packages: [],
       showComfirmDlg: 0,
@@ -91,16 +96,79 @@ export default {
       tabAddPackageClass: 'buys-menu-selected',
       tabPackageClass: 'buys-menu',
       product2Buy: null,
-      cardDetails: [
-        {
-            phone_number: '',
-            iccid: '',
-            flowSurplusUsed: '',
-            currentMeal: '',
-            mealStartDate: '',
-            mealEndDate: ''
-        }
-      ]
+      cardDetails: []
+    }
+  },
+  created() {
+    this.iccid = this.$route.query.iccid
+    this.getCardDetail()
+    this.getPackages()
+    this.getAddPackages()
+  },
+  methods: {
+    selRow: function(row, productCode) {
+      this.selectedRow = row
+      var product = {}
+      product.iccid = this.iccid
+      product.pdCode = productCode
+      product.body = '套餐购买'
+      this.product2Buy = product
+    },
+    getRowClass: function(row) {
+      if (this.selectedRow === row) {
+        return 'buys-product-selected'
+      } else {
+        return 'buys-product'
+      }
+    },
+    changeTab: function(tabIndex) {
+      this.tabIndex = tabIndex
+      if (this.tabIndex === 0) {
+        this.tabAddPackageClass = 'buys-menu-selected'
+        this.tabPackageClass = 'buys-menu'
+      } else if (this.tabIndex === 1) {
+        this.tabAddPackageClass = 'buys-menu'
+        this.tabPackageClass = 'buys-menu-selected'
+      }
+    },
+    getAddPackages: function() {
+        var params = {}
+        params.iccid = this.iccid
+        this.loadingShow = true
+        API.apiGetAddedPackages(params).then(res => {
+            if (res.resultCode === 0) {
+                this.addPackages = res.data
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
+    },
+    getPackages: function() {
+        var params = {}
+        params.iccid = this.iccid
+        this.loadingShow = true
+        API.apiGetPackages(params).then(res => {
+            if (res.resultCode === 0) {
+                this.packages = res.data
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
+    },
+    getCardDetail: function() {
+        var params = {}
+        params.iccid = this.iccid
+        this.loadingShow = true
+        API.apiGetCardDetail(params).then(res => {
+            if (res.resultCode === 0) {
+                this.cardDetails = res.data
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
     }
   }
 }
@@ -133,16 +201,16 @@ export default {
 }
 .head-card{
     flex: 2;
-    padding-top: 30px;
+    padding-top: 20px;
     color: white;
-    font-size: 18px;
+    font-size: 15px;
 }
 .detail{
     height: 30%;
     margin: 30px;
     border-radius: 15px;
     background: white;
-    font-size: 18px;
+    font-size: 15px;
     padding-top:5px;
 }
 .buys{
@@ -163,11 +231,11 @@ export default {
 }
 .detail-title{
     // font-size: 40px;
-    margin: 30px;
+    margin: 10px;
 }
 .detail-note{
-    margin: 30px;
-    padding-top: 5px;
+    margin: 10px;
+    // padding-top: 5px;
 }
 .buys-menus{
     display: flex;
@@ -179,17 +247,18 @@ export default {
     flex: 1;
     height: 50px;
     line-height: 50px;
-    font-size: 18px;
+    font-size: 15px;
 }
 .buys-menu-selected{
     flex: 1;
     height: 50px;
     line-height: 50px;
     border-bottom: 1px solid #ddd;
-    font-size: 18px;
+    font-size: 15px;
 }
 .buys-products{
     margin: 5px;
+    font-size: 15px;
 }
 .buys-product{
     margin: 5px;
@@ -217,8 +286,8 @@ export default {
     margin-left: 20px;
 }
 .product-icon-image{
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
 }
 .footer{
     position: fixed;
@@ -228,20 +297,34 @@ export default {
 }
 .buy-btn{
     width: 90%;
-    height: 80px;
+    height: 60px;
     text-align: center;
-    line-height: 80px;
+    line-height: 60px;
     margin-left: 5%;
     background: #4388de;
     border-radius: 15px;
     color: white;
-    font-size: 25px;
+    font-size: 20px;
 }
 .price{
     color: red;
 }
+.meno{
+    color: gray;
+}
 .old-price{
     text-decoration:line-through;
     color: gray;
+}
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 </style>
