@@ -20,5 +20,8 @@ export default {
   },
   apiGetAddedPackages: params => {
     return API.POST('bigflow/boss/v1.0/wechat/card/buy/addpackages', params)
+  },
+  apiBind: params => {
+    return API.POST('bigflow/boss/v1.0/wechat/card/bind', params)
   }
 }
