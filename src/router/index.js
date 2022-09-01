@@ -321,6 +321,11 @@ const routes = [
     path: '/usageDetails',
     name: '用量明细',
     component: () => import('components/bigflow/usageDetails.vue')
+  },
+  {
+    path: '/buyedRecords',
+    name: '购买记录',
+    component: () => import('components/bigflow/buyedRecords.vue')
   }
 ]
 
@@ -528,7 +533,7 @@ router.beforeEach((to, from, next) => {
         next()
       }
     } else {
-      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvUjdwUDFhRnAyZEU4dnhGSmYzanlMbmdVdkpBIiwiY2hhbm5lbElkIjoxMjQsInVzZXJJZCI6MTUzLCJ0eXBlIjoiMCJ9.F9U8azpfEHbrRf_-O1mU1ANdGdAdNKlSpq3tc9oEYQS_7hbLIXfZeoD0tJC-Nu9wJi4ETeqN7ATj_9LSipuK0w'
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjUifQ.rrVbADQoeGJDJmIxnuz_ABZnamyeQoUxrOrrzaJRY3U2sM72UmaDsAvkHpOQpCCBEbqalhuhYqqj5y_pjyND3w'
       if (token) {
         next()
       }
@@ -564,7 +569,7 @@ router.beforeEach((to, from, next) => {
         next()
       }
     } else {
-      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvUjdwUDFhRnAyZEU4dnhGSmYzanlMbmdVdkpBIiwiY2hhbm5lbElkIjoxMjQsInVzZXJJZCI6MTUzLCJ0eXBlIjoiMCJ9.F9U8azpfEHbrRf_-O1mU1ANdGdAdNKlSpq3tc9oEYQS_7hbLIXfZeoD0tJC-Nu9wJi4ETeqN7ATj_9LSipuK0w'
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjUifQ.rrVbADQoeGJDJmIxnuz_ABZnamyeQoUxrOrrzaJRY3U2sM72UmaDsAvkHpOQpCCBEbqalhuhYqqj5y_pjyND3w'
       console.log('***token:' + token)
       if (token) {
         next()
