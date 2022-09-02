@@ -514,7 +514,7 @@ router.beforeEach((to, from, next) => {
           console.log('111apiZxLogin:' + code)
           console.log(code)
           const appId = getUrlKey('appId')
-          const params = code + '-' + appId
+          const params = code + ' ' + appId
           WxAPI.apiBigflowLogin(params).then(res => {
             const loginInfo = res.data
             console.log(JSON.stringify(to))
