@@ -29,7 +29,7 @@
           :class="getRowClass(index)"
           v-for="(addpackage, index) in addPackages"
           :key="index"
-          @click="selRow(index, addpackage.productCode)"
+          @click="selRow(index, addpackage.productCode, addpackage.price)"
         >
           <div class="product-icon">
             <img
@@ -54,7 +54,7 @@
           :class="getRowClass(index)"
           v-for="(pkg, index) in packages"
           :key="index"
-          @click="selRow(index, pkg.productCode)"
+          @click="selRow(index, pkg.productCode, pkg.price)"
         >
           <div class="product-icon">
             <img
@@ -106,12 +106,13 @@ export default {
     this.getAddPackages()
   },
   methods: {
-    selRow: function(row, productCode) {
+    selRow: function(row, productCode, price) {
       this.selectedRow = row
       var product = {}
       product.iccid = this.iccid
       product.pdCode = productCode
       product.body = '套餐或加油包购买'
+      product.price = price
       this.product2Buy = product
     },
     getRowClass: function(row) {
@@ -130,6 +131,8 @@ export default {
         this.tabAddPackageClass = 'buys-menu'
         this.tabPackageClass = 'buys-menu-selected'
       }
+      this.product2Buy = null
+      this.selectedRow = -1
     },
     getAddPackages: function() {
         var params = {}
@@ -198,8 +201,8 @@ export default {
           const data = {
             body: '套餐或加油包购买',
             out_trade_no: res.data,
-            // total_fee: Number(this.orderDetails.price) * 100
-            total_fee: Number(0.01) * 100
+            total_fee: Number(this.product2Buy.price) * 100
+            // total_fee: Number(0.01) * 100
           }
           console.log('orderId:' + orderId)
           console.log('orderId:' + JSON.stringify(data))
