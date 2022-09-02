@@ -64,7 +64,7 @@ export default {
 }
 
 .orderinfo{
-    height: 20%;
+    height: 23%;
     background: white;
     margin: 5px;
     border-radius: 15px;

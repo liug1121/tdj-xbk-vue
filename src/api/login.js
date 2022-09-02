@@ -30,9 +30,7 @@ export default {
   },
   apiBigflowLogin: params => {
     const code = params
-    console.log('apiZxLogin')
+    console.log('apiBigflowLogin')
     return API.GET(`bigflow/boss/v1.0/users/login/${code}`, params)
   }
-
-  
 }

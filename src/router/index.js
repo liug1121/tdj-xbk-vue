@@ -506,13 +506,16 @@ router.beforeEach((to, from, next) => {
         // const code = '1111'
         if (code === null || code === '') {
           const urlNow = encodeURIComponent(window.location.href)
-          const appid = 'wx7dc1d69cc672844c'
+          // const appid = 'wx7dc1d69cc672844c'
+          const appid = getUrlKey('appId')
           const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${urlNow}&response_type=code&scope=snsapi_base&state=123#wechat_redirect`
           window.location.href = url
         } else {
           console.log('111apiZxLogin:' + code)
           console.log(code)
-          WxAPI.apiBigflowLogin(code).then(res => {
+          const appId = getUrlKey('appId')
+          const params = code + '-' + appId
+          WxAPI.apiBigflowLogin(params).then(res => {
             const loginInfo = res.data
             console.log(JSON.stringify(to))
             sessionStorage.setItem('token', loginInfo.token)
@@ -529,9 +532,9 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       console.log('32')
-      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvUjdwUDFhRnAyZEU4dnhGSmYzanlMbmdVdkpBIiwidHlwZSI6IjMiLCJzY2hvb2xNYW5hZ2VySWQiOjEsInNjaG9vbElkIjoxLCJvcmdhbml6YXRpb25JZHMiOiIxIiwiY29udHJvbEdyb3VwSWRzIjoiNCw1In0.nr6a3_nvQETar7M_4tAaf0J52xFgUJgBvw9toamxh6tbzUR0I1g-8eNPGc-YRrYDsAUBSkq61jIBvHrSoJaowQ'
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjQifQ.i0pJIHY63utUpREQg3KRGFTOHzFHoL9HfatgHOISQjHuj7WvfuO6xaZDK5yB_Clvlj4Xxi1RUU6J-fpPQj2uPQ'
       const userName = '测试'
-      localStorage.setItem('QKtoken', token)
+      sessionStorage.setItem('token', token)
       if (token && userName) {
         next()
       } else {
@@ -586,7 +589,7 @@ router.beforeEach((to, from, next) => {
         next()
       }
     } else {
-      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjUifQ.rrVbADQoeGJDJmIxnuz_ABZnamyeQoUxrOrrzaJRY3U2sM72UmaDsAvkHpOQpCCBEbqalhuhYqqj5y_pjyND3w'
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjQifQ.i0pJIHY63utUpREQg3KRGFTOHzFHoL9HfatgHOISQjHuj7WvfuO6xaZDK5yB_Clvlj4Xxi1RUU6J-fpPQj2uPQ'
       if (token) {
         next()
       }
@@ -622,7 +625,7 @@ router.beforeEach((to, from, next) => {
         next()
       }
     } else {
-      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjUifQ.rrVbADQoeGJDJmIxnuz_ABZnamyeQoUxrOrrzaJRY3U2sM72UmaDsAvkHpOQpCCBEbqalhuhYqqj5y_pjyND3w'
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjQifQ.i0pJIHY63utUpREQg3KRGFTOHzFHoL9HfatgHOISQjHuj7WvfuO6xaZDK5yB_Clvlj4Xxi1RUU6J-fpPQj2uPQ'
       console.log('***token:' + token)
       if (token) {
         next()
