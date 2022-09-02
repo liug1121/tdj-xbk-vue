@@ -5,8 +5,8 @@
         <img class="head-img-image" src="../../common/images/bigflow-person.jpeg" />
       </div>
       <div class="head-card">
-        <div>号码：</div>
-        <div>ICCID：{{ cardDetails.iccid }}</div>
+        <div>{{ cardDetails.phone_number }}</div>
+        <div>{{ cardDetails.iccid }}</div>
       </div>
     </div>
     <div class="detail">
