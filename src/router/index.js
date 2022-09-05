@@ -331,6 +331,12 @@ const routes = [
     name: '购买记录',
     component: () => import('components/bigflow/buyedRecords.vue'),
     meta: { bigflow: true }
+  },
+  {
+    path: '/aliy/cards',
+    name: '移动智慧物联',
+    component: () => import('components/aliybigflow/cards.vue'),
+    meta: { aliybigflow: true }
   }
 ]
 
