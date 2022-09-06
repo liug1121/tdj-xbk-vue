@@ -355,6 +355,12 @@ const routes = [
     name: '移动智慧物联',
     component: () => import('components/aliybigflow/cardDetail.vue'),
     meta: { aliybigflow: true }
+  },
+  {
+    path: '/aliy/buyPackage',
+    name: '移动智慧物联',
+    component: () => import('components/aliybigflow/buyPackage.vue'),
+    meta: { aliybigflow: true }
   }
 ]
 
