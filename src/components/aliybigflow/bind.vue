@@ -8,7 +8,7 @@
     <table>
         <tr>
             <td>
-                iccid<span>*</span>
+                ICCID<span>*</span>
             </td>
             <td>
                 <input/>
@@ -63,10 +63,11 @@ export default {
 .notice{
     width: 80%;
     margin-left: 10%;
+    color: #aaa;
 }
 .bind{
     text-align: center;
-    border: 1px solid black;
+    border: 1px solid #f59a23;
     border-radius:15px;
     margin-top: 30px;
     padding-top: 20px;
@@ -74,6 +75,8 @@ export default {
     margin-bottom: 50px;
     width: 80%;
     margin-left: 10%;
+    background: #f59a23;
+    color: white;
 }
 .page table{
     margin: 15px;
@@ -87,7 +90,7 @@ export default {
 }
 .next{
     text-align: center;
-    border: 1px solid black;
+    border: 1px solid #f59a23;
     border-radius:15px;
     margin-top: 30px;
     padding-top: 20px;
@@ -95,5 +98,13 @@ export default {
     margin-bottom: 50px;
     width: 80%;
     margin-left: 10%;
+    background: #f59a23;
+    color: white;
+}
+tr{
+    height: 50px;
+}
+span{
+    color: red;
 }
 </style>
