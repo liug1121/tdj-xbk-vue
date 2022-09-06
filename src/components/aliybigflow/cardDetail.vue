@@ -13,7 +13,7 @@
         <table>
             <tr>
                 <td><img class="usage-detail-title" src="../../common/images/usage-detal.jpg" /></td>
-                <td>流量明细</td>
+                <td class="usage-detail-title-name">流量明细</td>
             </tr>
         </table>
         <table class="usage_detail-contents">
@@ -47,20 +47,35 @@
         <table>
             <tr>
                 <td width="10%"><img class="usage-detail-title" src="../../common/images/usage-detal.jpg" /></td>
-                <td width="30%">
+                <td class="usage-detail-title-name" width="30%" >
                     套餐+流量包
                 </td>
                 <td class="usage-detail-content" width="80%">更多></td>
             </tr>
         </table>
         <div class="package-boxes">
-            <div class="package">
-                <div class="package-content">
-                    <div class="package-content-name">50G加油包</div>
-                    <div class="package-content-price">¥ 58</div>
-                    <div class="package-content-buy">购买</div>
-                </div>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="package-selected">
+                            <div class="package-content">
+                                <div class="package-content-name-selected">50G加油包</div>
+                                <div class="package-content-price">¥ 58</div>
+                                <div class="package-content-buy-selected">购买</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="package-unselect">
+                            <div class="package-content">
+                                <div class="package-content-name-unselect">50G加油包</div>
+                                <div class="package-content-price">¥ 58</div>
+                                <div class="package-content-buy-unselect">购买</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
     <table class="package-alert">
@@ -111,6 +126,7 @@ export default {
     height: 60%;
     margin-left: 20%;
     margin-top: 20%;
+    color: #aaa;
 }
 .circle-note{
     margin-top: 30%;
@@ -127,6 +143,7 @@ export default {
     background: white;
     padding-top: 10px;
     padding-bottom: 10px;
+    // color: #aaa;
 }
 .usage-detail{
     font-size: 15px;
@@ -141,9 +158,14 @@ export default {
     width: 20px;
     height: 30px;
     margin: 10px;
+    // color: #f59a23;
+}
+.usage-detail-title-name{
+    color: #f59a23;
 }
 .usage_detail-contents{
     width: 100%;
+    color: #aaa;
 }
 .usage_detail-contents td{
     padding: 10px;
@@ -164,7 +186,14 @@ export default {
     padding-left: 20px;
     padding-bottom: 20px;
 }
-.package{
+.package-selected{
+    width: 120px;
+    height: 120px;
+    border: 1px solid #f59a23;
+    border-radius:15px;
+    text-align: center;
+}
+.package-unselect{
     width: 120px;
     height: 120px;
     border: 1px solid black;
@@ -178,18 +207,36 @@ export default {
     font-weight:bolder;
     margin-bottom: 10px;
 }
+.package-content-name-selected{
+    font-weight:bolder;
+    margin-bottom: 10px;
+    color: #f59a23;
+}
+.package-content-name-unselect{
+    font-weight:bolder;
+    margin-bottom: 10px;
+    color: black;
+}
 .package-content-price{
     font-size: 20px;
     font-weight:bolder;
     color: red;
     margin-bottom: 10px;
 }
-.package-content-buy{
-    border: 1px solid black;
+.package-content-buy-unselect{
+    // border: 1px solid black;
     border-radius:15px;
     width:60%;
     margin-left: 20%;
     margin-bottom: 10px;
+    color: black;
+}
+.package-content-buy-selected{
+    border-radius:15px;
+    width:60%;
+    margin-left: 20%;
+    margin-bottom: 10px;
+    color: #f59a23;
 }
 .package-alert{
     font-size: 15px;

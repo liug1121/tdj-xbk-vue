@@ -7,7 +7,17 @@
                 <table>
                     <tr>
                         <td>
-                            <div class="package">
+                            <div class="package-selected">
+                                <!-- <img class="package-content-selected" src="../../common/images/QK_img_icon.png" /> -->
+                                <div class="package-content">
+                                    <div class="package-content-name-selected">50G套餐</div>
+                                    <div class="package-content-price">¥ 58</div>
+                                    <div class="package-content-buy">1个月</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="package-unselected">
                                 <div class="package-content">
                                     <div class="package-content-name">50G套餐</div>
                                     <div class="package-content-price">¥ 58</div>
@@ -16,16 +26,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="package">
-                                <div class="package-content">
-                                    <div class="package-content-name">50G套餐</div>
-                                    <div class="package-content-price">¥ 58</div>
-                                    <div class="package-content-buy">1个月</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="package">
+                            <div class="package-unselected">
                                 <div class="package-content">
                                     <div class="package-content-name">包月50G套餐</div>
                                     <div class="package-content-price">¥ 58</div>
@@ -43,7 +44,7 @@
                 <table>
                     <tr>
                         <td>
-                            <div class="package">
+                            <div class="package-unselected">
                                 <div class="package-content">
                                     <div class="package-content-name">50G加油包</div>
                                     <div class="package-content-price">¥ 58</div>
@@ -52,7 +53,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="package">
+                            <div class="package-unselected">
                                 <div class="package-content">
                                     <div class="package-content-name">50G加油包</div>
                                     <div class="package-content-price">¥ 58</div>
@@ -61,7 +62,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="package">
+                            <div class="package-unselected">
                                 <div class="package-content">
                                     <div class="package-content-name">50G加油包</div>
                                     <div class="package-content-price">¥ 58</div>
@@ -129,6 +130,7 @@ export default {
     font-weight:bolder;
     padding-top: 30px;
     padding-left: 10px;
+    color: #f59a23;
 }
 .packages{
     background: white;
@@ -139,10 +141,18 @@ export default {
 .added-packages{
     margin-top: 20px;
 }
-.package{
+.package-selected{
     width: 110px;
     height: 110px;
-    border: 1px solid black;
+    border: 1px solid #f59a23;
+    border-radius:15px;
+    text-align: center;
+    margin: 5px;
+}
+.package-unselected{
+    width: 110px;
+    height: 110px;
+    border: 1px solid #aaa;
     border-radius:15px;
     text-align: center;
     margin: 5px;
@@ -153,6 +163,13 @@ export default {
 .package-content-name{
     font-weight:bolder;
     margin-bottom: 10px;
+    font-size: 15px;
+}
+.package-content-name-selected{
+    font-weight:bolder;
+    margin-bottom: 10px;
+    color: #f59a23;
+    font-size: 15px;
 }
 .package-content-price{
     font-size: 15px;
@@ -180,7 +197,9 @@ export default {
     font-size: 18px;
     font-weight:bolder;
     margin-left: 10px;
+    color: #f59a23;
 }
+
 .package-desc table{
     width: 95%;
     margin: 2.5%;
@@ -195,15 +214,26 @@ export default {
 }
 .package-desc-detail-item{
     margin: 5px;
+    color:#aaa;
 }
 .pay-btn{
     position: fixed;
     width: 60%;
     bottom: 2%;
-    border: 1px solid black;
+    border: 1px solid #FDAB16;
     text-align: center;
-    font-size: 30px;
+    font-size: 25px;
     border-radius:15px;
     margin-left: 20%;
+    background: #FDAB16;
+    padding: 10px;
+    color: white;
 }
+// .package-content-selected{
+//     width: 20px;
+//     height: 20px;
+//     position: inherit;
+//     left: 0px;
+//     // top: 100%;
+// }
 </style>

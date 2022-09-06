@@ -18,7 +18,6 @@
                         <tr>
                             <td class="device-item">{{record.deviceName}}</td>
                             <td class="device-item">{{record.cardCertStatus}}</td>
-                            <td class="device-item">{{record.cardStatus}}</td>
                         </tr>
                     </table>
                 </div>
@@ -26,7 +25,7 @@
                 <div class="item">当前套餐有效期：{{record.validPeriod}} ></div>
                 <div class="item">{{record.nextPackageDesc}} ></div>
                 <div class="unused-packages" v-for="(pkg, pkgIndex) in record.nextPackages" :key="pkgIndex">
-                    <div>{{pkg.name}}</div>
+                    <div class="pkg-name">{{pkg.name}}</div>
                     <table>
                         <tr>
                             <td>生效时间</td>
@@ -101,22 +100,6 @@ export default {
                         viewName: '全国流量300G，共6个月'
                     }
                 ]
-            },
-            {
-                deviceName: 'CPE设备',
-                cardCertStatus: '已实名',
-                cardStatus: 1,
-                iccid: '89860919720022618536',
-                validPeriod: '2022-09-20',
-                nextPackageDesc: '未生效套餐：2个',
-                nextPackages: [
-                    {
-                        name: '半年包套餐',
-                        startDate: '2022-09-20',
-                        endDate: '2022-09-20',
-                        viewName: '全国流量300G，共6个月'
-                    }
-                ]
             }
         ]
     }
@@ -128,53 +111,67 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.page{
+    background: silver;
+    padding-top: 10px;
+    // color: white;
+}
 .notice{
     font-size: 18px;
-    border: 1px solid black;
-    margin-top: 10px;
+    border: 1px solid white;
     margin-left: 5%;
     width: 90%;
     height: 80px;
     border-radius:15px;
     text-align: center;
     padding-top: 20px;
+    background: white;
+    color: #aaa;
 }
 .cards{
     font-size: 18px;
-    border: 1px solid white;
+    // border: 1px solid white;
     margin-top: 10px;
 }
 .card{
     font-size: 18px;
-    border: 1px solid black;
+    // border: 1px solid #fff6dd;
     border-radius:15px;
     padding: 10px;
     width: 85%;
     margin-left: 5%;
     margin-top: 10px;
+    background: white;
+    color: #aaa;
 }
 .item{
-   border: 1px solid black;
+//    border: 1px solid black;
    margin-top: 8px;
+   font-weight: bolder;
 }
 .device{
     text-align: center;
     width: 100%;
+    margin-top: 20px;
+    padding-bottom: 20px;
 }
 .device-item{
-    border: 1px solid white;
+    border: 0px solid white;
+    color: #f59a23;
 }
 .card-usage{
     text-align: center;
-    border: 1px solid black;
+    // border: 1px solid black;
     border-radius:15px;
     margin-top: 30px;
     padding-top: 20px;
     padding-bottom: 20px;
+    background: #FDAB16;
+    color: white;
 }
 .tocert{
     text-align: center;
-    border: 1px solid black;
+    border: 1px solid #FACD91;
     border-radius:15px;
     margin-top: 30px;
     padding-top: 20px;
@@ -182,7 +179,7 @@ export default {
 }
 .tobuy{
     text-align: center;
-    border: 1px solid black;
+    border: 1px solid #FACD91;
     border-radius:15px;
     margin-top: 30px;
     padding-top: 20px;
@@ -202,7 +199,7 @@ export default {
     margin-top: 50px;
     padding-top: 30px;
     font-size: 18px;
-    border: 1px solid black;
+    border: 1px solid #FACD91;
     border-radius:15px;
     width: 90%;
     margin-left: 5%;
@@ -233,7 +230,8 @@ export default {
 .unused-packages{
     font-size: 18px;
     text-align: center;
-    border: 1px solid black;
+    border: 1px solid white;
+    margin-top: 20px;
 }
 .unused-packages table{
     width: 90%;
@@ -241,6 +239,11 @@ export default {
     font-size: 15px;
 }
 .unused-packages td{
-    border: 1px solid black;
+    border: 1px solid white;
+    text-align: left;
+}
+.pkg-name{
+    color: #f59a23;
+    font-weight:bolder;
 }
 </style>
