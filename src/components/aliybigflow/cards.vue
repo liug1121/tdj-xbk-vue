@@ -24,7 +24,25 @@
                 </div>
                 <div class="item">{{record.iccid}}</div>
                 <div class="item">当前套餐有效期：{{record.validPeriod}} ></div>
-                <div class="item">{{record.nextPackages}} ></div>
+                <div class="item">{{record.nextPackageDesc}} ></div>
+                <div class="unused-packages" v-for="(pkg, pkgIndex) in record.nextPackages" :key="pkgIndex">
+                    <div>{{pkg.name}}</div>
+                    <table>
+                        <tr>
+                            <td>生效时间</td>
+                            <td>失效时间</td>
+                        </tr>
+                        <tr>
+                            <td>{{pkg.startDate}}</td>
+                            <td>{{pkg.endDate}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{pkg.viewName}}</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <div></div>
                 <div class = "card-usage" v-if="record.cardStatus===1">
                     <div>当月剩余可用量</div>
                     <div>{{lastUsage}}</div>
@@ -62,22 +80,44 @@ export default {
         lastUsage: '100G',
         clearDate: '2022-09-20',
         cards: [
-            // {
-            //     deviceName: 'CPE设备',
-            //     cardCertStatus: '已实名',
-            //     cardStatus: 1,
-            //     iccid: '89860919720022618536',
-            //     validPeriod: '2022-09-20',
-            //     nextPackages: '未生效套餐：2个'
-            // },
-            // {
-            //     deviceName: 'CPE设备',
-            //     cardCertStatus: '已实名',
-            //     cardStatus: 1,
-            //     iccid: '89860919720022618536',
-            //     validPeriod: '2022-09-20',
-            //     nextPackages: '未生效套餐：2个'
-            // }
+            {
+                deviceName: 'CPE设备',
+                cardCertStatus: '已实名',
+                cardStatus: 1,
+                iccid: '89860919720022618536',
+                validPeriod: '2022-09-20',
+                nextPackageDesc: '未生效套餐：2个',
+                nextPackages: [
+                    {
+                        name: '半年包套餐',
+                        startDate: '2022-09-20',
+                        endDate: '2022-09-20',
+                        viewName: '全国流量300G，共6个月'
+                    },
+                    {
+                        name: '月套餐',
+                        startDate: '2022-09-20',
+                        endDate: '2022-09-20',
+                        viewName: '全国流量300G，共6个月'
+                    }
+                ]
+            },
+            {
+                deviceName: 'CPE设备',
+                cardCertStatus: '已实名',
+                cardStatus: 1,
+                iccid: '89860919720022618536',
+                validPeriod: '2022-09-20',
+                nextPackageDesc: '未生效套餐：2个',
+                nextPackages: [
+                    {
+                        name: '半年包套餐',
+                        startDate: '2022-09-20',
+                        endDate: '2022-09-20',
+                        viewName: '全国流量300G，共6个月'
+                    }
+                ]
+            }
         ]
     }
   },
@@ -189,5 +229,18 @@ export default {
 }
 .bind-titile{
     font-size: 25px;
+}
+.unused-packages{
+    font-size: 18px;
+    text-align: center;
+    border: 1px solid black;
+}
+.unused-packages table{
+    width: 90%;
+    margin-left: 5%;
+    font-size: 15px;
+}
+.unused-packages td{
+    border: 1px solid black;
 }
 </style>
