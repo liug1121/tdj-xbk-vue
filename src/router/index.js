@@ -367,6 +367,12 @@ const routes = [
     name: '移动智慧物联',
     component: () => import('components/aliybigflow/cardPackageDetails.vue'),
     meta: { aliybigflow: true }
+  },
+  {
+    path: '/zopCard/orderSubmit',
+    name: '订单',
+    component: () => import('components/zopCard/orderSubmit.vue'),
+    meta: { zopCard: true }
   }
 ]
 
