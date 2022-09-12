@@ -4,7 +4,7 @@
         <div class="title">入网信息</div>
         <table>
             <tr>
-                <td><span>*</span>入网人姓名：</td>
+                <td class="label"><span>*</span>入网人姓名：</td>
                 <td><input/></td>
             </tr>
             <tr>
@@ -13,26 +13,31 @@
             </tr>
             <tr>
                 <td><span>*</span>联系电话：</td>
-                <td><input/></td>
+                <td><input type="tel"/></td>
             </tr>
             <tr>
-                <td><span>*</span>收货省份：</td>
-                <td><input/></td>
+                <td><span>*</span>收货地址：</td>
+                <td>
+                    <van-field v-model="postAreaCode" readonly clickable name="area" :value="value" label="" placeholder="请选择配送区域" @click="showArea = true" right-icon="arrow" />
+                    <van-popup v-model="showArea" position="bottom">
+                    <van-picker show-toolbar title="配送区域" :columns="areaList" @confirm="onAddrAreaConfirm" @change="onAreaChange" @cancel="onAreaCancel" :item-height="28" visible-item-count="12" />
+                    </van-popup>
+                </td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td><span>*</span>收货地市：</td>
                 <td><input/></td>
             </tr>
             <tr>
                 <td><span>*</span>收货区县：</td>
                 <td><input/></td>
-            </tr>
+            </tr> -->
         </table>
          <table>
             <tr>
                 <td><span>*</span>订购号码：</td>
                 <td class="cardNum"></td>
-                <td>选择号码</td>
+                <td @click="toCardSel">选择号码</td>
             </tr>
         </table>
     </div>
@@ -53,7 +58,7 @@
                 <td>18676767676</td>
             </tr>
         </table>
-        <div class="sel-btn">确定</div>
+        <div class="sel-btn" @click="cardSelOk">确定</div>
     </div>
   </div>
 </template>
@@ -61,6 +66,25 @@
 export default {
   data () {
     return {
+        areaList: [
+        {
+          values: '',
+          className: 'column1'
+        },
+        {
+          values: '',
+          className: 'column2',
+          defaultIndex: 0
+        },
+        {
+          values: '',
+          className: 'column3',
+          defaultIndex: 0
+        }
+      ],
+        postAreaCode: '',
+        value: '',
+        showArea: false,
         loadingShow: false,
         selCardNumDlgShow: false
     }
@@ -68,6 +92,20 @@ export default {
   created() {
   },
   methods: {
+    cardSelOk: function() {
+        this.selCardNumDlgShow = false
+    },
+    toCardSel: function() {
+        this.selCardNumDlgShow = true
+    },
+    onAreaChange: function(picker, index, value) {
+    },
+    onAddrAreaConfirm: function(e) {
+        this.showArea = false
+    },
+    onAreaCancel: function() {
+        this.showArea = false
+    }
   }
 }
 </script>
@@ -92,10 +130,13 @@ export default {
     border-radius:15px;
     background: white;
 }
+.label{
+    width: 30%;
+}
 table{
     margin: 5%;
     // border: 1px solid black;
-    width: 80%;
+    width: 93%;
 }
 tr{
     height: 70px;
