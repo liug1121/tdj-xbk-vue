@@ -38,11 +38,11 @@
           </div>
         </div>
       </div>
-      <div class="addcard" >+</div>
+      <div class="addcard" @click="toBind">+</div>
     </div>
     <div class="addcardpage" v-else>
       <div class="note">当前没有绑定任何卡</div>
-      <div class="addcard" >+</div>
+      <div class="addcard" @click="toBind">+</div>
     </div>
     <div v-show="loadingShow" class="loading">
       <van-loading type="spinner" color="#FDAB16" />
@@ -83,6 +83,11 @@ export default {
             })
         }).catch(() => {
         })
+    },
+    toBind: function() {
+      this.$router.push({
+            path: '/bigflowBind'
+          })
     },
     toDetail (iccid) {
         this.$router.push({
