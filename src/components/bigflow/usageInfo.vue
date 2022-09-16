@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div v-if="bindStatus == 1">
+    <div v-if="cardInfos.length > 0">
       <div class="useage" v-for="(record, index) in cardInfos" :key="index">
         <table>
           <tr>
@@ -41,7 +41,7 @@
       <div class="addcard" @click="toBind">+</div>
     </div>
     <div class="addcardpage" v-else>
-      <div class="note">当前没有绑定任何卡</div>
+      <div class="note">当前没有绑定任何卡，点击绑卡</div>
       <div class="addcard" @click="toBind">+</div>
     </div>
     <div v-show="loadingShow" class="loading">
