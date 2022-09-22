@@ -11,7 +11,7 @@
                 ICCID<span>*</span>
             </td>
             <td>
-                <input/>
+                <input v-model="iccid19" type="tel"/>
             </td>
         </tr>
         <tr>
@@ -19,32 +19,72 @@
                 卡命名：
             </td>
             <td>
-                <input/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                PUK码：
-            </td>
-            <td>
-                <input/>
+                <input v-model="cardName"/>
             </td>
         </tr>
     </table>
     <div class = "next">
-        <div>下一步</div>
+        <div @click="bind">去绑卡</div>
+    </div>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
     </div>
   </div>
 </template>
 <script>
+import API from 'api/aliy'
 export default {
   data () {
     return {
+        loadingShow: false,
+        iccid19: '',
+        cardName: ''
     }
   },
   created() {
   },
   methods: {
+    bind: function() {
+        if (this.iccid19 === null || this.iccid19 === '' || this.iccid19.length !== 19) {
+            this.$toast('请输入19位iccid')
+            return
+        }
+        if (this.cardName === null || this.cardName === '' || this.cardName.length > 10) {
+            this.$toast('卡名称不能超过10个字')
+            return
+        }
+        this.$dialog.confirm({
+            title: '提醒',
+            message: '确认进行该操作吗？'
+        }).then(() => {
+            var params = {}
+            params.iccid = this.iccid19
+            params.cardName = this.cardName
+            this.loadingShow = true
+            API.apiBind(params).then(res => {
+                if (res.resultCode === 0) {
+                    this.$toast('绑定成功')
+                    this.loadingShow = false
+                    this.toCards()
+                    // if (res.data.authStatus === 'uncertified') {
+                    //     // this.toCert()
+                    // } else {
+                    //     // this.toUsgeInfo()
+                    // }
+                    // this.getCards()
+                } else {
+                    this.loadingShow = false
+                    this.$toast('绑定失败：' + res.resultInfo)
+                }
+            })
+        }).catch(() => {
+        })
+    },
+    toCards: function(iccid) {
+        this.$router.push({
+            path: '/aliy/cards'
+        })
+    }
   }
 }
 </script>
@@ -106,5 +146,16 @@ tr{
 }
 span{
     color: red;
+}
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 </style>

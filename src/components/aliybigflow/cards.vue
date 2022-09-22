@@ -16,16 +16,17 @@
                 <div class="item">
                     <table class="device">
                         <tr>
-                            <td class="device-item">{{record.deviceName}}</td>
-                            <td class="device-item">{{record.cardCertStatus}}</td>
+                            <td class="device-item">{{record.cardName}}</td>
+                            <td class="device-item">{{record.authStatusName}}</td>
                         </tr>
                     </table>
                 </div>
                 <div class="item">{{record.iccid}}</div>
-                <div class="item">当前套餐有效期：{{record.validPeriod}} ></div>
-                <div class="item">{{record.nextPackageDesc}} ></div>
-                <div class="unused-packages" v-for="(pkg, pkgIndex) in record.nextPackages" :key="pkgIndex">
-                    <div class="pkg-name">{{pkg.name}}</div>
+                <div class="item">当前套餐有效期：{{record.packageExpireDate}} </div>
+                <div v-if="record.unUsedPackages.length == 0" class="item">未生效套餐：无</div>
+                <div v-if="record.unUsedPackages.length > 0" class="item">未生效套餐：{{record.unUsedPackages.length}}个 ></div>
+                <div class="unused-packages" v-for="(pkg, pkgIndex) in record.unUsedPackages" :key="pkgIndex">
+                    <div class="pkg-name">{{pkg.packageViewName}}</div>
                     <table>
                         <tr>
                             <td>生效时间</td>
@@ -36,21 +37,22 @@
                             <td>{{pkg.endDate}}</td>
                         </tr>
                         <tr>
-                            <td>{{pkg.viewName}}</td>
+                            <td>{{pkg.areaName}}{{pkg.dose}}，共{{pkg.expireMonth}}个月</td>
                             <td></td>
                         </tr>
                     </table>
                 </div>
                 <div></div>
-                <div class = "card-usage" v-if="record.cardStatus===1">
+                <div class = "card-usage" v-if="record.currentMeal != ''">
                     <div>当月剩余可用量</div>
-                    <div>{{lastUsage}}</div>
-                    <div>下次可用量重置日:{{clearDate}}</div>
+                    <div>{{record.flowSurplusUsed}}G</div>
+                    <div>下次可用量重置日</div>
+                    <div>{{record.nextClearDate}}</div>
                 </div>
-                <div class = "tocert" v-if="record.cardStatus===0">
+                <!-- <div class = "tocert" v-if="record.cardStatus===0">
                     <div>去实名认证</div>
-                </div>
-                <div class = "tobuy" v-if="record.cardStatus===2">
+                </div> -->
+                <div class = "tobuy" v-if="record.currentMeal===''">
                     <div>购买套餐</div>
                 </div>
             </div>
@@ -69,12 +71,17 @@
             </div>
         </div>
     </div>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 <script>
+import API from 'api/aliy'
 export default {
   data () {
     return {
+        loadingShow: false,
         notice: '您的卡片已激活，可以插卡使用流量啦，如有疑问请联系官方客服咨询～',
         lastUsage: '100G',
         clearDate: '2022-09-20',
@@ -105,8 +112,21 @@ export default {
     }
   },
   created() {
+    this.getCards()
   },
   methods: {
+    getCards: function() {
+        var params = {}
+        this.loadingShow = true
+        API.apiGetCards(params).then(res => {
+            if (res.resultCode === 0) {
+                this.cards = res.data
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
+    }
   }
 }
 </script>
@@ -117,13 +137,13 @@ export default {
     // color: white;
 }
 .notice{
-    font-size: 18px;
+    font-size: 16px;
     border: 1px solid white;
     margin-left: 5%;
     width: 90%;
     height: 80px;
     border-radius:15px;
-    text-align: center;
+    text-align: left;
     padding-top: 20px;
     background: white;
     color: #aaa;
@@ -134,7 +154,7 @@ export default {
     margin-top: 10px;
 }
 .card{
-    font-size: 18px;
+    font-size: 16px;
     // border: 1px solid #fff6dd;
     border-radius:15px;
     padding: 10px;
@@ -148,6 +168,7 @@ export default {
 //    border: 1px solid black;
    margin-top: 8px;
    font-weight: bolder;
+   margin-left: 5%
 }
 .device{
     text-align: center;
@@ -168,6 +189,7 @@ export default {
     padding-bottom: 20px;
     background: #FDAB16;
     color: white;
+    font-size: 16px;
 }
 .tocert{
     text-align: center;
@@ -194,6 +216,7 @@ export default {
     text-align: center;
     font-size: 80px;
     color: gray;
+    background: silver;
 }
 .bind-guid{
     margin-top: 50px;
@@ -245,5 +268,16 @@ export default {
 .pkg-name{
     color: #f59a23;
     font-weight:bolder;
+}
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 </style>
