@@ -24,23 +24,25 @@
                 <div class="item">{{record.iccid}}</div>
                 <div class="item">当前套餐有效期：{{record.packageExpireDate}} </div>
                 <div v-if="record.unUsedPackages.length == 0" class="item">未生效套餐：无</div>
-                <div v-if="record.unUsedPackages.length > 0" class="item">未生效套餐：{{record.unUsedPackages.length}}个 ></div>
-                <div class="unused-packages" v-for="(pkg, pkgIndex) in record.unUsedPackages" :key="pkgIndex">
-                    <div class="pkg-name">{{pkg.packageViewName}}</div>
-                    <table>
-                        <tr>
-                            <td>生效时间</td>
-                            <td>失效时间</td>
-                        </tr>
-                        <tr>
-                            <td>{{pkg.startDate}}</td>
-                            <td>{{pkg.endDate}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{pkg.areaName}}{{pkg.dose}}，共{{pkg.expireMonth}}个月</td>
-                            <td></td>
-                        </tr>
-                    </table>
+                <div v-if="record.unUsedPackages.length > 0" class="item" @click="showNextProduct(nextProductsShowed)">未生效套餐：<span class="unUsedPkg">{{record.unUsedPackages.length}}</span>个 ></div>
+                <div v-if="nextProductsShowed">
+                    <div class="unused-packages" v-for="(pkg, pkgIndex) in record.unUsedPackages" :key="pkgIndex" >
+                        <div class="pkg-name">{{pkg.packageViewName}}</div>
+                        <table>
+                            <tr>
+                                <td>生效时间</td>
+                                <td>失效时间</td>
+                            </tr>
+                            <tr>
+                                <td>{{pkg.startDate}}</td>
+                                <td>{{pkg.endDate}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{pkg.areaName}}{{pkg.dose}}G，共{{pkg.expireMonth}}个月</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
                 <div></div>
                 <div class = "card-usage" v-if="record.currentMeal != ''">
@@ -81,6 +83,7 @@ import API from 'api/aliy'
 export default {
   data () {
     return {
+        nextProductsShowed: false,
         loadingShow: false,
         notice: '您的卡片已激活，可以插卡使用流量啦，如有疑问请联系官方客服咨询～',
         lastUsage: '100G',
@@ -115,6 +118,9 @@ export default {
     this.getCards()
   },
   methods: {
+    showNextProduct: function(showed) {
+        this.nextProductsShowed = !showed
+    },
     getCards: function() {
         var params = {}
         this.loadingShow = true
@@ -190,6 +196,9 @@ export default {
     background: #FDAB16;
     color: white;
     font-size: 16px;
+    width: 90%;
+    margin-left: 5%;
+
 }
 .tocert{
     text-align: center;
@@ -279,5 +288,12 @@ export default {
   width: 100%;
   height: 100%;
   margin: 0;
+}
+.unUsedPkg{
+    color: #f59a23;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 18px;
+    text-decoration: underline;
 }
 </style>
