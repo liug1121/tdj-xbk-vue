@@ -16,7 +16,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td v-if="rowPackages.length >= 2" @click="selectPkgId(0,index , 1,rowPackages[0])">
+                        <td v-if="rowPackages.length >= 2" @click="selectPkgId(0,index , 1,rowPackages[1])">
                             <div :class=getPkgClass(0,index,1,0)>
                                 <div class="package-content">
                                     <div :class=getPkgClass(0,index,1,1)>{{rowPackages[1].productName}}</div>
@@ -25,7 +25,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td v-if="rowPackages.length >= 3" @click="selectPkgId(0,index , 2,rowPackages[0])">
+                        <td v-if="rowPackages.length >= 3" @click="selectPkgId(0,index , 2,rowPackages[2])">
                             <div :class=getPkgClass(0,index,2,0)>
                                 <div class="package-content">
                                     <div :class=getPkgClass(0,index,2,1)>{{rowPackages[2].productName}}</div>
@@ -81,16 +81,16 @@
             <table>
                 <tr>
                     <td>套餐价格</td>
-                    <td class="package-desc-content">399元</td>
+                    <td class="package-desc-content">{{selectedPkg.price}}元</td>
                 </tr>
                 <tr>
                     <td>套餐内总可用量</td>
-                    <td class="package-desc-content">100GB(每月100GB)</td>
+                    <td class="package-desc-content">{{selectedPkg.totalDose}}</td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td>每月可用量</td>
                     <td class="package-desc-content">100GB</td>
-                </tr>
+                </tr> -->
             </table>
         </div>
     </div>
@@ -107,7 +107,7 @@
             <div class="package-desc-detail-item">8. 高风险管控地区：根据运营商相关规定将不定期调整高风险管控地区，包括且不限于新疆、西藏、云南、广西等。</div>
         </div>
     </div>
-    <div class="pay-btn">立即支付</div>
+    <div class="pay-btn" @click="toBuy">立即支付</div>
     <div v-show="loadingShow" class="loading">
       <van-loading type="spinner" color="#FDAB16" />
     </div>
@@ -118,13 +118,14 @@ import API from 'api/aliy'
 export default {
   data () {
     return {
+        selectedPkg: {},
         divisionaledAddedPackages: [],
         divisionaledPackages: [],
         packages: [],
         addPackages: [],
         iccid: '',
         loadingShow: false,
-        selPkgId: 0 + '-' + 0
+        selPkgId: 0 + '-' + 0 + '-' + 0
     }
   },
   created() {
@@ -133,8 +134,38 @@ export default {
     this.getPackages()
   },
   methods: {
+    toBuy: function(product) {
+        console.log(JSON.stringify(this.selectedPkg))
+        this.$dialog.confirm({
+            title: '提醒',
+            message: '确认购买 ' + this.selectedPkg.viewName + '吗？'
+        }).then(() => {
+            this.loadingShow = true
+            API.apiOrderOrderId().then(res => {
+                console.log('apiOrderOrderId:' + JSON.stringify(res))
+                const orderId = res.data
+                var params = {}
+                params.orderId = orderId
+                params.iccid = this.iccid
+                params.pdCode = this.selectedPkg.productCode
+                params.body = '套餐购买'
+                params.orderId = orderId
+                API.apiBuyed(params).then(res => {
+                    if (res.resultCode === 0) {
+                    this.$toast('购买成功')
+                    // this.getCardDetails()
+                    } else {
+                    this.$toast(res.resultInfo)
+                    }
+                    this.loadingShow = false
+                })
+            })
+        }).catch(() => {
+        })
+    },
     selectPkgId: function(pkgType, row, column, pkg) {
         this.selPkgId = pkgType + '-' + row + '-' + column
+        this.selectedPkg = pkg
     },
     getPkgClass: function(pkgType, row, column, type) {
         if (this.selPkgId === pkgType + '-' + row + '-' + column) {
@@ -206,6 +237,9 @@ export default {
         API.apiGetPackages(params).then(res => {
             if (res.resultCode === 0) {
                 this.packages = res.data
+                if (this.packages.length > 0) {
+                    this.selectedPkg = this.packages[0]
+                }
                 this.divisionalPackages(this.packages)
                 this.loadingShow = false
             } else {
