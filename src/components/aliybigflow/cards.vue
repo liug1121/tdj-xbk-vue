@@ -22,7 +22,7 @@
                     </table>
                 </div>
                 <div class="item">{{record.iccid}}</div>
-                <div class="item">当前套餐有效期：{{record.packageExpireDate}} </div>
+                <div class="item" @click="toCardDetails(record.iccid)">当前套餐有效期：{{record.packageExpireDate}}> </div>
                 <div v-if="record.unUsedPackages.length == 0" class="item">未生效套餐：无</div>
                 <div v-if="record.unUsedPackages.length > 0" class="item" @click="showNextProduct(nextProductsShowed)">未生效套餐：<span class="unUsedPkg">{{record.unUsedPackages.length}}</span>个 ></div>
                 <div v-if="nextProductsShowed">
@@ -118,6 +118,14 @@ export default {
     this.getCards()
   },
   methods: {
+    toCardDetails: function(iccid) {
+        this.$router.push({
+            path: '/aliy/cardDetail',
+            query: {
+                iccid: iccid
+            }
+        })
+    },
     showNextProduct: function(showed) {
         this.nextProductsShowed = !showed
     },
@@ -172,7 +180,7 @@ export default {
 }
 .item{
 //    border: 1px solid black;
-   margin-top: 8px;
+   margin-top: 18px;
    font-weight: bolder;
    margin-left: 5%
 }

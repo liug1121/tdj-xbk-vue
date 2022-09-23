@@ -5,32 +5,32 @@
             <div class="package-title">套餐</div>
             <div>
                 <table>
-                    <tr>
-                        <td>
-                            <div class="package-selected">
+                    <tr v-for="(rowPackages, index) in divisionaledPackages" :key="index">
+                        <td v-if="rowPackages.length >= 1" @click="selectPkgId(0,index, 0,rowPackages[0])">
+                            <div :class=getPkgClass(0,index,0,0)>
                                 <!-- <img class="package-content-selected" src="../../common/images/QK_img_icon.png" /> -->
                                 <div class="package-content">
-                                    <div class="package-content-name-selected">50G套餐</div>
-                                    <div class="package-content-price">¥ 58</div>
-                                    <div class="package-content-buy">1个月</div>
+                                    <div :class=getPkgClass(0,index,0,1)>{{rowPackages[0].productName}}</div>
+                                    <div class="package-content-price">¥ {{rowPackages[0].price}}</div>
+                                    <div class="package-content-buy">{{rowPackages[0].expireDate}}个月</div>
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <div class="package-unselected">
+                        <td v-if="rowPackages.length >= 2" @click="selectPkgId(0,index , 1,rowPackages[0])">
+                            <div :class=getPkgClass(0,index,1,0)>
                                 <div class="package-content">
-                                    <div class="package-content-name">50G套餐</div>
-                                    <div class="package-content-price">¥ 58</div>
-                                    <div class="package-content-buy">1个月</div>
+                                    <div :class=getPkgClass(0,index,1,1)>{{rowPackages[1].productName}}</div>
+                                    <div class="package-content-price">¥ {{rowPackages[1].price}}</div>
+                                    <div class="package-content-buy">{{rowPackages[1].expireDate}}个月</div>
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <div class="package-unselected">
+                        <td v-if="rowPackages.length >= 3" @click="selectPkgId(0,index , 2,rowPackages[0])">
+                            <div :class=getPkgClass(0,index,2,0)>
                                 <div class="package-content">
-                                    <div class="package-content-name">包月50G套餐</div>
-                                    <div class="package-content-price">¥ 58</div>
-                                    <div class="package-content-buy">每月续费</div>
+                                    <div :class=getPkgClass(0,index,2,1)>{{rowPackages[2].productName}}</div>
+                                    <div class="package-content-price">¥ {{rowPackages[2].price}}</div>
+                                    <div class="package-content-buy">{{rowPackages[2].expireDate}}个月</div>
                                 </div>
                             </div>
                         </td>
@@ -42,30 +42,30 @@
             <div class="package-title">加油包</div>
             <div>
                 <table>
-                    <tr>
-                        <td>
-                            <div class="package-unselected">
+                    <tr v-for="(rowAddPackages, index) in divisionaledAddedPackages" :key="index">
+                        <td v-if="rowAddPackages.length >= 1" @click="selectPkgId(1,index , 0,rowAddPackages[0])">
+                            <div :class=getPkgClass(1,index,0,0)>
                                 <div class="package-content">
-                                    <div class="package-content-name">50G加油包</div>
-                                    <div class="package-content-price">¥ 58</div>
+                                    <div :class=getPkgClass(1,index,0,1)>{{rowAddPackages[0].productName}}</div>
+                                    <div class="package-content-price">¥ {{rowAddPackages[0].price}}</div>
                                     <div class="package-content-buy">当月有效</div>
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <div class="package-unselected">
+                        <td v-if="rowAddPackages.length >= 2" @click="selectPkgId(1,index , 1,rowAddPackages[1])">
+                            <div :class=getPkgClass(1,index,1,0)>
                                 <div class="package-content">
-                                    <div class="package-content-name">50G加油包</div>
-                                    <div class="package-content-price">¥ 58</div>
+                                    <div :class=getPkgClass(1,index,1,1)>{{rowAddPackages[1].productName}}</div>
+                                    <div class="package-content-price">¥ {{rowAddPackages[1].price}}</div>
                                     <div class="package-content-buy">当月有效</div>
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <div class="package-unselected">
+                        <td v-if="rowAddPackages.length >= 3" @click="selectPkgId(1,index , 2,rowAddPackages[2])">
+                            <div :class=getPkgClass(1,index,2,0)>
                                 <div class="package-content">
-                                    <div class="package-content-name">50G加油包</div>
-                                    <div class="package-content-price">¥ 58</div>
+                                    <div :class=getPkgClass(1,index,2,1)>{{rowAddPackages[2].productName}}</div>
+                                    <div class="package-content-price">¥ {{rowAddPackages[2].price}}</div>
                                     <div class="package-content-buy">当月有效</div>
                                 </div>
                             </div>
@@ -108,17 +108,111 @@
         </div>
     </div>
     <div class="pay-btn">立即支付</div>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 <script>
+import API from 'api/aliy'
 export default {
   data () {
     return {
+        divisionaledAddedPackages: [],
+        divisionaledPackages: [],
+        packages: [],
+        addPackages: [],
+        iccid: '',
+        loadingShow: false,
+        selPkgId: 0 + '-' + 0
     }
   },
   created() {
+    this.iccid = this.$route.query.iccid
+    this.getAddPackages()
+    this.getPackages()
   },
   methods: {
+    selectPkgId: function(pkgType, row, column, pkg) {
+        this.selPkgId = pkgType + '-' + row + '-' + column
+    },
+    getPkgClass: function(pkgType, row, column, type) {
+        if (this.selPkgId === pkgType + '-' + row + '-' + column) {
+            if (type === 0) {
+                return 'package-selected'
+            } else if (type === 1) {
+                return 'package-content-name-selected'
+            }
+        } else {
+            if (type === 0) {
+                return 'package-unselected'
+            } else if (type === 1) {
+                return 'package-content-name'
+            }
+        }
+    },
+    divisionalAddedPackages: function(addPackages) {
+        var divisionaledAddedPackages = []
+        var index = 0
+        addPackages.forEach(pkg => {
+            if (divisionaledAddedPackages.length < index + 1) {
+                divisionaledAddedPackages.push([])
+            }
+            var rowPkgs = divisionaledAddedPackages[index]
+            if (rowPkgs.length < 3) {
+                rowPkgs.push(pkg)
+            } else {
+                index = index + 1
+            }
+        })
+        this.divisionaledAddedPackages = divisionaledAddedPackages
+        console.log(JSON.stringify(this.divisionaledAddedPackages))
+    },
+    divisionalPackages: function(packages) {
+        var divisionaledPackages = []
+        var index = 0
+        packages.forEach(pkg => {
+            if (divisionaledPackages.length < index + 1) {
+                divisionaledPackages.push([])
+            }
+            var rowPkgs = divisionaledPackages[index]
+            if (rowPkgs.length < 3) {
+                rowPkgs.push(pkg)
+            } else {
+                index = index + 1
+            }
+        })
+        this.divisionaledPackages = divisionaledPackages
+        // console.log(JSON.stringify(this.divisionaledPackages))
+    },
+    getAddPackages: function() {
+        var params = {}
+        params.iccid = this.iccid
+        this.loadingShow = true
+        API.apiGetAddedPackages(params).then(res => {
+            if (res.resultCode === 0) {
+                this.addPackages = res.data
+                this.divisionalAddedPackages(this.addPackages)
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
+    },
+    getPackages: function() {
+        var params = {}
+        params.iccid = this.iccid
+        this.loadingShow = true
+        API.apiGetPackages(params).then(res => {
+            if (res.resultCode === 0) {
+                this.packages = res.data
+                this.divisionalPackages(this.packages)
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
+    }
   }
 }
 </script>
@@ -163,13 +257,13 @@ export default {
 .package-content-name{
     font-weight:bolder;
     margin-bottom: 10px;
-    font-size: 15px;
+    font-size: 13px;
 }
 .package-content-name-selected{
     font-weight:bolder;
     margin-bottom: 10px;
     color: #f59a23;
-    font-size: 15px;
+    font-size: 13px;
 }
 .package-content-price{
     font-size: 15px;
@@ -229,6 +323,18 @@ export default {
     padding: 10px;
     color: white;
 }
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
 // .package-content-selected{
 //     width: 20px;
 //     height: 20px;

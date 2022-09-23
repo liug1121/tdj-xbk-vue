@@ -1,13 +1,13 @@
 <template>
   <div class="page">
     <div class="circle">
-         <van-circle v-model="currentUsageRate" :rate="Number(usagePercent)" :speed="Number(usage)" layer-color="#ebedf0" size="200px" :color="bodyColor" :stroke-width="120" >
+         <van-circle v-model="currentUsageRate" :rate="Number(cardDetails.usagePercent)" :speed="Number(usage)" layer-color="#ebedf0" size="200px" :color="bodyColor" :stroke-width="120" >
             <div class="circle-box">
               <div class="circle-note">当月剩余可用量</div>
-              <div class="circle-last">100.00GB</div>
+              <div class="circle-last">{{cardDetails.flowSurplusUsed}}</div>
             </div>
           </van-circle>
-          <div class="circle-usage">209.8 GB 已用</div>
+          <div class="circle-usage">{{cardDetails.flowTotalUsedG}}已用</div>
     </div>
     <div class="usage-detail">
         <table>
@@ -19,33 +19,33 @@
         <table class="usage_detail-contents">
             <tr>
                 <td>套餐有效期：</td>
-                <td class="usage-detail-content">2022.01.20-2023.01.19</td>
+                <td class="usage-detail-content">{{cardDetails.mealStartDate}}-{{cardDetails.mealEndDate}}</td>
             </tr>
             <tr>
                 <td>套餐当月可用量：</td>
-                <td class="usage-detail-content">300 GB</td>
+                <td class="usage-detail-content">{{cardDetails.flowTotalDoseG}}</td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td>当月已购加油包可用量：</td>
                 <td class="usage-detail-content">150 GB</td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
                 <td>当月总可用量：</td>
                 <td class="usage-detail-content">150 GB</td>
-            </tr>
+            </tr> -->
             <tr>
                 <td>当月已用量：</td>
-                <td class="usage-detail-content">150 GB</td>
+                <td class="usage-detail-content">{{cardDetails.flowTotalUsedG}}</td>
             </tr>
             <tr>
                 <td>当月剩余可用量：</td>
-                <td class="usage-detail-content">150 GB</td>
+                <td class="usage-detail-content">{{cardDetails.flowSurplusUsed}}</td>
             </tr>
         </table>
     </div>
     <div class="packages">
         <table>
-            <tr>
+            <tr @click="toPackages">
                 <td width="10%"><img class="usage-detail-title" src="../../common/images/usage-detal.jpg" /></td>
                 <td class="usage-detail-title-name" width="30%" >
                     套餐+流量包
@@ -53,32 +53,33 @@
                 <td class="usage-detail-content" width="80%">更多></td>
             </tr>
         </table>
-        <div class="package-boxes">
+        <div class="package-boxes" v-if="addedPacakgesToBuy.length > 0">
             <table>
                 <tr>
                     <td>
-                        <div class="package-selected">
+                        <div :class=getPkgClass(0,0) @click="selectPkgId(0,addedPacakgesToBuy[0])">
                             <div class="package-content">
-                                <div class="package-content-name-selected">50G加油包</div>
-                                <div class="package-content-price">¥ 58</div>
-                                <div class="package-content-buy-selected">购买</div>
+                                <div :class=getPkgClass(0,1)>{{addedPacakgesToBuy[0].viewName}}</div>
+                                <div class="package-content-price">¥ {{addedPacakgesToBuy[0].price}}</div>
+                                <div :class=getPkgClass(0,2)>购买</div>
                             </div>
                         </div>
                     </td>
                     <td>
-                        <div class="package-unselect">
+                        <div :class=getPkgClass(1,0) v-if="addedPacakgesToBuy[1]" @click="selectPkgId(1, addedPacakgesToBuy[1])">
                             <div class="package-content">
-                                <div class="package-content-name-unselect">50G加油包</div>
-                                <div class="package-content-price">¥ 58</div>
-                                <div class="package-content-buy-unselect">购买</div>
+                                <div :class=getPkgClass(1,1)>{{addedPacakgesToBuy[1].viewName}}</div>
+                                <div class="package-content-price">¥ {{addedPacakgesToBuy[1].price}}</div>
+                                <div :class=getPkgClass(1,2)>购买</div>
                             </div>
                         </div>
                     </td>
                 </tr>
             </table>
+            <div class="buy-btn"><span class="buy-btn-text" @click="toBuy">立即购买</span></div>
         </div>
     </div>
-    <table class="package-alert">
+    <table class="package-alert" v-if="cardDetails.showUsedAlert">
         <tr>
             <td><img class="package-alert-image" src="../../common/images/usage-alert.jpg" /></td>
             <td>
@@ -86,12 +87,24 @@
             </td>
         </tr>
     </table>
+    <div v-show="loadingShow" class="loading">
+      <van-loading type="spinner" color="#FDAB16" />
+    </div>
   </div>
 </template>
 <script>
+import API from 'api/aliy'
 export default {
   data () {
     return {
+        selectedPkg: {},
+        selPkgId: 0,
+        type: 0,
+        selectContentId: 0,
+        addedPacakgesToBuy: [],
+        loadingShow: false,
+        cardDetails: {},
+        iccid: '',
         currentUsageRate: '',
         usagePercent: 10,
         usage: 0,
@@ -99,8 +112,106 @@ export default {
     }
   },
   created() {
+    this.iccid = this.$route.query.iccid
+    this.getCardDetails()
+    this.getAddedPackages()
   },
   methods: {
+    toPackages: function(iccid) {
+        this.$router.push({
+            path: '/aliy/buyPackage',
+            query: {
+                iccid: this.iccid
+            }
+        })
+    },
+    selectPkgId: function(selectId, pkg) {
+        this.selPkgId = selectId
+        this.selectContentId = selectId
+        this.selectedPkg = pkg
+    },
+    getPkgClass: function(selectId, type) {
+        if (this.selPkgId === selectId) {
+            if (type === 0) {
+                return 'package-selected'
+            } else if (type === 1) {
+                return 'package-content-name-selected'
+            } else if (type === 2) {
+                return 'package-content-buy-selected'
+            }
+        } else {
+            if (type === 0) {
+                return 'package-unselect'
+            } else if (type === 1) {
+                return 'package-content-name-unselect'
+            } else if (type === 2) {
+                return 'package-content-buy-unselect'
+            }
+        }
+    },
+    getPkgContentClass: function(selectId) {
+        if (this.selectContentId === selectId) {
+            return 'package-content-name-selected'
+        } else {
+            return 'package-content-name-unselect'
+        }
+    },
+    getAddedPackages: function() {
+        var params = {}
+        params.iccid = this.iccid
+        this.loadingShow = true
+        console.log('getAddedPackages')
+        API.apiGetAddedPackages(params).then(res => {
+            if (res.resultCode === 0) {
+                this.addedPacakgesToBuy = res.data
+                if (this.addedPacakgesToBuy !== undefined && this.addedPacakgesToBuy.length > 0) {
+                    this.selectedPkg = this.addedPacakgesToBuy[0]
+                }
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
+    },
+    getCardDetails: function() {
+        var params = {}
+        params.iccid = this.iccid
+        this.loadingShow = true
+        API.apiGetCardDetail(params).then(res => {
+            if (res.resultCode === 0) {
+                this.cardDetails = res.data
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
+    },
+    toBuy: function(product) {
+        this.$dialog.confirm({
+            title: '提醒',
+            message: '确认购买 ' + this.selectedPkg.viewName + '吗？'
+        }).then(() => {
+            API.apiOrderOrderId().then(res => {
+                console.log('apiOrderOrderId:' + JSON.stringify(res))
+                const orderId = res.data
+                var params = {}
+                params.orderId = orderId
+                params.iccid = this.iccid
+                params.pdCode = this.selectedPkg.productCode
+                params.body = '套餐购买'
+                params.orderId = orderId
+                API.apiBuyed(params).then(res => {
+                    if (res.resultCode === 0) {
+                    this.$toast('购买成功')
+                    this.getCardDetails()
+                    } else {
+                    this.$toast(res.resultInfo)
+                    }
+                })
+            })
+        }).catch(() => {
+        })
+    }
   }
 }
 </script>
@@ -172,6 +283,7 @@ export default {
 }
 .usage-detail-content{
     text-align: right;
+    padding-right: 10px;
 }
 .packages{
     width: 99%;
@@ -246,5 +358,28 @@ export default {
 .package-alert-image{
     width: 30px;
     height: 30px;
+}
+.loading {
+  position: fixed;
+  padding-top: 75%;
+  padding-left: 48%;
+  z-index: 999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.buy-btn{
+    border-radius:15px;
+    background: #f59a23;
+    width: 50%;
+    height: 40px;
+    text-align: center;
+    font-size: 20px;
+    padding-top: 10px;
+    color: white;
+    margin-left: 20%;
+    margin-top: 15px;
 }
 </style>
