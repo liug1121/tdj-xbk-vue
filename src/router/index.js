@@ -485,12 +485,20 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else if (to.meta.aliybigflow) {
-    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjQifQ.i0pJIHY63utUpREQg3KRGFTOHzFHoL9HfatgHOISQjHuj7WvfuO6xaZDK5yB_Clvlj4Xxi1RUU6J-fpPQj2uPQ'
-    console.log('***token:' + token)
-    if (token) {
-      next()
+    const code = getUrlKey('auth_code')
+    console.log('auth_code:' + code)
+    if (code === null || code === '') {
+      const urlNow = encodeURIComponent(window.location.href)
+      const url = `https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2021002105630076&scope=auth_user&redirect_uri=` + urlNow
+      window.location.href = url
+    } else {
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjQifQ.i0pJIHY63utUpREQg3KRGFTOHzFHoL9HfatgHOISQjHuj7WvfuO6xaZDK5yB_Clvlj4Xxi1RUU6J-fpPQj2uPQ'
+      console.log('***token:' + token)
+      if (token) {
+        next()
+      }
+      sessionStorage.setItem('token', token)
     }
-    sessionStorage.setItem('token', token)
   } else if (to.meta.zx) {
     console.log('22')
     console.log('process.env.VUE_APP_CURRENTMODE:' + process.env.VUE_APP_CURRENTMODE)

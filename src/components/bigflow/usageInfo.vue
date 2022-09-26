@@ -23,10 +23,10 @@
             <td>当月剩余：</td>
             <td class="order-info">{{ record.flowSurplusUsed }}</td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td>未生效套餐：</td>
             <td class="order-info">{{ record.nextMeal}}</td>
-          </tr>
+          </tr> -->
         </table>
 
         <div class="buttons">

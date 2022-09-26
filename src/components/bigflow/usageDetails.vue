@@ -18,6 +18,12 @@
           有效期：{{ cardDetails.mealStartDate }}-{{ cardDetails.mealEndDate }}
         </div>
       </div>
+      <div class="detail-note">
+        <div>未使用套餐：{{ cardDetails.nextMeal }}</div>
+        <div>
+          开始生效时间：{{ cardDetails.nextMealStartDate }}
+        </div>
+      </div>
     </div>
     <div class="buys">
       <div class="buys-menus">
@@ -309,7 +315,7 @@ export default {
     font-size: 15px;
 }
 .detail{
-    height: 30%;
+    height: 35%;
     margin: 30px;
     border-radius: 15px;
     background: white;
