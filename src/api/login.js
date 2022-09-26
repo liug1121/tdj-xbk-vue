@@ -32,5 +32,10 @@ export default {
     const code = params
     console.log('apiBigflowLogin')
     return API.GET(`bigflow/boss/v1.0/users/login/${code}`, params)
+  },
+  apiAliBigflowLogin: params => {
+    const code = params
+    console.log('apiAliBigflowLogin')
+    return API.GET(`/aliy/boss/v1.0/users/login/${code}`, params)
   }
 }
