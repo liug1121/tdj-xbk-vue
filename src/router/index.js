@@ -485,28 +485,40 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else if (to.meta.aliybigflow) {
-    const token = sessionStorage.getItem('token')
-    if (token === null || token === '' || token === undefined || token === 'null') {
-      const code = getUrlKey('auth_code')
-      console.log('auth_code:' + code)
-      if (code === null || code === '') {
-        const urlNow = encodeURIComponent(window.location.href)
-        const url = `https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2021002105630076&scope=auth_user&redirect_uri=` + urlNow
-        window.location.href = url
+    if (process.env.VUE_APP_CURRENTMODE === 'production') {
+      const token = sessionStorage.getItem('token')
+      if (token === null || token === '' || token === undefined || token === 'null') {
+        const code = getUrlKey('auth_code')
+        console.log('auth_code:' + code)
+        if (code === null || code === '') {
+          const urlNow = encodeURIComponent(window.location.href)
+          const url = 'https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2021002105630076&scope=auth_user&redirect_uri=' + urlNow
+          window.location.href = url
+        } else {
+            console.log(code)
+            const appId = getUrlKey('app_id')
+            const params = code + ' ' + appId
+            console.log('params:' + params)
+            WxAPI.apiAliBigflowLogin(params).then(res => {
+              const loginInfo = res.data
+              console.log(JSON.stringify(to))
+              sessionStorage.setItem('token', loginInfo.token)
+              next()
+            })
+        }
       } else {
-          console.log(code)
-          const appId = getUrlKey('app_id')
-          const params = code + ' ' + appId
-          console.log('params:' + params)
-          WxAPI.apiAliBigflowLogin(params).then(res => {
-            const loginInfo = res.data
-            console.log(JSON.stringify(to))
-            sessionStorage.setItem('token', loginInfo.token)
-            next()
-          })
+        next()
       }
     } else {
-      next()
+      console.log('32')
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjQifQ.i0pJIHY63utUpREQg3KRGFTOHzFHoL9HfatgHOISQjHuj7WvfuO6xaZDK5yB_Clvlj4Xxi1RUU6J-fpPQj2uPQ'
+      const userName = '测试'
+      sessionStorage.setItem('token', token)
+      if (token && userName) {
+        next()
+      } else {
+        next('/QKLogin')
+      }
     }
   } else if (to.meta.zx) {
     console.log('22')

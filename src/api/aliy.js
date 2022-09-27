@@ -29,5 +29,8 @@ export default {
   },
   apiBuyed: params => {
     return API.POST('aliy/boss/v1.0/buy', params)
+  },
+  apiPrepay: params => {
+    return API.POST('aliy/boss/v1.0/pay/aliprepay', params)
   }
 }

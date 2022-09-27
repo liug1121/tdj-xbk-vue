@@ -3,7 +3,7 @@
     <div class="card"></div>
     <div class="notice">扫描SIM卡上的ICCID条形码，开始添加，PUK码可刮开涂层后查看</div>
     <div class = "bind">
-        <div>扫一扫添加</div>
+        <div @click="scan">扫一扫添加</div>
     </div>
     <table>
         <tr>
@@ -33,6 +33,7 @@
 </template>
 <script>
 import API from 'api/aliy'
+import alipay from 'common/js/alipayjsapi.inc.min'
 export default {
   data () {
     return {
@@ -41,9 +42,17 @@ export default {
         cardName: ''
     }
   },
+  mounted() {
+  },
   created() {
+    console.log(alipay)
   },
   methods: {
+    scan: function() {
+        alipay.scan().then((res) => {
+            this.iccid19 = res.code
+        })
+    },
     bind: function() {
         if (this.iccid19 === null || this.iccid19 === '' || this.iccid19.length !== 19) {
             this.$toast('请输入19位iccid')

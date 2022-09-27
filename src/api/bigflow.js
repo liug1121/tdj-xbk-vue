@@ -30,6 +30,9 @@ export default {
   apiOrderOrderId: params => {
     return API.GET('wechat/v1.0/orders/orderid', params)
   },
+  apiCreateOrderId: params => {
+    return API.POST('wechat/v1.0/orders/orderid/create', params)
+  },
   apiWXprepay: params => {
     return API.POST('bigflow/boss/v1.0/pay/wxprepay', params)
   },

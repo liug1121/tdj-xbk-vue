@@ -201,7 +201,13 @@ export default {
           title: '提醒',
           message: '确认支付吗'
       }).then(() => {
-        API.apiOrderOrderId().then(res => {
+        var params = {}
+        params.iccid = this.iccid
+        params.productCode = this.product2Buy.pdCode
+        params.busiType = 0
+        params.payType = 0
+        API.apiCreateOrderId(params).then(res => {
+        // API.apiOrderOrderId().then(res => {
           console.log('apiOrderOrderId:' + JSON.stringify(res))
           const orderId = res.data
           const data = {
