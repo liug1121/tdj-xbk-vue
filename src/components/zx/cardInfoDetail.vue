@@ -25,39 +25,45 @@
         <div :class="tabPackageClass" @click="changeTab(1)">购买记录</div>
       </div>
       <div class="buys-products" v-if="tabIndex == 1">
-        <div
+        <div v-if="buyedRecords.length > 0">
+          <div
           :class="getRowClass(index)"
           v-for="(buyedRecord, index) in buyedRecords"
           :key="index"
-        >
-          <div class="product-info">
-            <div>{{ buyedRecord.productName }}</div>
-            <div>{{ buyedRecord.buyedDate }}</div>
-          </div>
-          <div class="product-price">
-            <div>
-              <span class="record-price">价格：¥{{ buyedRecord.price }}</span>
+          >
+            <div class="product-info">
+              <div>{{ buyedRecord.productName }}</div>
+              <div>{{ buyedRecord.buyedDate }}</div>
             </div>
-            <!-- <div class="old-price">原价：¥{{ addpackage.originalPrice }}</div> -->
+            <div class="product-price">
+              <div>
+                <span class="record-price">价格：¥{{ buyedRecord.price }}</span>
+              </div>
+              <!-- <div class="old-price">原价：¥{{ addpackage.originalPrice }}</div> -->
+            </div>
           </div>
         </div>
+        <div class="notice" v-else>您还没有购买过任何套餐</div>
       </div>
       <div class="buys-products" v-if="tabIndex == 0">
-        <div
+        <div v-if="packages.length > 0">
+          <div
           :class="getRowClass(index)"
           v-for="(pkg, index) in packages"
           :key="index"
           @click="selRow(index, pkg)"
-        >
-          <div class="product-info">
-            <div>{{ pkg.productName }}</div>
-            <!-- <div>{{ pkg.memo }}</div> -->
-          </div>
-          <div class="product-price">
-            <div class="price">现价：¥{{ pkg.price }}</div>
-            <div class="old-price">原价：¥{{ pkg.originalPrice }}</div>
+          >
+            <div class="product-info">
+              <div>{{ pkg.productName }}</div>
+              <!-- <div>{{ pkg.memo }}</div> -->
+            </div>
+            <div class="product-price">
+              <div class="price">现价：¥{{ pkg.price }}</div>
+              <div class="old-price">原价：¥{{ pkg.originalPrice }}</div>
+            </div>
           </div>
         </div>
+        <div class="notice" v-else>当前没有可以购买的套餐</div>
       </div>
     </div>
     <div class="footer">
@@ -357,7 +363,7 @@ export default {
 .detail{
     padding: 5px;
     font-size: 20px;
-    height: 160px;
+    height: 35%;
     margin: 30px;
     border-radius: 15px;
     background: white;
@@ -478,5 +484,11 @@ export default {
 .record-price{
     margin-top: 10px;
     color: #FFBA27;
+}
+.notice{
+  font-size: 18px;
+  color: silver;
+  width: 70%;
+  margin-left: 15%;
 }
 </style>

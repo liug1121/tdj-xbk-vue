@@ -559,14 +559,10 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       console.log('32')
-      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvUjdwUDFhRnAyZEU4dnhGSmYzanlMbmdVdkpBIiwidHlwZSI6IjMiLCJzY2hvb2xNYW5hZ2VySWQiOjEsInNjaG9vbElkIjoxLCJvcmdhbml6YXRpb25JZHMiOiIxIiwiY29udHJvbEdyb3VwSWRzIjoiNCw1In0.nr6a3_nvQETar7M_4tAaf0J52xFgUJgBvw9toamxh6tbzUR0I1g-8eNPGc-YRrYDsAUBSkq61jIBvHrSoJaowQ'
-      const userName = '测试'
-      localStorage.setItem('QKtoken', token)
-      if (token && userName) {
-        next()
-      } else {
-        next('/QKLogin')
-      }
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvd21FODZXV3JCcWNzYkw3S3UxQUptc0p1Z0tJIiwidHlwZSI6IjQifQ.51XSrf6b3wCP8AsSjG1vTadJ73OlHEG_7oAEXL3U5s9nWECAjd6iUf5xlMFnzZXurbl19sA29vo6kNPNXuZeoQ'
+      // const userName = '测试'
+      sessionStorage.setItem('token', token)
+      next()
     }
   } else if (to.meta.bigflow) {
     console.log('22')
