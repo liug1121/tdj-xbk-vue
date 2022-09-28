@@ -142,7 +142,12 @@ export default {
             message: '确认购买 ' + this.selectedPkg.viewName + '吗？'
         }).then(() => {
             this.loadingShow = true
-            API.apiOrderOrderId().then(res => {
+            var params = {}
+            params.iccid = this.iccid
+            params.productCode = this.selectedPkg.productCode
+            params.busiType = 0
+            params.payType = 1
+            API.apiCreateOrderId(params).then(res => {
                 console.log('apiOrderOrderId:' + JSON.stringify(res))
                 // apiPrepay
                 const orderId = res.data
@@ -150,6 +155,9 @@ export default {
                 params.out_trade_no = orderId
                 params.body = '套餐购买'
                 params.total_fee = 1
+                const returnUrl = encodeURIComponent(window.location.href)
+                params.pageReturnUrl = returnUrl
+                console.log('params:' + JSON.stringify(params))
                 API.apiPrepay(params).then(res => {
                     const div = document.createElement('div')
                     div.innerHTML = res

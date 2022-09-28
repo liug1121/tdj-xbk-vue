@@ -27,6 +27,9 @@ export default {
   apiOrderOrderId: params => {
     return API.GET('wechat/v1.0/orders/orderid', params)
   },
+  apiCreateOrderId: params => {
+    return API.POST('wechat/v1.0/orders/orderid/create', params)
+  },
   apiBuyed: params => {
     return API.POST('aliy/boss/v1.0/buy', params)
   },
