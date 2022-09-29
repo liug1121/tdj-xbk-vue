@@ -35,5 +35,8 @@ export default {
   },
   apiPrepay: params => {
     return API.POST('aliy/boss/v1.0/pay/aliprepay', params)
+  },
+  getKeyValueFromUrl: params => {
+    return decodeURIComponent((new RegExp('[?|&]' + params + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [null, ''])[1].replace(/\+/g, '%20')) || null
   }
 }

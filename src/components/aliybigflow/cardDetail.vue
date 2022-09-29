@@ -113,6 +113,9 @@ export default {
   },
   created() {
     this.iccid = this.$route.query.iccid
+    if (this.iccid.length > 20) {
+        this.iccid = this.iccid.substring(0, 20)
+    }
     this.getCardDetails()
     this.getAddedPackages()
   },
@@ -191,27 +194,57 @@ export default {
             title: '提醒',
             message: '确认购买 ' + this.selectedPkg.viewName + '吗？'
         }).then(() => {
-            API.apiOrderOrderId().then(res => {
-                console.log('apiOrderOrderId:' + JSON.stringify(res))
+            this.loadingShow = true
+            var params = {}
+            params.iccid = this.iccid
+            params.productCode = this.selectedPkg.productCode
+            params.busiType = 0
+            params.payType = 1
+            API.apiCreateOrderId(params).then(res => {
                 const orderId = res.data
                 var params = {}
-                params.orderId = orderId
-                params.iccid = this.iccid
-                params.pdCode = this.selectedPkg.productCode
+                params.out_trade_no = orderId
                 params.body = '套餐购买'
-                params.orderId = orderId
-                API.apiBuyed(params).then(res => {
-                    if (res.resultCode === 0) {
-                    this.$toast('购买成功')
-                    this.getCardDetails()
-                    } else {
-                    this.$toast(res.resultInfo)
-                    }
+                params.total_fee = 1
+                const returnUrl = encodeURIComponent(window.location.href)
+                params.pageReturnUrl = returnUrl
+                API.apiPrepay(params).then(res => {
+                    const div = document.createElement('div')
+                    div.innerHTML = res
+                    document.body.appendChild(div)
+                    document.forms[0].submit()
                 })
+                this.loadingShow = false
             })
         }).catch(() => {
         })
     }
+    // toBuy: function(product) {
+    //     this.$dialog.confirm({
+    //         title: '提醒',
+    //         message: '确认购买 ' + this.selectedPkg.viewName + '吗？'
+    //     }).then(() => {
+    //         API.apiOrderOrderId().then(res => {
+    //             console.log('apiOrderOrderId:' + JSON.stringify(res))
+    //             const orderId = res.data
+    //             var params = {}
+    //             params.orderId = orderId
+    //             params.iccid = this.iccid
+    //             params.pdCode = this.selectedPkg.productCode
+    //             params.body = '套餐购买'
+    //             params.orderId = orderId
+    //             API.apiBuyed(params).then(res => {
+    //                 if (res.resultCode === 0) {
+    //                 this.$toast('购买成功')
+    //                 this.getCardDetails()
+    //                 } else {
+    //                 this.$toast(res.resultInfo)
+    //                 }
+    //             })
+    //         })
+    //     }).catch(() => {
+    //     })
+    // }
   }
 }
 </script>

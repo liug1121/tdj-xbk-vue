@@ -131,12 +131,14 @@ export default {
   },
   created() {
     this.iccid = this.$route.query.iccid
+    if (this.iccid.length > 20) {
+        this.iccid = this.iccid.substring(0, 20)
+    }
     this.getAddPackages()
     this.getPackages()
   },
   methods: {
     toBuy: function(product) {
-        console.log(JSON.stringify(this.selectedPkg))
         this.$dialog.confirm({
             title: '提醒',
             message: '确认购买 ' + this.selectedPkg.viewName + '吗？'
@@ -148,8 +150,6 @@ export default {
             params.busiType = 0
             params.payType = 1
             API.apiCreateOrderId(params).then(res => {
-                console.log('apiOrderOrderId:' + JSON.stringify(res))
-                // apiPrepay
                 const orderId = res.data
                 var params = {}
                 params.out_trade_no = orderId
@@ -157,40 +157,13 @@ export default {
                 params.total_fee = 1
                 const returnUrl = encodeURIComponent(window.location.href)
                 params.pageReturnUrl = returnUrl
-                console.log('params:' + JSON.stringify(params))
                 API.apiPrepay(params).then(res => {
                     const div = document.createElement('div')
                     div.innerHTML = res
                     document.body.appendChild(div)
-                    console.log(div)
                     document.forms[0].submit()
                 })
                 this.loadingShow = false
-                // var aliPayResq = {}
-                // aliPayResq.tradeNO = orderId
-                // alipay.tradePay(aliPayResq).then((res) => {
-                //     console.log(JSON.stringify(res))
-                //     if (res.resultCode === '9000') {
-                //         console.log('支付成功')
-                //         var params = {}
-                //         params.orderId = orderId
-                //         params.iccid = this.iccid
-                //         params.pdCode = this.selectedPkg.productCode
-                //         params.body = '套餐购买'
-                //         params.orderId = orderId
-                //         API.apiBuyed(params).then(res => {
-                //             if (res.resultCode === 0) {
-                //             this.$toast('购买成功')
-                //             // this.getCardDetails()
-                //             } else {
-                //             this.$toast(res.resultInfo)
-                //             }
-                //             this.loadingShow = false
-                //         })
-                //     } else {
-                //         this.$toast('支付失败')
-                //     }
-                // })
             })
         }).catch(() => {
         })
