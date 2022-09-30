@@ -61,7 +61,7 @@
         </div>
         <div class="addcard" >+</div>
     </div>
-    <div v-else>
+    <!-- <div v-else>
         <div class="bind-guid">
             <div class="bind-titile">暂无SIM卡</div>
             <div>如您已拥有XXX物联网设备及配套的SIM卡，您可以点击激活</div>
@@ -72,7 +72,7 @@
                 <div>去实名认证</div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div v-show="loadingShow" class="loading">
       <van-loading type="spinner" color="#FDAB16" />
     </div>
@@ -116,6 +116,13 @@ export default {
   },
   created() {
     this.getCards()
+    // if (this.isAlipayClient() === false) {
+    //     this.$router.push({
+    //         path: '/aliy/notaliy'
+    //     })
+    // } else {
+    //     this.getCards()
+    // }
   },
   methods: {
     toCardDetails: function(iccid) {
@@ -126,6 +133,16 @@ export default {
             }
         })
     },
+    toBind: function(iccid) {
+        this.$router.push({
+            path: '/aliy/bind'
+        })
+    },
+    // toNotAliyPay: function(iccid) {
+    //     this.$router.push({
+    //         path: '/aliy/bind'
+    //     })
+    // },
     showNextProduct: function(showed) {
         this.nextProductsShowed = !showed
     },
@@ -135,12 +152,22 @@ export default {
         API.apiGetCards(params).then(res => {
             if (res.resultCode === 0) {
                 this.cards = res.data
+                if (this.cards.length < 1) {
+                    this.toBind()
+                }
                 this.loadingShow = false
             } else {
                 this.loadingShow = false
             }
         })
     }
+    // ,
+    // isAlipayClient: function() {
+    //     if (navigator.userAgent.indexOf('AlipayClient') > -1) {
+    //         return true
+    //     }
+    //     return false
+    //     }
   }
 }
 </script>

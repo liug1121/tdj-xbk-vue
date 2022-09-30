@@ -164,7 +164,7 @@ const routes = [
   },
   {
     path: '/QKLogin',
-    name: '群控登录',
+    name: '出错啦',
     component: () => import('components/groupControl/groupLogin.vue'),
     meta: { groupControlLogin: true }
   },
@@ -369,6 +369,12 @@ const routes = [
     meta: { aliybigflow: true }
   },
   {
+    path: '/notaliy',
+    name: '移动智慧物联',
+    component: () => import('components/aliybigflow/notAliPay.vue'),
+    meta: { aliybigflow: true }
+  },
+  {
     path: '/zopCard/orderSubmit',
     name: '订单',
     component: () => import('components/zopCard/orderSubmit.vue'),
@@ -486,32 +492,36 @@ router.beforeEach((to, from, next) => {
     }
   } else if (to.meta.aliybigflow) {
     if (process.env.VUE_APP_CURRENTMODE === 'production') {
-      const token = sessionStorage.getItem('token')
-      if (token === null || token === '' || token === undefined || token === 'null') {
-        const code = getUrlKey('auth_code')
-        console.log('auth_code:' + code)
-        if (code === null || code === '') {
-          const urlNow = encodeURIComponent(window.location.href)
-          const url = 'https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2021002105630076&scope=auth_user&redirect_uri=' + urlNow
-          window.location.href = url
+      if (isAlipayClient()) {
+        const token = sessionStorage.getItem('token')
+        if (token === null || token === '' || token === undefined || token === 'null') {
+          const code = getUrlKey('auth_code')
+          console.log('auth_code:' + code)
+          if (code === null || code === '') {
+            const urlNow = encodeURIComponent(window.location.href)
+            const url = 'https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2021002105630076&scope=auth_user&redirect_uri=' + urlNow
+            window.location.href = url
+          } else {
+              console.log(code)
+              const appId = getUrlKey('app_id')
+              const params = code + ' ' + appId
+              console.log('params:' + params)
+              WxAPI.apiAliBigflowLogin(params).then(res => {
+                const loginInfo = res.data
+                console.log(JSON.stringify(to))
+                sessionStorage.setItem('token', loginInfo.token)
+                next()
+              })
+          }
         } else {
-            console.log(code)
-            const appId = getUrlKey('app_id')
-            const params = code + ' ' + appId
-            console.log('params:' + params)
-            WxAPI.apiAliBigflowLogin(params).then(res => {
-              const loginInfo = res.data
-              console.log(JSON.stringify(to))
-              sessionStorage.setItem('token', loginInfo.token)
-              next()
-            })
+          next()
         }
       } else {
-        next()
+        next('/QKLogin')
       }
     } else {
       console.log('32')
-      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjQifQ.i0pJIHY63utUpREQg3KRGFTOHzFHoL9HfatgHOISQjHuj7WvfuO6xaZDK5yB_Clvlj4Xxi1RUU6J-fpPQj2uPQ'
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiIyMDg4OTMyMzEzNjg4NDY1IiwiYXBwSWQiOiIyMDIxMDAyMTA1NjMwMDc2IiwidHlwZSI6IjQifQ.ty28G2Kj53ERdQW2pebwzEKr2JxOFmirPANxCq65RDgNIZ7WwtfpM7yhU1oRcsmZ0Mq7cL51XEwA8lev586rMA'
       const userName = '测试'
       sessionStorage.setItem('token', token)
       if (token && userName) {
@@ -519,6 +529,21 @@ router.beforeEach((to, from, next) => {
       } else {
         next('/QKLogin')
       }
+      // if (isAlipayClient()) {
+      //   alert('isAlipay')
+      //   console.log('32')
+      //   const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiIyMDg4OTMyMzEzNjg4NDY1IiwiYXBwSWQiOiIyMDIxMDAyMTA1NjMwMDc2IiwidHlwZSI6IjQifQ.ty28G2Kj53ERdQW2pebwzEKr2JxOFmirPANxCq65RDgNIZ7WwtfpM7yhU1oRcsmZ0Mq7cL51XEwA8lev586rMA'
+      //   const userName = '测试'
+      //   sessionStorage.setItem('token', token)
+      //   if (token && userName) {
+      //     next()
+      //   } else {
+      //     next('/QKLogin')
+      //   }
+      // } else {
+      //   console.log('not alipay')
+      //   next('/QKLogin')
+      // }
     }
   } else if (to.meta.zx) {
     console.log('22')
@@ -712,4 +737,10 @@ router.beforeEach((to, from, next) => {
 export default router
 function getUrlKey (name) {
   return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [null, ''])[1].replace(/\+/g, '%20')) || null
+}
+function isAlipayClient () {
+  if (navigator.userAgent.indexOf('AlipayClient') > -1) {
+    return true
+  }
+  return false
 }
