@@ -2,7 +2,12 @@
   <div class="page">
     <div class="packages">
         <div class="main-packages">
-            <div class="package-title">套餐</div>
+            <table>
+                <tr>
+                    <td><img class="package-title-img" src="../../common/images/usage-detal.jpg" /></td>
+                    <td><div class="package-title">套餐</div></td>
+                </tr>
+            </table>
             <div>
                 <table>
                     <tr v-for="(rowPackages, index) in divisionaledPackages" :key="index">
@@ -39,7 +44,12 @@
             </div>
         </div>
         <div class="added-packages">
-            <div class="package-title">加油包</div>
+            <table>
+                <tr>
+                    <td><img class="package-title-img" src="../../common/images/usage-detal.jpg" /></td>
+                    <td><div class="package-title">加油包</div></td>
+                </tr>
+            </table>
             <div>
                 <table>
                     <tr v-for="(rowAddPackages, index) in divisionaledAddedPackages" :key="index">
@@ -257,27 +267,27 @@ export default {
 </script>
 <style lang="less" scoped>
 .page{
-    background: silver;
+    background: rgb(240, 240, 240);
 }
 .package-title{
     font-weight:bolder;
-    padding-top: 30px;
-    padding-left: 10px;
-    color: #f59a23;
+    // padding-top: 30px;
+    // padding-left: 10px;
+    color: #fa7000;
 }
+
 .packages{
     background: white;
     font-size: 18px;
     width: 99%;
     margin-left: 0.5%;
-}
-.added-packages{
+    padding-bottom: 20px;
     margin-top: 20px;
 }
 .package-selected{
     width: 110px;
     height: 110px;
-    border: 1px solid #f59a23;
+    border: 1px solid #fa7000;
     border-radius:15px;
     text-align: center;
     margin: 5px;
@@ -301,7 +311,7 @@ export default {
 .package-content-name-selected{
     font-weight:bolder;
     margin-bottom: 10px;
-    color: #f59a23;
+    color: #fa7000;
     font-size: 13px;
 }
 .package-content-price{
@@ -330,9 +340,8 @@ export default {
     font-size: 18px;
     font-weight:bolder;
     margin-left: 10px;
-    color: #f59a23;
+    color: #fa7000;
 }
-
 .package-desc table{
     width: 95%;
     margin: 2.5%;
@@ -340,20 +349,22 @@ export default {
 }
 .package-desc-content{
     text-align: right;
+    padding-bottom: 15px;
 }
 .package-desc-detail{
     margin: 30px;
-    padding-bottom: 30px;
+    padding-bottom: 55px;
 }
 .package-desc-detail-item{
     margin: 5px;
-    color:#aaa;
+    color:black;
+    margin-bottom: 15px;
 }
 .pay-page{
     position: fixed;
     width: 60%;
     bottom: 10%;
-    border: 1px solid #FDAB16;
+    border: 1px solid #fa7000;
     text-align: center;
     font-size: 25px;
     border-radius:15px;
@@ -371,7 +382,7 @@ export default {
     font-size: 25px;
     border-radius:15px;
     margin-left: 20%;
-    background: #FDAB16;
+    background: #fa7000;
     padding: 10px;
     color: white;
 }
@@ -386,12 +397,9 @@ export default {
   height: 100%;
   margin: 0;
 }
-
-// .package-content-selected{
-//     width: 20px;
-//     height: 20px;
-//     position: inherit;
-//     left: 0px;
-//     // top: 100%;
-// }
+.package-title-img{
+    width: 20px;
+    height: 30px;
+    margin: 1px;
+}
 </style>

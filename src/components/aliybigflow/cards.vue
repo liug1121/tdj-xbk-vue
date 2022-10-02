@@ -5,7 +5,7 @@
             <table>
                 <tr>
                     <td>
-                        <img class="notice-image" src="../../common/images/smsIcon.png" />
+                        <img class="notice-image" src="../../common/images/alisms.jpg" />
                     </td>
                     <td>{{notice}}</td>
                 </tr>
@@ -13,7 +13,54 @@
         </div>
         <div class="cards" v-for="(record, index) in cards" :key="index">
             <div class="card">
-                <div class="item">
+                <table class="card-infos">
+                    <tr>
+                        <td>
+                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="130px" :color="bodyColor" :stroke-width="90" >
+                                <div class="circle-box">
+                                <div>当月剩余可用量</div>
+                                <div>{{record.flowSurplusUsed}}G</div>
+                                </div>
+                            </van-circle>
+                            <div class="card-infos-clear">用量清零日 {{record.nextClearDate.substring(5,10)}}</div>
+                        </td>
+                        <td>
+                            <div class="card-infos-pkgs">
+                                <!-- <div>当前套餐有效期：></div>
+                                <div>未生效套餐：无</div> -->
+                                <div @click="toCardDetails(record.iccid)">套餐有效期：{{record.packageExpireDate}} > </div>
+                                <div v-if="record.unUsedPackages.length == 0" >未生效套餐：无</div>
+                                <div v-if="record.unUsedPackages.length > 0" @click="showNextProduct(nextProductsShowed)">未生效套餐：<span class="unUsedPkg">{{record.unUsedPackages.length}}</span>个 ></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table class="card-titile">
+                    <tr>
+                        <td class="card-titile-name">{{record.cardName}}</td>
+                        <td class="card-titile-status">{{record.authStatusName}}</td>
+                    </tr>
+                </table>
+                <div v-if="nextProductsShowed">
+                    <div class="unused-packages" v-for="(pkg, pkgIndex) in record.unUsedPackages" :key="pkgIndex" >
+                       <div class="pkg-name">{{pkg.packageViewName}}</div>
+                        <table>
+                            <tr>
+                                <td>生效时间</td>
+                                <td>失效时间</td>
+                            </tr>
+                            <tr>
+                                <td>{{pkg.startDate}}</td>
+                                <td>{{pkg.endDate}}</td>
+                            </tr>
+                            <tr>
+                                <td ><span class="pkg-desc">{{pkg.areaName}}{{pkg.dose}}G，共{{pkg.expireMonth}}个月</span></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="item">
                     <table class="device">
                         <tr>
                             <td class="device-item">{{record.cardName}}</td>
@@ -51,15 +98,12 @@
                     <div>下次可用量重置日</div>
                     <div>{{record.nextClearDate}}</div>
                 </div>
-                <!-- <div class = "tocert" v-if="record.cardStatus===0">
-                    <div>去实名认证</div>
-                </div> -->
                 <div class = "tobuy" v-if="record.currentMeal===''">
                     <div>购买套餐</div>
-                </div>
+                </div> -->
             </div>
         </div>
-        <div class="addcard" >+</div>
+        <!-- <div class="addcard" >+</div> -->
     </div>
     <!-- <div v-else>
         <div class="bind-guid">
@@ -83,6 +127,7 @@ import API from 'api/aliy'
 export default {
   data () {
     return {
+        bodyColor: '#FDAB16',
         nextProductsShowed: false,
         loadingShow: false,
         notice: '您的卡片已激活，可以插卡使用流量啦，如有疑问请联系官方客服咨询～',
@@ -173,7 +218,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .page{
-    background: silver;
+    background: rgb(240, 240, 240);
     padding-top: 10px;
     // color: white;
 }
@@ -185,25 +230,26 @@ export default {
     height: 80px;
     border-radius:15px;
     text-align: left;
-    padding-top: 20px;
+    padding-top: 30px;
     background: white;
-    color: #aaa;
+    color: black;
 }
 .cards{
     font-size: 18px;
     // border: 1px solid white;
-    margin-top: 10px;
+    margin-top: 30px;
 }
 .card{
     font-size: 16px;
     // border: 1px solid #fff6dd;
     border-radius:15px;
     padding: 10px;
+    padding-top: 20px;
     width: 85%;
     margin-left: 5%;
     margin-top: 10px;
-    background: white;
-    color: #aaa;
+    background: #ffffff;
+    color: black;
 }
 .item{
 //    border: 1px solid black;
@@ -252,8 +298,8 @@ export default {
     padding-bottom: 20px;
 }
 .notice-image{
-    width: 25px;
-    height: 25px;
+    width: 40px;
+    height: 35px;
     margin: 5px;
 }
 .addcard{
@@ -297,8 +343,9 @@ export default {
 .unused-packages{
     font-size: 18px;
     text-align: center;
-    border: 1px solid white;
+    border-bottom: 1px solid #f7cdab;
     margin-top: 20px;
+    padding-bottom: 20px;
 }
 .unused-packages table{
     width: 90%;
@@ -310,8 +357,9 @@ export default {
     text-align: left;
 }
 .pkg-name{
-    color: #f59a23;
+    color: #fa7000;
     font-weight:bolder;
+    margin-bottom: 15px;
 }
 .loading {
   position: fixed;
@@ -325,10 +373,73 @@ export default {
   margin: 0;
 }
 .unUsedPkg{
-    color: #f59a23;
+    color: #fa7000;
     margin-left: 10px;
     margin-right: 10px;
     font-size: 18px;
     text-decoration: underline;
+}
+.card-titile{
+    margin-top:10px;
+    margin-bottom: 10px;
+    width: 100%;
+    // margin-left: 5%;
+    // color: #fa7000;
+    background: #fa7000;
+    color: white;
+    text-align: center;
+    border-radius:10px;
+}
+.card-titile-name{
+    // text-align: left;
+    font-size: 25px;
+    font-weight:bold;
+    // background: #fa7000;
+    // color: white;
+}
+.card-titile-status{
+    // text-align: right;
+    font-size: 16px;
+}
+.circle-box{
+    font-size: 13px;
+    width: 80%;
+    height: 80%;
+    margin-left: 10%;
+    margin-top: 40%;
+    color: black;
+}
+.card-infos{
+    margin-bottom: 15px;
+}
+.card-infos-pkgs{
+    margin-left: 5px;
+    font-size: 14px;
+}
+.card-infos-pkgs div{
+    margin-left: 1px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    // font-weight:bold;
+}
+.card-infos-clear{
+    font-size: 12px;
+    background: #f7cdab;
+    text-align: center;
+    margin-top: 10px;
+    font-weight:bold;
+    color: #fa7000;
+    padding: 2px;
+}
+.pkg-desc{
+    font-size: 12px;
+    color: #fa7000;
+    font-weight:bold;
+    background: #f7cdab;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-radius:5px;
 }
 </style>

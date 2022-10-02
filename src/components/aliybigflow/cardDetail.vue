@@ -108,7 +108,7 @@ export default {
         currentUsageRate: '',
         usagePercent: 10,
         usage: 0,
-        bodyColor: '#FDAB16'
+        bodyColor: '#fa7000'
     }
   },
   created() {
@@ -250,7 +250,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .page{
-    background: silver;
+    background: rgb(240, 240, 240);
 }
 .circle{
     padding-top: 10%;
@@ -270,7 +270,7 @@ export default {
     height: 60%;
     margin-left: 20%;
     margin-top: 20%;
-    color: #aaa;
+    color: black;
 }
 .circle-note{
     margin-top: 30%;
@@ -305,11 +305,11 @@ export default {
     // color: #f59a23;
 }
 .usage-detail-title-name{
-    color: #f59a23;
+    color: #fa7000;
 }
 .usage_detail-contents{
     width: 100%;
-    color: #aaa;
+    color: black;
 }
 .usage_detail-contents td{
     padding: 10px;
@@ -334,7 +334,7 @@ export default {
 .package-selected{
     width: 120px;
     height: 120px;
-    border: 1px solid #f59a23;
+    border: 1px solid #fa7000;
     border-radius:15px;
     text-align: center;
 }
@@ -355,7 +355,7 @@ export default {
 .package-content-name-selected{
     font-weight:bolder;
     margin-bottom: 10px;
-    color: #f59a23;
+    color: #fa7000;
 }
 .package-content-name-unselect{
     font-weight:bolder;
@@ -381,7 +381,7 @@ export default {
     width:60%;
     margin-left: 20%;
     margin-bottom: 10px;
-    color: #f59a23;
+    color: #fa7000;
 }
 .package-alert{
     font-size: 15px;
@@ -405,7 +405,7 @@ export default {
 }
 .buy-btn{
     border-radius:15px;
-    background: #f59a23;
+    background: #fa7000;
     width: 50%;
     height: 40px;
     text-align: center;

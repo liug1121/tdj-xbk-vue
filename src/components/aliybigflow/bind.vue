@@ -54,6 +54,7 @@ export default {
         })
     },
     bind: function() {
+        // window.location.href = 'alipays://platformapi/startapp?appId=20000042&publicBizType=LIFE_APP&publicId=2021002105630076'
         if (this.iccid19 === null || this.iccid19 === '' || this.iccid19.length !== 19) {
             this.$toast('请输入19位iccid')
             return
@@ -99,7 +100,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .page{
-    font-size: 18px;
+    font-size: 16px;
 }
 .card{
     margin:50px;
@@ -112,19 +113,19 @@ export default {
 .notice{
     width: 80%;
     margin-left: 10%;
-    color: #aaa;
+    color: black;
 }
 .bind{
     text-align: center;
-    border: 1px solid #f59a23;
+    border: 1px solid #fa7000;
     border-radius:15px;
     margin-top: 30px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     margin-bottom: 50px;
     width: 80%;
     margin-left: 10%;
-    background: #f59a23;
+    background: #fa7000;
     color: white;
 }
 .page table{
@@ -139,15 +140,15 @@ export default {
 }
 .next{
     text-align: center;
-    border: 1px solid #f59a23;
+    border: 1px solid #fa7000;
     border-radius:15px;
     margin-top: 30px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     margin-bottom: 50px;
     width: 80%;
     margin-left: 10%;
-    background: #f59a23;
+    background: #fa7000;
     color: white;
 }
 tr{

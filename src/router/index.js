@@ -521,7 +521,8 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       console.log('32')
-      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiIyMDg4OTMyMzEzNjg4NDY1IiwiYXBwSWQiOiIyMDIxMDAyMTA1NjMwMDc2IiwidHlwZSI6IjQifQ.ty28G2Kj53ERdQW2pebwzEKr2JxOFmirPANxCq65RDgNIZ7WwtfpM7yhU1oRcsmZ0Mq7cL51XEwA8lev586rMA'
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiIyMDg4MjIyOTM4MTMwNTE0IiwiYXBwSWQiOiIyMDIxMDAyMTA1NjMwMDc2IiwidHlwZSI6IjQifQ.kiV4sPXJMlCQ8XzMuFvjWDUIFmi6bZ0e2iuWYPdBICJAS9nbmpMrKcuYm_WiIanuOHUD7q0eOdwXCKiZkF-Dxg'
+      // const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiIyMDg4OTMyMzEzNjg4NDY1IiwiYXBwSWQiOiIyMDIxMDAyMTA1NjMwMDc2IiwidHlwZSI6IjQifQ.ty28G2Kj53ERdQW2pebwzEKr2JxOFmirPANxCq65RDgNIZ7WwtfpM7yhU1oRcsmZ0Mq7cL51XEwA8lev586rMA'
       const userName = '测试'
       sessionStorage.setItem('token', token)
       if (token && userName) {
