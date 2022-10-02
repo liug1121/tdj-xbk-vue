@@ -243,7 +243,8 @@ export default {
     font-size: 16px;
     // border: 1px solid #fff6dd;
     border-radius:15px;
-    padding: 10px;
+    // padding: 10px;
+    padding-bottom: 0px;
     padding-top: 20px;
     width: 85%;
     margin-left: 5%;
@@ -381,14 +382,15 @@ export default {
 }
 .card-titile{
     margin-top:10px;
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
     width: 100%;
     // margin-left: 5%;
     // color: #fa7000;
     background: #fa7000;
     color: white;
     text-align: center;
-    border-radius:10px;
+    border-bottom: 10px;
+    // border-radius:10px;
     padding-top: 5px;
     padding-bottom: 5px;
 }
@@ -413,6 +415,7 @@ export default {
 }
 .card-infos{
     margin-bottom: 15px;
+    margin-left: 5px;
 }
 .card-infos-pkgs{
     margin-left: 5px;
