@@ -246,7 +246,7 @@ export default {
     // padding: 10px;
     padding-bottom: 0px;
     padding-top: 20px;
-    width: 85%;
+    width: 90%;
     margin-left: 5%;
     margin-top: 10px;
     background: #ffffff;
@@ -415,7 +415,8 @@ export default {
 }
 .card-infos{
     margin-bottom: 15px;
-    margin-left: 5px;
+    margin-left: 2.5%;
+    width:95%;
 }
 .card-infos-pkgs{
     margin-left: 5px;
