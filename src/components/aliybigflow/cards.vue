@@ -18,7 +18,7 @@
                         <td>
                             <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="130px" :color="bodyColor" :stroke-width="90" >
                                 <div class="circle-box">
-                                <div>当月剩余可用量</div>
+                                <div>剩余可用量</div>
                                 <div>{{record.flowSurplusUsed}}G</div>
                                 </div>
                             </van-circle>
@@ -389,10 +389,12 @@ export default {
     color: white;
     text-align: center;
     border-radius:10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 .card-titile-name{
     // text-align: left;
-    font-size: 25px;
+    font-size: 16px;
     font-weight:bold;
     // background: #fa7000;
     // color: white;
