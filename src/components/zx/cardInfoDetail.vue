@@ -14,8 +14,11 @@
         <div class="detail-item">ICCID：{{ cardDetails.iccid }}</div>
         <div class="detail-item">您的套餐：{{ cardDetails.currentMeal }}</div>
         <div class="detail-item">已用量：{{ cardDetails.usage }}</div>
-        <div class="detail-item">
+        <div class="detail-item" v-if="cardDetails.mealEndDate != ''">
           有效期：{{ cardDetails.mealStartDate }} 到 {{ cardDetails.mealEndDate }}
+        </div>
+        <div class="detail-item" v-else>
+          套餐待使用
         </div>
       </div>
     </div>
