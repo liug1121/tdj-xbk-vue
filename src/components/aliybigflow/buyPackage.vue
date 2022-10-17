@@ -129,6 +129,8 @@ import API from 'api/aliy'
 export default {
   data () {
     return {
+        pkgType: -1,
+        cardDetails: {},
         selectedPkg: {},
         divisionaledAddedPackages: [],
         divisionaledPackages: [],
@@ -146,9 +148,28 @@ export default {
     }
     this.getAddPackages()
     this.getPackages()
+    this.getCardDetails()
   },
   methods: {
+    getCardDetails: function() {
+        var params = {}
+        params.iccid = this.iccid
+        this.loadingShow = true
+        API.apiGetCardDetail(params).then(res => {
+            if (res.resultCode === 0) {
+                this.cardDetails = res.data
+                this.loadingShow = false
+            } else {
+                this.loadingShow = false
+            }
+        })
+    },
     toBuy: function(product) {
+        console.log('****:' + JSON.stringify(this.cardDetails))
+        if (this.pkgType === 1 && (this.cardDetails.currentMeal === undefined || this.cardDetails.currentMeal === null || this.cardDetails.currentMeal === '')) {
+            this.$toast('请先购买主套餐后，才能购买加油包')
+            return
+        }
         this.$dialog.confirm({
             title: '提醒',
             message: '确认购买 ' + this.selectedPkg.viewName + '吗？'
@@ -179,6 +200,7 @@ export default {
         })
     },
     selectPkgId: function(pkgType, row, column, pkg) {
+        this.pkgType = pkgType
         this.selPkgId = pkgType + '-' + row + '-' + column
         this.selectedPkg = pkg
     },

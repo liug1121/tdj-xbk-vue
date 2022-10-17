@@ -12,7 +12,9 @@
             </table>
         </div>
         <div class="cards" v-for="(record, index) in cards" :key="index">
-            <div class="card">
+                <div class="card">
+                <div v-if="record.currentMeal === ''" class="mask-notice" >尚未购买套餐，点击购买</div>
+                <div v-if="record.currentMeal === ''" class="mask" @click="toPackages(record.iccid)">
                 <table class="card-infos">
                     <tr>
                         <td>
@@ -22,15 +24,14 @@
                                 <div>{{record.flowSurplusUsed}}G</div>
                                 </div>
                             </van-circle>
-                            <div class="card-infos-clear">用量清零日 {{record.nextClearDate.substring(5,10)}}</div>
+                            <div v-if="record.nextClearDate !== null" class="card-infos-clear">用量清零日 </div>
                         </td>
                         <td>
                             <div class="card-infos-pkgs">
-                                <!-- <div>当前套餐有效期：></div>
-                                <div>未生效套餐：无</div> -->
-                                <div @click="toCardDetails(record.iccid)">套餐有效期：{{record.packageExpireDate}} > </div>
-                                <div v-if="record.unUsedPackages.length == 0" >未生效套餐：无</div>
-                                <div v-if="record.unUsedPackages.length > 0" @click="showNextProduct(nextProductsShowed)">未生效套餐：<span class="unUsedPkg">{{record.unUsedPackages.length}}</span>个 ></div>
+                                <div v-if="record.packageExpireDate != null && record.packageExpireDate !== ''" @click="toCardDetails(record.iccid)">套餐有效期：{{record.packageExpireDate}} > </div>
+                                <div v-else @click="toCardDetails(record.iccid)">套餐有效期：无 > </div>
+                                <div >未生效套餐：无</div>
+                                <!-- <div v-if="record.unUsedPackages.length > 0" @click="showNextProduct(nextProductsShowed)">未生效套餐：<span class="unUsedPkg">{{record.unUsedPackages.length}}</span>个 ></div> -->
                             </div>
                         </td>
                     </tr>
@@ -60,21 +61,38 @@
                         </table>
                     </div>
                 </div>
-                <!-- <div class="item">
-                    <table class="device">
-                        <tr>
-                            <td class="device-item">{{record.cardName}}</td>
-                            <td class="device-item">{{record.authStatusName}}</td>
-                        </tr>
-                    </table>
                 </div>
-                <div class="item">{{record.iccid}}</div>
-                <div class="item" @click="toCardDetails(record.iccid)">当前套餐有效期：{{record.packageExpireDate}}> </div>
-                <div v-if="record.unUsedPackages.length == 0" class="item">未生效套餐：无</div>
-                <div v-if="record.unUsedPackages.length > 0" class="item" @click="showNextProduct(nextProductsShowed)">未生效套餐：<span class="unUsedPkg">{{record.unUsedPackages.length}}</span>个 ></div>
+                <div v-if="record.currentMeal !== ''">
+                    <table class="card-infos">
+                    <tr>
+                        <td>
+                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="130px" :color="bodyColor" :stroke-width="90" >
+                                <div class="circle-box">
+                                <div>剩余可用量</div>
+                                <div>{{record.flowSurplusUsed}}G</div>
+                                </div>
+                            </van-circle>
+                            <div v-if="record.nextClearDate !== null && record.nextClearDate !== undefined" class="card-infos-clear">用量清零日 {{record.nextClearDate.substring(5,10)}}</div>
+                        </td>
+                        <td>
+                            <div class="card-infos-pkgs">
+                                <div v-if="record.packageExpireDate != null && record.packageExpireDate !== ''" @click="toCardDetails(record.iccid)">套餐有效期：{{record.packageExpireDate}} > </div>
+                                <div v-else @click="toCardDetails(record.iccid)">套餐有效期：无 > </div>
+                                <div v-if="record.unUsedPackages == undefined || record.unUsedPackages.length == 0" >未生效套餐：无</div>
+                                <div v-if="record.unUsedPackages != undefined && record.unUsedPackages.length > 0" @click="showNextProduct(nextProductsShowed)">未生效套餐：<span class="unUsedPkg">{{record.unUsedPackages.length}}</span>个 ></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table class="card-titile">
+                    <tr>
+                        <td class="card-titile-name">{{record.cardName}}</td>
+                        <td class="card-titile-status">{{record.authStatusName}}</td>
+                    </tr>
+                </table>
                 <div v-if="nextProductsShowed">
                     <div class="unused-packages" v-for="(pkg, pkgIndex) in record.unUsedPackages" :key="pkgIndex" >
-                        <div class="pkg-name">{{pkg.packageViewName}}</div>
+                       <div class="pkg-name">{{pkg.packageViewName}}</div>
                         <table>
                             <tr>
                                 <td>生效时间</td>
@@ -85,38 +103,16 @@
                                 <td>{{pkg.endDate}}</td>
                             </tr>
                             <tr>
-                                <td>{{pkg.areaName}}{{pkg.dose}}G，共{{pkg.expireMonth}}个月</td>
+                                <td ><span class="pkg-desc">{{pkg.areaName}}{{pkg.dose}}G，共{{pkg.expireMonth}}个月</span></td>
                                 <td></td>
                             </tr>
                         </table>
                     </div>
                 </div>
-                <div></div>
-                <div class = "card-usage" v-if="record.currentMeal != ''">
-                    <div>当月剩余可用量</div>
-                    <div>{{record.flowSurplusUsed}}G</div>
-                    <div>下次可用量重置日</div>
-                    <div>{{record.nextClearDate}}</div>
                 </div>
-                <div class = "tobuy" v-if="record.currentMeal===''">
-                    <div>购买套餐</div>
-                </div> -->
             </div>
         </div>
-        <!-- <div class="addcard" >+</div> -->
     </div>
-    <!-- <div v-else>
-        <div class="bind-guid">
-            <div class="bind-titile">暂无SIM卡</div>
-            <div>如您已拥有XXX物联网设备及配套的SIM卡，您可以点击激活</div>
-            <div>
-                <img  src="../../common/images/bindGuid.jpg" />
-            </div>
-            <div class = "tobind">
-                <div>去实名认证</div>
-            </div>
-        </div>
-    </div> -->
     <div v-show="loadingShow" class="loading">
       <van-loading type="spinner" color="#FDAB16" />
     </div>
@@ -134,28 +130,6 @@ export default {
         lastUsage: '100G',
         clearDate: '2022-09-20',
         cards: [
-            {
-                deviceName: 'CPE设备',
-                cardCertStatus: '已实名',
-                cardStatus: 1,
-                iccid: '89860919720022618536',
-                validPeriod: '2022-09-20',
-                nextPackageDesc: '未生效套餐：2个',
-                nextPackages: [
-                    {
-                        name: '半年包套餐',
-                        startDate: '2022-09-20',
-                        endDate: '2022-09-20',
-                        viewName: '全国流量300G，共6个月'
-                    },
-                    {
-                        name: '月套餐',
-                        startDate: '2022-09-20',
-                        endDate: '2022-09-20',
-                        viewName: '全国流量300G，共6个月'
-                    }
-                ]
-            }
         ]
     }
   },
@@ -170,7 +144,16 @@ export default {
     // }
   },
   methods: {
+    toPackages: function(iccid) {
+        this.$router.push({
+            path: '/aliy/buyPackage',
+            query: {
+                iccid: iccid
+            }
+        })
+    },
     toCardDetails: function(iccid) {
+        console.log('sss')
         this.$router.push({
             path: '/aliy/cardDetail',
             query: {
@@ -240,6 +223,7 @@ export default {
     margin-top: 30px;
 }
 .card{
+    position: relative;
     font-size: 16px;
     // border: 1px solid #fff6dd;
     border-radius:15px;
@@ -447,5 +431,19 @@ export default {
     padding-top: 3px;
     padding-bottom: 3px;
     border-radius:5px;
+}
+.mask {
+ opacity: 0.15;
+ z-index: 1
+}
+.mask-notice{
+    left: 10%;
+    top: 40%;
+    width: 80%;
+    color: #fa7000;
+    position: absolute;
+    font-size: 18px;
+    text-align: center;
+    font-weight:bold;
 }
 </style>
