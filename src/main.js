@@ -10,6 +10,8 @@ import axios from 'axios'
 // import VConsole from 'vconsole'
 import wx from 'weixin-js-sdk'
 import infiniteScroll from 'vue-infinite-scroll'
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 Vue.use(infiniteScroll)
 if (process.env.VUE_APP_BASE_URL === 'http://xbk.tdj.cn') {
   /* eslint-disable no-new */

@@ -41,7 +41,7 @@
                 <table class="card-titile">
                     <tr>
                         <td class="card-titile-name">{{record.cardName}}</td>
-                        <td class="card-titile-status">{{record.cardStatusName}}<span class="to-cert" v-if="record.cardStatus === 0">去实名</span></td>
+                        <td class="card-titile-status">{{record.cardStatusName}}<span class="to-cert" v-if="record.cardStatus === 0">去实名认证</span></td>
                     </tr>
                 </table>
                 <div v-if="nextProductsShowed">
@@ -91,7 +91,7 @@
                 <table class="card-titile">
                     <tr>
                         <td class="card-titile-name">{{record.cardName}}</td>
-                        <td class="card-titile-status">{{record.cardStatusName}}<span  v-if="record.cardStatus === 0"><a class="to-cert" href="https://ur.alipay.com/xVMGSNb4VYgFWollT2kzM">去实名</a></span></td>
+                        <td class="card-titile-status">{{record.cardStatusName}}<span class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid)">去实名认证</span></td>
                     </tr>
                 </table>
                 <div v-if="nextProductsShowed">
@@ -160,6 +160,14 @@ export default {
         console.log('sss')
         this.$router.push({
             path: '/aliy/cardDetail',
+            query: {
+                iccid: iccid
+            }
+        })
+    },
+    toCert: function(iccid) {
+        this.$router.push({
+            path: '/aliy/cert',
             query: {
                 iccid: iccid
             }
@@ -452,13 +460,14 @@ export default {
 }
 .to-cert{
     margin-left: 10px;
-    font-weight:bold;
-    background:cadetblue;
+    // font-weight:bold;
+    background:white;
     padding: 2px;
     padding-left: 10px;
     padding-right: 10px;
     border-radius:5px;
     font-size: 14px;
-    color:#ffffff;
+    color:black;
+
 }
 </style>

@@ -1,5 +1,14 @@
 <template>
   <div class="page">
+    <div class="process">
+        <table>
+            <tr>
+                <td><img  src="../../common/images/process-sim.jpg" /><div>添加卡</div></td>
+                <td class="mask"><img  src="../../common/images/process-cert.jpg" /><div>实名认证</div></td>
+            </tr>
+        </table>
+    </div>
+    <span class="demo-title">示意图</span>
     <div class="card-wrapp">
         <div class="card">
         </div>
@@ -27,7 +36,7 @@
         </tr>
     </table>
     <div class = "next">
-        <div @click="bind">去绑卡</div>
+        <div @click="bind">下一步</div>
     </div>
     <div v-show="loadingShow" class="loading">
       <van-loading type="spinner" color="#FDAB16" />
@@ -78,7 +87,12 @@ export default {
                 if (res.resultCode === 0) {
                     this.$toast('绑定成功')
                     this.loadingShow = false
-                    this.toCards()
+                    var authStatus = res.data.authStatus
+                    if (authStatus === 'authedSuccess') {
+                        this.toCards()
+                    } else {
+                        this.toCert(res.data.iccid)
+                    }
                     // if (res.data.authStatus === 'uncertified') {
                     //     // this.toCert()
                     // } else {
@@ -93,9 +107,17 @@ export default {
         }).catch(() => {
         })
     },
-    toCards: function(iccid) {
+    toCards: function() {
         this.$router.push({
             path: '/aliy/cards'
+        })
+    },
+    toCert: function(iccid) {
+        this.$router.push({
+            path: '/aliy/cert',
+            query: {
+                iccid: iccid
+            }
         })
     }
   }
@@ -107,6 +129,7 @@ export default {
 }
 .card-wrapp{
     margin:10%;
+    margin-top:10px;
     width: 80%;
     // height: 4.1rem;
     height: 220px;
@@ -178,5 +201,35 @@ span{
   width: 100%;
   height: 100%;
   margin: 0;
+}
+.process{
+    width: 98%;
+    margin-left: 1%;
+    margin-top: 1px;
+    height: 100px;
+    // background: gray;
+    margin-bottom: 10px;
+    border: 0.5px solid #fa7000;
+    border-radius:5px;
+}
+.demo-title{
+    margin-left: 10%;
+    color: black;
+    font-weight:bold;
+}
+.process img{
+    width: 30px;
+    height: 30px;
+}
+.process table{
+    width: 90%;
+    // background: gray;
+    text-align: center;
+    color: #fa7000;
+    font-size: 14px;
+}
+.mask {
+ opacity: 0.30;
+ z-index: 1
 }
 </style>
