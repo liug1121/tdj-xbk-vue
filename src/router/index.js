@@ -334,13 +334,13 @@ const routes = [
   },
   {
     path: '/aliy/cards',
-    name: '移动智慧物联',
+    name: '灵趣智慧物联',
     component: () => import('components/aliybigflow/cards.vue'),
     meta: { aliybigflow: true }
   },
   {
     path: '/aliy/bind',
-    name: '移动智慧物联',
+    name: '灵趣智慧物联',
     component: () => import('components/aliybigflow/bind.vue'),
     meta: { aliybigflow: true }
   },
@@ -352,25 +352,25 @@ const routes = [
   },
   {
     path: '/aliy/cardDetail',
-    name: '移动智慧物联',
+    name: '灵趣智慧物联',
     component: () => import('components/aliybigflow/cardDetail.vue'),
     meta: { aliybigflow: true }
   },
   {
     path: '/aliy/buyPackage',
-    name: '移动智慧物联',
+    name: '灵趣智慧物联',
     component: () => import('components/aliybigflow/buyPackage.vue'),
     meta: { aliybigflow: true }
   },
   {
     path: '/aliy/cardPackageDetails',
-    name: '移动智慧物联',
+    name: '灵趣智慧物联',
     component: () => import('components/aliybigflow/cardPackageDetails.vue'),
     meta: { aliybigflow: true }
   },
   {
     path: '/notaliy',
-    name: '移动智慧物联',
+    name: '灵趣智慧物联',
     component: () => import('components/aliybigflow/notAliPay.vue'),
     meta: { aliybigflow: true }
   },

@@ -1,7 +1,10 @@
 <template>
   <div class="page">
-    <div class="card"></div>
-    <div class="notice">扫描SIM卡上的ICCID条形码，开始添加，PUK码可刮开涂层后查看</div>
+    <div class="card-wrapp">
+        <div class="card">
+        </div>
+    </div>
+    <div class="notice">扫描设备上的ICCID条形码，开始添加</div>
     <div class = "bind">
         <div @click="scan">扫一扫添加</div>
     </div>
@@ -59,10 +62,10 @@ export default {
             this.$toast('请输入19位iccid')
             return
         }
-        if (this.cardName === null || this.cardName === '' || this.cardName.length > 10) {
-            this.$toast('卡名称不能超过10个字')
-            return
-        }
+        // if (this.cardName === null || this.cardName === '' || this.cardName.length > 10) {
+        //     this.$toast('卡名称不能超过10个字')
+        //     return
+        // }
         this.$dialog.confirm({
             title: '提醒',
             message: '确认进行该操作吗？'
@@ -102,12 +105,20 @@ export default {
 .page{
     font-size: 16px;
 }
+.card-wrapp{
+    margin:10%;
+    width: 80%;
+    // height: 4.1rem;
+    height: 220px;
+    border: 0.5px solid gray;
+    border-radius:5px;
+}
 .card{
-    margin:50px;
+    margin-left: 3px;
     width: 5.8rem;
-    height: 4.3rem;
+    height: 4.0rem;
     display:block;
-    background:url(../../common/images/card-demo.png) no-repeat 100% 100%;
+    background:url(../../common/images/ufi-demo.jpg) no-repeat 100% 100%;
     background-size:contain;
 }
 .notice{

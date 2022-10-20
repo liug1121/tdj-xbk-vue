@@ -1,5 +1,15 @@
 <template>
   <div class="page">
+    <div class="notice">
+        <table>
+            <tr>
+                <td>
+                    <img class="notice-image" src="../../common/images/alisms.jpg" />
+                </td>
+                <td>{{notice}}</td>
+            </tr>
+        </table>
+    </div>
     <div class="circle">
          <van-circle v-model="currentUsageRate" :rate="Number(cardDetails.usagePercent)" :speed="Number(usage)" layer-color="#ebedf0" size="200px" :color="bodyColor" :stroke-width="120" >
             <div class="circle-box">
@@ -43,7 +53,7 @@
             </tr>
         </table>
     </div>
-    <div class="packages">
+    <!-- <div class="packages">
         <table>
             <tr @click="toPackages">
                 <td width="10%"><img class="usage-detail-title" src="../../common/images/usage-detal.jpg" /></td>
@@ -78,7 +88,7 @@
             </table>
             <div class="buy-btn"><span class="buy-btn-text" @click="toBuy">立即购买</span></div>
         </div>
-    </div>
+    </div> -->
     <table class="package-alert" v-if="cardDetails.showUsedAlert">
         <tr>
             <td><img class="package-alert-image" src="../../common/images/usage-alert.jpg" /></td>
@@ -97,6 +107,7 @@ import API from 'api/aliy'
 export default {
   data () {
     return {
+        notice: '',
         selectedPkg: {},
         selPkgId: 0,
         type: 0,
@@ -117,7 +128,7 @@ export default {
         this.iccid = this.iccid.substring(0, 20)
     }
     this.getCardDetails()
-    this.getAddedPackages()
+    // this.getAddedPackages()
   },
   methods: {
     toPackages: function(iccid) {
@@ -183,6 +194,16 @@ export default {
         API.apiGetCardDetail(params).then(res => {
             if (res.resultCode === 0) {
                 this.cardDetails = res.data
+                var cardStatus = this.cardDetails.cardStatus
+                if (cardStatus === 0) {
+                    this.notice = '您购买的套餐会在' + this.cardDetails.mealStartDate + '自动生效并开始计费，为了避免您的套餐有效时间浪费，请尽快完成实名认证～'
+                } else if (cardStatus === 1) {
+                    this.notice = '您当前的套餐已过期，套餐有效期过期1年后(' + this.cardDetails.mealEneDateAdded1Year + ')，系统将对该SIM卡做自动销户处理，建议您及时购买套餐继续使用～'
+                } else if (cardStatus === 2) {
+                    this.notice = '您的卡还没有套餐，请联系客服反馈～'
+                } else if (cardStatus === 3) {
+                    this.notice = '您的卡片已激活，可以插卡使用流量啦，如有疑问请联系官方客服咨询'
+                }
                 this.loadingShow = false
             } else {
                 this.loadingShow = false
@@ -257,7 +278,7 @@ export default {
     margin-left: 0.5%;
     // border: 1px solid black;
     width: 99%;
-    height: 200px;
+    height: 210px;
     text-align: center;
     // margin-top: 10%;
     background: white;
@@ -294,7 +315,7 @@ export default {
     width: 99%;
     border: 0px solid black;
     margin-left: 0.5%;
-    margin-top: 50px;
+    margin-top: 45px;
     background: white;
     // border-radius:15px;
 }
@@ -312,7 +333,7 @@ export default {
     color: black;
 }
 .usage_detail-contents td{
-    padding: 10px;
+    padding: 15px;
 }
 .usage-detail-content{
     text-align: right;
@@ -414,5 +435,25 @@ export default {
     color: white;
     margin-left: 20%;
     margin-top: 15px;
+}
+.notice{
+    font-size: 16px;
+    border: 1px solid white;
+    // margin-left: 5%;
+    width: 100%;
+    height: 80px;
+    // border-radius:15px;
+    text-align: left;
+    padding-top: 30px;
+    background: white;
+    color: black;
+    margin-bottom: 15px;
+    margin-left: 0.5%;
+    width: 99%;
+}
+.notice-image{
+    width: 40px;
+    height: 35px;
+    margin: 5px;
 }
 </style>

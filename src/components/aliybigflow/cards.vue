@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div v-if="cards.length > 0">
-        <div class="notice">
+        <!-- <div class="notice">
             <table>
                 <tr>
                     <td>
@@ -10,26 +10,28 @@
                     <td>{{notice}}</td>
                 </tr>
             </table>
-        </div>
+        </div> -->
         <div class="cards" v-for="(record, index) in cards" :key="index">
                 <div class="card">
-                <div v-if="record.currentMeal === ''" class="mask-notice" >尚未购买套餐，点击购买</div>
-                <div v-if="record.currentMeal === ''" class="mask" @click="toPackages(record.iccid)">
+                <div v-if="record.currentMeal === ''" class="mask-notice" >您的卡还没有订购套餐，还不能正常使用，请与客服联系。</div>
+                <div v-if="record.currentMeal === ''" class="mask" >
                 <table class="card-infos">
                     <tr>
                         <td>
-                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="130px" :color="bodyColor" :stroke-width="90" >
+                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="100px" :color="bodyColor" :stroke-width="90" >
                                 <div class="circle-box">
                                 <div>剩余可用量</div>
-                                <div>{{record.flowSurplusUsed}}G</div>
+                                <div>{{record.flowSurplusUsed}}</div>
                                 </div>
                             </van-circle>
                             <div v-if="record.nextClearDate !== null" class="card-infos-clear">用量清零日 </div>
                         </td>
                         <td>
                             <div class="card-infos-pkgs">
-                                <div v-if="record.packageExpireDate != null && record.packageExpireDate !== ''" @click="toCardDetails(record.iccid)">套餐有效期：{{record.packageExpireDate}} > </div>
-                                <div v-else @click="toCardDetails(record.iccid)">套餐有效期：无 > </div>
+                                <div >ICCID：{{record.iccid}}</div>
+                                <div >SN：{{record.ufiSn}}</div>
+                                <div v-if="record.packageExpireDate != null && record.packageExpireDate !== ''" >套餐有效期：{{record.packageExpireDate}} > </div>
+                                <div v-else >套餐有效期：无 > </div>
                                 <div >未生效套餐：无</div>
                                 <!-- <div v-if="record.unUsedPackages.length > 0" @click="showNextProduct(nextProductsShowed)">未生效套餐：<span class="unUsedPkg">{{record.unUsedPackages.length}}</span>个 ></div> -->
                             </div>
@@ -39,7 +41,7 @@
                 <table class="card-titile">
                     <tr>
                         <td class="card-titile-name">{{record.cardName}}</td>
-                        <td class="card-titile-status">{{record.authStatusName}}</td>
+                        <td class="card-titile-status">{{record.cardStatusName}}<span class="to-cert" v-if="record.cardStatus === 0">去实名</span></td>
                     </tr>
                 </table>
                 <div v-if="nextProductsShowed">
@@ -66,16 +68,18 @@
                     <table class="card-infos">
                     <tr>
                         <td>
-                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="130px" :color="bodyColor" :stroke-width="90" >
+                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="100px" :color="bodyColor" :stroke-width="90" >
                                 <div class="circle-box">
                                 <div>剩余可用量</div>
-                                <div>{{record.flowSurplusUsed}}G</div>
+                                <div>{{record.flowSurplusUsed}}</div>
                                 </div>
                             </van-circle>
                             <div v-if="record.nextClearDate !== null && record.nextClearDate !== undefined" class="card-infos-clear">用量清零日 {{record.nextClearDate.substring(5,10)}}</div>
                         </td>
                         <td>
                             <div class="card-infos-pkgs">
+                                <div >ICCID：{{record.iccid}}</div>
+                                <div >SN：{{record.ufiSn}}</div>
                                 <div v-if="record.packageExpireDate != null && record.packageExpireDate !== ''" @click="toCardDetails(record.iccid)">套餐有效期：{{record.packageExpireDate}} > </div>
                                 <div v-else @click="toCardDetails(record.iccid)">套餐有效期：无 > </div>
                                 <div v-if="record.unUsedPackages == undefined || record.unUsedPackages.length == 0" >未生效套餐：无</div>
@@ -87,7 +91,7 @@
                 <table class="card-titile">
                     <tr>
                         <td class="card-titile-name">{{record.cardName}}</td>
-                        <td class="card-titile-status">{{record.authStatusName}}</td>
+                        <td class="card-titile-status">{{record.cardStatusName}}<span  v-if="record.cardStatus === 0"><a class="to-cert" href="https://ur.alipay.com/xVMGSNb4VYgFWollT2kzM">去实名</a></span></td>
                     </tr>
                 </table>
                 <div v-if="nextProductsShowed">
@@ -408,12 +412,12 @@ export default {
 }
 .card-infos-pkgs div{
     margin-left: 1px;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin-top: 1px;
+    margin-bottom: 15px;
     // font-weight:bold;
 }
 .card-infos-clear{
-    font-size: 12px;
+    font-size: 11px;
     background: #f7cdab;
     text-align: center;
     margin-top: 10px;
@@ -442,8 +446,19 @@ export default {
     width: 80%;
     color: #fa7000;
     position: absolute;
-    font-size: 18px;
+    font-size: 14px;
     text-align: center;
     font-weight:bold;
+}
+.to-cert{
+    margin-left: 10px;
+    font-weight:bold;
+    background:cadetblue;
+    padding: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius:5px;
+    font-size: 14px;
+    color:#ffffff;
 }
 </style>
