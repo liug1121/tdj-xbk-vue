@@ -14,10 +14,10 @@
          <van-circle v-model="currentUsageRate" :rate="Number(cardDetails.usagePercent)" :speed="Number(usage)" layer-color="#ebedf0" size="200px" :color="bodyColor" :stroke-width="120" >
             <div class="circle-box">
               <div class="circle-note">当月剩余可用量</div>
-              <div class="circle-last">{{cardDetails.flowSurplusUsed}}</div>
+              <div class="circle-last"><span class="usage">{{cardDetails.flowSurplusUsed}}</span><span class="unit">{{cardDetails.flowSurplusUsedUnit}}</span></div>
             </div>
           </van-circle>
-          <div class="circle-usage">{{cardDetails.flowTotalUsedG}}已用</div>
+          <div class="circle-usage"><span class="usage">{{cardDetails.flowTotalUsedG}}</span><span class="unit">{{cardDetails.flowTotalUsedGUnit}}</span>已用</div>
     </div>
     <div class="usage-detail">
         <table>
@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <td>套餐当月可用量：</td>
-                <td class="usage-detail-content">{{cardDetails.flowTotalDoseG}}</td>
+                <td class="usage-detail-content">{{cardDetails.flowTotalDoseG}}<span>{{cardDetails.flowTotalDoseGUnit}}</span></td>
             </tr>
             <!-- <tr>
                 <td>当月已购加油包可用量：</td>
@@ -45,11 +45,11 @@
             </tr> -->
             <tr>
                 <td>当月已用量：</td>
-                <td class="usage-detail-content">{{cardDetails.flowTotalUsedG}}</td>
+                <td class="usage-detail-content">{{cardDetails.flowTotalUsedG}}<span>{{cardDetails.flowTotalUsedGUnit}}</span></td>
             </tr>
             <tr>
                 <td>当月剩余可用量：</td>
-                <td class="usage-detail-content">{{cardDetails.flowSurplusUsed}}</td>
+                <td class="usage-detail-content">{{cardDetails.flowSurplusUsed}}<span>{{cardDetails.flowSurplusUsedUnit}}</span></td>
             </tr>
         </table>
     </div>
@@ -296,6 +296,7 @@ export default {
 .circle-note{
     margin-top: 30%;
     margin-bottom: 10px;
+    font-weight:bold;
 }
 .circle-last{
     font-size: 18px;
@@ -455,5 +456,16 @@ export default {
     width: 40px;
     height: 35px;
     margin: 5px;
+}
+.usage{
+    font-size: 23px;
+}
+.unit{
+    font-size: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.usage_detail-contents span{
+    margin-left: 5px;
 }
 </style>
