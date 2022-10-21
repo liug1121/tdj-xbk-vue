@@ -18,18 +18,23 @@
                 <table class="card-infos">
                     <tr>
                         <td>
-                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="100px" :color="bodyColor" :stroke-width="90" >
+                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="120px" :color="bodyColor" :stroke-width="90" >
                                 <div class="circle-box">
-                                <div>剩余可用量</div>
-                                <div>{{record.flowSurplusUsed}}</div>
+                                <div>当月剩余可用量</div>
+                                <div><span class="usage">{{record.flowSurplusUsed}}</span> <span class="unit">{{record.flowSurplusUsedUnit}}</span></div>
                                 </div>
                             </van-circle>
-                            <div v-if="record.nextClearDate !== null" class="card-infos-clear">用量清零日 </div>
+                            <div v-if="record.nextClearDate !== null" class="card-infos-clear">下次流量重置日 </div>
                         </td>
                         <td>
                             <div class="card-infos-pkgs">
-                                <div >ICCID：{{record.iccid}}</div>
-                                <div >SN：{{record.ufiSn}}</div>
+                                <div ><span class="device-name">设备昵称：{{record.cardName}}</span>
+                                    <span v-if="record.cardStatus !== 0" class="card-status">{{record.cardStatusName}}</span>
+                                    <span v-if="record.cardStatus === 0" class="card-status-gray">{{record.cardStatusName}}</span>
+                                </div>
+                                <div >ICCID：{{record.iccid19Format}}</div>
+                                <div >IMEI：{{record.ufiImeiFormat}}</div>
+                                <!-- <div >卡状态：{{record.cardStatusName}}<span class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid)">去实名认证</span></div> -->
                                 <div v-if="record.packageExpireDate != null && record.packageExpireDate !== ''" >套餐有效期：{{record.packageExpireDate}} > </div>
                                 <div v-else >套餐有效期：无 > </div>
                                 <div >未生效套餐：无</div>
@@ -38,12 +43,12 @@
                         </td>
                     </tr>
                 </table>
-                <table class="card-titile">
+                <!-- <table class="card-titile">
                     <tr>
+                        <td class="card-titile-name">设备昵称：</td>
                         <td class="card-titile-name">{{record.cardName}}</td>
-                        <td class="card-titile-status">{{record.cardStatusName}}<span class="to-cert" v-if="record.cardStatus === 0">去实名认证</span></td>
                     </tr>
-                </table>
+                </table> -->
                 <div v-if="nextProductsShowed">
                     <div class="unused-packages" v-for="(pkg, pkgIndex) in record.unUsedPackages" :key="pkgIndex" >
                        <div class="pkg-name">{{pkg.packageViewName}}</div>
@@ -68,18 +73,23 @@
                     <table class="card-infos">
                     <tr>
                         <td>
-                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="100px" :color="bodyColor" :stroke-width="90" >
+                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="120px" :color="bodyColor" :stroke-width="90" >
                                 <div class="circle-box">
-                                <div>剩余可用量</div>
-                                <div>{{record.flowSurplusUsed}}</div>
+                                <div>当月剩余可用量</div>
+                                <div><span class="usage">{{record.flowSurplusUsed}}</span> <span class="unit">{{record.flowSurplusUsedUnit}}</span></div>
                                 </div>
                             </van-circle>
-                            <div v-if="record.nextClearDate !== null && record.nextClearDate !== undefined" class="card-infos-clear">用量清零日 {{record.nextClearDate.substring(5,10)}}</div>
+                            <div v-if="record.nextClearDate !== null && record.nextClearDate !== undefined" class="card-infos-clear">下次流量重置日 <div>{{record.nextClearDate}}</div></div>
                         </td>
                         <td>
                             <div class="card-infos-pkgs">
-                                <div >ICCID：{{record.iccid}}</div>
-                                <div >SN：{{record.ufiSn}}</div>
+                                <div ><span class="device-name">设备昵称：{{record.cardName}}</span>
+                                    <span v-if="record.cardStatus !== 0" class="card-status">{{record.cardStatusName}}</span>
+                                    <span v-if="record.cardStatus === 0" class="card-status-gray">{{record.cardStatusName}}</span>
+                                </div>
+                                <div >ICCID：{{record.iccid19Format}}</div>
+                                <div >IMEI：{{record.ufiImeiFormat}}</div>
+                                <!-- <div >卡状态：{{record.cardStatusName}}<span class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid)">去实名认证</span></div> -->
                                 <div v-if="record.packageExpireDate != null && record.packageExpireDate !== ''" @click="toCardDetails(record.iccid)">套餐有效期：{{record.packageExpireDate}} > </div>
                                 <div v-else @click="toCardDetails(record.iccid)">套餐有效期：无 > </div>
                                 <div v-if="record.unUsedPackages == undefined || record.unUsedPackages.length == 0" >未生效套餐：无</div>
@@ -88,12 +98,13 @@
                         </td>
                     </tr>
                 </table>
-                <table class="card-titile">
+                <div class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid)">去实名认证</div>
+                <!-- <table class="card-titile">
                     <tr>
+                        <td class="card-titile-name">设备名称：</td>
                         <td class="card-titile-name">{{record.cardName}}</td>
-                        <td class="card-titile-status">{{record.cardStatusName}}<span class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid)">去实名认证</span></td>
                     </tr>
-                </table>
+                </table> -->
                 <div v-if="nextProductsShowed">
                     <div class="unused-packages" v-for="(pkg, pkgIndex) in record.unUsedPackages" :key="pkgIndex" >
                        <div class="pkg-name">{{pkg.packageViewName}}</div>
@@ -240,7 +251,7 @@ export default {
     // border: 1px solid #fff6dd;
     border-radius:15px;
     // padding: 10px;
-    padding-bottom: 0px;
+    padding-bottom: 20px;
     padding-top: 20px;
     width: 90%;
     margin-left: 5%;
@@ -394,6 +405,8 @@ export default {
     // text-align: left;
     font-size: 16px;
     font-weight:bold;
+    text-align: left;
+    padding-left: 1%;
     // background: #fa7000;
     // color: white;
 }
@@ -408,6 +421,7 @@ export default {
     margin-left: 10%;
     margin-top: 40%;
     color: black;
+    font-weight:bold;
 }
 .card-infos{
     margin-bottom: 15px;
@@ -415,23 +429,26 @@ export default {
     width:95%;
 }
 .card-infos-pkgs{
+    margin-top: 10px;
     margin-left: 5px;
-    font-size: 14px;
+    font-size: 12px;
 }
 .card-infos-pkgs div{
     margin-left: 1px;
     margin-top: 1px;
     margin-bottom: 15px;
+
     // font-weight:bold;
 }
 .card-infos-clear{
     font-size: 11px;
-    background: #f7cdab;
+    background: #fa7000;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 7px;
     font-weight:bold;
-    color: #fa7000;
+    color: white;
     padding: 2px;
+    border-radius:5px;
 }
 .pkg-desc{
     font-size: 12px;
@@ -459,15 +476,45 @@ export default {
     font-weight:bold;
 }
 .to-cert{
-    margin-left: 10px;
+    // margin-left: 10px;
     // font-weight:bold;
-    background:white;
-    padding: 2px;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-radius:5px;
+    background:#fa7000;
+    padding: 10px;
+    // padding-left: 10px;
+    // padding-right: 10px;
+    border-radius: 20px;
     font-size: 14px;
-    color:black;
-
+    color:white;
+    width: 90%;
+    margin-left: 2%;
+    text-align: center;
+}
+.unit{
+    font-size: 9px;
+}
+.device-name{
+    font-weight:bold;
+    font-size: 13px;
+}
+.card-status{
+    background:#fa7000;
+    border-radius:5px;
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 40px;
+    font-weight:bold;
+}
+.card-status-gray{
+    background:gray;
+    border-radius:5px;
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 40px;
+    font-weight:bold;
+}
+.usage{
+    font-size: 18px;
 }
 </style>

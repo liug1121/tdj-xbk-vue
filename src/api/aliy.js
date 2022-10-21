@@ -24,6 +24,9 @@ export default {
   apiBind: params => {
     return API.POST('aliy/boss/v1.0/aliy/card/bind', params)
   },
+  apiGetIccid19: params => {
+    return API.POST('aliy/boss/v1.0/aliy/card/ufidevice', params)
+  },
   apiOrderOrderId: params => {
     return API.GET('wechat/v1.0/orders/orderid', params)
   },

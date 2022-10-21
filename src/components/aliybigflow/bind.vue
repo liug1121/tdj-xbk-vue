@@ -62,7 +62,23 @@ export default {
   methods: {
     scan: function() {
         alipay.scan().then((res) => {
-            this.iccid19 = res.code
+            console.log('scan code: ' + res.code)
+            if (res.code.length !== 19) {
+                var params = {}
+                params.imei = res.code
+                this.loadingShow = true
+                API.apiGetIccid19(params).then(res => {
+                    if (res.resultCode === 0) {
+                        this.iccid19 = res.data
+                        this.loadingShow = false
+                    } else {
+                        this.loadingShow = false
+                        this.$toast('绑定失败：' + res.resultInfo)
+                    }
+                })
+            } else {
+                this.iccid19 = res.code
+            }
         })
     },
     bind: function() {
@@ -91,7 +107,7 @@ export default {
                     if (authStatus === 'authedSuccess') {
                         this.toCards()
                     } else {
-                        this.toCert(res.data.iccid)
+                        this.toCert(res.data.iccid19)
                     }
                     // if (res.data.authStatus === 'uncertified') {
                     //     // this.toCert()
