@@ -24,20 +24,26 @@
         <div class="step-title">步骤3:</div>
         <div>步骤3:按照指引上传身份证正反面，进行人脸识别认证，完成实名认证后，关闭“阿里云物联SIM服务小程序”，稍加等待即可完成开卡流程</div>
     </div>
-    <div class="tocert"><a href="https://ur.alipay.com/xVMGSNb4VYgFWollT2kzM">开始实名认证</a></div>
+    <!-- <div class="tocert"><a href="https://ur.alipay.com/xVMGSNb4VYgFWollT2kzM">开始实名认证</a></div> -->
+    <div class="tocert" @click="toCert">开始实名认证</div>
   </div>
 </template>
 <script>
 export default {
   data () {
     return {
-      iccid: ''
+      iccid: '',
+      certUrl:'alipays://platformapi/startapp?appId=2021001188676248&page=pages/tasks/tasks&query=iccid='
     }
   },
   created() {
     this.iccid = this.$route.query.iccid
   },
   methods: {
+    toCert: function() {
+      var certUrl = this.certUrl + this.iccid
+      window.open(certUrl, '_blank')
+    },
     onCopy: function() {
       this.$toast('ICCID已复制到剪切板！')
     },
