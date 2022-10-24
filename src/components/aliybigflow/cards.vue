@@ -13,7 +13,7 @@
         </div> -->
         <div class="cards" v-for="(record, index) in cards" :key="index">
                 <div class="card">
-                <div v-if="record.currentMeal === ''" class="mask-notice" >您的卡还没有订购套餐，还不能正常使用，请与客服联系。</div>
+                <div v-if="record.currentMeal === ''" class="mask-notice" >您的设备还没有订购套餐。</div>
                 <div v-if="record.currentMeal === ''" class="mask" >
                 <table class="card-infos">
                     <tr>
@@ -28,7 +28,7 @@
                         </td>
                         <td>
                             <div class="card-infos-pkgs">
-                                <div ><span class="device-name">设备昵称：{{record.cardName}}</span>
+                                <div ><span class="device-name">昵称：{{record.cardName}}</span>
                                     <span v-if="record.cardStatus !== 0" class="card-status">{{record.cardStatusName}}</span>
                                     <span v-if="record.cardStatus === 0" class="card-status-gray">{{record.cardStatusName}}</span>
                                 </div>
@@ -70,7 +70,7 @@
                 </div>
                 </div>
                 <div v-if="record.currentMeal !== ''">
-                    <table class="card-infos">
+                    <table class="card-infos" @click="toCardDetails(record.iccid, record.iccid19Format, record.ufiImeiFormat)">
                     <tr>
                         <td>
                             <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="120px" :color="bodyColor" :stroke-width="90" >
@@ -83,22 +83,22 @@
                         </td>
                         <td>
                             <div class="card-infos-pkgs">
-                                <div ><span class="device-name">设备昵称：{{record.cardName}}</span>
-                                    <span v-if="record.cardStatus !== 0" class="card-status">{{record.cardStatusName}}</span>
-                                    <span v-if="record.cardStatus === 0" class="card-status-gray">{{record.cardStatusName}}</span>
+                                <div ><span class="device-name">昵称：{{record.cardName}}</span>
+                                    <span v-if="record.cardStatus === 0 || record.cardStatus === 1 || record.cardStatus === 7" class="card-status-gray">{{record.cardStatusName}}</span>
+                                    <span v-if="record.cardStatus !== 0 && record.cardStatus !== 1 && record.cardStatus !== 7" class="card-status">{{record.cardStatusName}}</span>
                                 </div>
                                 <div >ICCID：{{record.iccid19Format}}</div>
                                 <div >IMEI：{{record.ufiImeiFormat}}</div>
                                 <!-- <div >卡状态：{{record.cardStatusName}}<span class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid)">去实名认证</span></div> -->
-                                <div v-if="record.packageExpireDate != null && record.packageExpireDate !== ''" @click="toCardDetails(record.iccid)">套餐有效期：{{record.packageExpireDate}} > </div>
-                                <div v-else @click="toCardDetails(record.iccid)">套餐有效期：无 > </div>
+                                <div v-if="record.packageExpireDate != null && record.packageExpireDate !== ''" >套餐有效期：{{record.packageExpireDate}} <span class="more">更多>></span> </div>
+                                <div v-else >套餐有效期：无 > </div>
                                 <div v-if="record.unUsedPackages == undefined || record.unUsedPackages.length == 0" >未生效套餐：无</div>
                                 <div v-if="record.unUsedPackages != undefined && record.unUsedPackages.length > 0" @click="showNextProduct(nextProductsShowed)">未生效套餐：<span class="unUsedPkg">{{record.unUsedPackages.length}}</span>个 ></div>
                             </div>
                         </td>
                     </tr>
                 </table>
-                <div class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid)">去实名认证</div>
+                <div class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid19Format)">去实名认证</div>
                 <!-- <table class="card-titile">
                     <tr>
                         <td class="card-titile-name">设备名称：</td>
@@ -167,12 +167,14 @@ export default {
             }
         })
     },
-    toCardDetails: function(iccid) {
+    toCardDetails: function(iccid, iccid19, imei) {
         console.log('sss')
         this.$router.push({
             path: '/aliy/cardDetail',
             query: {
-                iccid: iccid
+                iccid: iccid,
+                iccid19: iccid19,
+                imei: imei
             }
         })
     },
@@ -516,5 +518,10 @@ export default {
 }
 .usage{
     font-size: 18px;
+}
+.more{
+    color: #fa7000;
+    font-weight:bold;
+    margin-left: 10px;
 }
 </style>

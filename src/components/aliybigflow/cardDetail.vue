@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div class="notice">
+    <div class="notice" v-if="notice !== ''">
         <table>
             <tr>
                 <td>
@@ -28,8 +28,16 @@
         </table>
         <table class="usage_detail-contents">
             <tr>
+                <td >ICCID：</td>
+                <td class="usage-detail-content">{{iccid19}}</td>
+            </tr>
+            <tr>
+                <td>IMEI：</td>
+                <td class="usage-detail-content">{{imei}}</td>
+            </tr>
+            <tr>
                 <td>套餐有效期：</td>
-                <td class="usage-detail-content">{{cardDetails.mealStartDate}}-{{cardDetails.mealEndDate}}</td>
+                <td class="usage-detail-content">{{cardDetails.mealStartDate}} <span class="to">~</span> {{cardDetails.mealEndDate}}</td>
             </tr>
             <tr>
                 <td>套餐当月可用量：</td>
@@ -119,11 +127,15 @@ export default {
         currentUsageRate: '',
         usagePercent: 10,
         usage: 0,
-        bodyColor: '#fa7000'
+        bodyColor: '#fa7000',
+        imei: '',
+        iccid19: ''
     }
   },
   created() {
     this.iccid = this.$route.query.iccid
+    this.iccid19 = this.$route.query.iccid19
+    this.imei = this.$route.query.imei
     if (this.iccid.length > 20) {
         this.iccid = this.iccid.substring(0, 20)
     }
@@ -201,8 +213,14 @@ export default {
                     this.notice = '您当前的套餐已过期，套餐有效期过期1年后(' + this.cardDetails.mealEneDateAdded1Year + ')，系统将对该SIM卡做自动销户处理，建议您及时购买套餐继续使用～'
                 } else if (cardStatus === 2) {
                     this.notice = '您的卡还没有套餐，请联系客服反馈～'
-                } else if (cardStatus === 3) {
-                    this.notice = '您的卡片已激活，可以插卡使用流量啦，如有疑问请联系官方客服咨询'
+                } else if (cardStatus === 4) {
+                    this.notice = '您已可以正常使用啦，如有疑问请联系官方客服咨询～'
+                } else if (cardStatus === 5) {
+                    this.notice = '您的套餐还有10天到期，为了不影响您的正常使用。推荐您购买套餐～'
+                } else if (cardStatus === 6) {
+                    this.notice = '您的流量不足10G，为了不影响您的正常使用，推荐您购买加油包～'
+                } else if (cardStatus === 7) {
+                    this.notice = '您的流量已用完，为了不影响您的正常使用，推荐您购买加油包～'
                 }
                 this.loadingShow = false
             } else {
@@ -467,5 +485,9 @@ export default {
 }
 .usage_detail-contents span{
     margin-left: 5px;
+}
+.to{
+    color: #fa7000;
+    font-weight:bold;
 }
 </style>

@@ -28,15 +28,18 @@
         </tr>
         <tr>
             <td>
-                卡命名：
+                昵称：
             </td>
             <td>
                 <input v-model="cardName"/>
             </td>
         </tr>
     </table>
-    <div class = "next">
+    <div v-if="iccid19 !== null && iccid19 !== undefined && iccid19.length === 19" class = "next">
         <div @click="bind">下一步</div>
+    </div>
+    <div v-else class = "next-disable">
+        <div>下一步</div>
     </div>
     <div v-show="loadingShow" class="loading">
       <van-loading type="spinner" color="#FDAB16" />
@@ -199,6 +202,19 @@ export default {
     width: 80%;
     margin-left: 10%;
     background: #fa7000;
+    color: white;
+}
+.next-disable{
+    text-align: center;
+    border: 1px solid gray;
+    border-radius:15px;
+    margin-top: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 50px;
+    width: 80%;
+    margin-left: 10%;
+    background: gray;
     color: white;
 }
 tr{
