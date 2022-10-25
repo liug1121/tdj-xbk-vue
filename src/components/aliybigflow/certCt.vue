@@ -8,21 +8,27 @@
             </tr>
         </table>
     </div>
-    <div class="title">阿里云物联实名认证方法</div>
+    <div class="title">中国电信物联网H5实名登记方法</div>
     <div class="item">
         <!-- <div> 1、</div> -->
-        <div class="first">您可以通过阿里云的官方物联网服务运营平台小程序，操作实名认证：</div>
+        <div class="first">您可以通过中国电信的官方物联网H5实名登记网页，完成实名认证：</div>
         <div class="step-title">步骤1：</div>
-        <div>支付宝登录并允许小程序获取您的昵称、头像等信息，点击上方“运管商实名认证”按钮。</div>
-        <img class="image-demo" src="../../common/images/cert-demo.jpg" />
+        <div>
+            <div>进入“中国电信物联’H5实名登记”页面</div>
+            <div>1.1  在第一行输入ICCID；</div>
+            <div>1.2  第二行输入自己的手机号；</div>
+            <div>1.3  点击“获取验证码”，填入收到的验证码；</div>
+            <div>1.4  然后点击“快速验证”。</div>
+        </div>
+        <img class="image-demo" src="../../common/images/cert-demo-ct.png" />
     </div>
     <div class="item">
         <div class="step-title">步骤2:</div>
-        <div>小程序中需要输入的卡号即ICCID，可先复制出来：{{iccid}}<span class="to-copy" v-clipboard:copy="iccid" v-clipboard:success="onCopy" v-clipboard:error="onError">点击复制</span></div>
+        <div>电信物联网实名登记需要的ICCID，可先复制出来：{{iccid}}<span class="to-copy" v-clipboard:copy="iccid" v-clipboard:success="onCopy" v-clipboard:error="onError">点击复制</span></div>
     </div>
     <div class="item">
         <div class="step-title">步骤3:</div>
-        <div>步骤3:按照指引上传身份证正反面，进行人脸识别认证，完成实名认证后，关闭“阿里云物联SIM服务小程序”，稍加等待即可完成开卡流程</div>
+        <div>步骤3:按照指引上传身份证正反面，进行人脸识别认证，完成实名认证后，关闭“中国电信物联网实名登记”页面，稍加等待即可完成开卡流程。</div>
     </div>
     <!-- <div class="tocert"><a href="https://ur.alipay.com/xVMGSNb4VYgFWollT2kzM">开始实名认证</a></div> -->
     <div class="tocert" @click="toCert">开始实名认证</div>
@@ -33,7 +39,7 @@ export default {
   data () {
     return {
       iccid: '',
-      certUrl: 'alipays://platformapi/startapp?appId=2021001188676248&page=pages/tasks/tasks&query=iccid='
+      certUrl: 'http://uniteapp.ctwing.cn:9090/uapp/certifhtml/certif_entry.html?userCode=r/s9Tc00hjiKcR13MIjZHg==&passWord=9u8VuY1xbez6r6k/BBnLlw==&tmstemp=1666658072758'
     }
   },
   created() {
@@ -41,8 +47,7 @@ export default {
   },
   methods: {
     toCert: function() {
-      var iccid = this.iccid.replace(new RegExp(/( )/g), '')
-      var certUrl = this.certUrl + iccid
+      var certUrl = this.certUrl + this.iccid
       window.open(certUrl, '_blank')
     },
     onCopy: function() {

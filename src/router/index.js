@@ -345,6 +345,12 @@ const routes = [
     meta: { aliybigflow: true }
   },
   {
+    path: '/aliy/certct',
+    name: '灵趣智慧物联',
+    component: () => import('components/aliybigflow/certCt.vue'),
+    meta: { aliybigflow: true }
+  },
+  {
     path: '/aliy/cert',
     name: '灵趣智慧物联',
     component: () => import('components/aliybigflow/cert.vue'),

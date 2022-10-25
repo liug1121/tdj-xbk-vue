@@ -98,7 +98,11 @@
                         </td>
                     </tr>
                 </table>
-                <div class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid19Format)">去实名认证</div>
+                <div v-if="record.cardStatus === 0">
+                    <div class="to-cert" v-if="record.cardType === 0" @click="toCert(record.iccid19Format)">去实名认证</div>
+                    <div class="to-cert" v-if="record.cardType === 1" @click="toCertCt(record.iccid19Format)">去实名认证</div>
+                </div>
+                <!-- <div class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid19Format)">去实名认证</div> -->
                 <!-- <table class="card-titile">
                     <tr>
                         <td class="card-titile-name">设备名称：</td>
@@ -178,9 +182,18 @@ export default {
             }
         })
     },
+    toCertCt: function(iccid) {
+        this.$router.push({
+            path: '/aliy/certct',
+            query: {
+                iccid: iccid
+            }
+        })
+    },
     toCert: function(iccid) {
         this.$router.push({
             path: '/aliy/cert',
+            // path: '/aliy/certct',
             query: {
                 iccid: iccid
             }
