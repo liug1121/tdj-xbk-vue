@@ -14,8 +14,11 @@
       <div class="detail-button">剩余{{ cardDetails.flowSurplusUsed }}</div>
       <div class="detail-note">
         <div>您的套餐：{{ cardDetails.currentMeal }}</div>
-        <div>
+        <div v-if="cardDetails.packageExired === 0">
           有效期：{{ cardDetails.mealStartDate }}-{{ cardDetails.mealEndDate }}
+        </div>
+        <div v-else-if="cardDetails.packageExired === 1">
+          套餐已过期，有效期到：{{cardDetails.mealEndDate}}
         </div>
       </div>
       <div class="detail-note">
