@@ -11,7 +11,7 @@
         </table>
     </div>
     <div class="circle">
-         <van-circle v-model="currentUsageRate" :rate="Number(cardDetails.usagePercent)" :speed="Number(usage)" layer-color="#ebedf0" size="200px" :color="bodyColor" :stroke-width="120" >
+         <van-circle v-model="currentUsageRate" :rate="cardDetails.usagePercent" speed="100" layer-color="#fa7000" size="200px" color="gray" :stroke-width="120" >
             <div class="circle-box">
               <div class="circle-note">当月剩余可用量</div>
               <div class="circle-last"><span class="usage">{{cardDetails.flowSurplusUsed}}</span><span class="unit">{{cardDetails.flowSurplusUsedUnit}}</span></div>
@@ -124,7 +124,7 @@ export default {
         loadingShow: false,
         cardDetails: {},
         iccid: '',
-        currentUsageRate: '',
+        currentUsageRate: 0,
         usagePercent: 10,
         usage: 0,
         bodyColor: '#fa7000',

@@ -73,7 +73,7 @@
                     <table class="card-infos" @click="toCardDetails(record.iccid, record.iccid19Format, record.ufiImeiFormat)">
                     <tr>
                         <td>
-                            <van-circle  :rate="Number(90)" :speed="Number(10)" layer-color="#fa7000" size="120px" :color="bodyColor" :stroke-width="90" >
+                            <van-circle v-model="record.currentUsageRate" :rate="record.usedPercent" speed="100" layer-color="#fa7000" color="gray" size="120px" :stroke-width="90" >
                                 <div class="circle-box">
                                 <div>当月剩余可用量</div>
                                 <div><span class="usage">{{record.flowSurplusUsed}}</span> <span class="unit">{{record.flowSurplusUsedUnit}}</span></div>
@@ -98,10 +98,6 @@
                         </td>
                     </tr>
                 </table>
-                <div v-if="record.cardStatus === 0">
-                    <div class="to-cert" v-if="record.cardType === 0" @click="toCert(record.iccid19Format)">去实名认证</div>
-                    <div class="to-cert" v-if="record.cardType === 1" @click="toCertCt(record.iccid19Format)">去实名认证</div>
-                </div>
                 <!-- <div class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid19Format)">去实名认证</div> -->
                 <!-- <table class="card-titile">
                     <tr>
