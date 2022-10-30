@@ -84,8 +84,8 @@
                         <td>
                             <div class="card-infos-pkgs">
                                 <div ><span class="device-name">昵称：{{record.cardName}}</span>
-                                    <span v-if="record.cardStatus === 0 || record.cardStatus === 1 || record.cardStatus === 7" class="card-status-gray">{{record.cardStatusName}}</span>
-                                    <span v-if="record.cardStatus !== 0 && record.cardStatus !== 1 && record.cardStatus !== 7" class="card-status">{{record.cardStatusName}}</span>
+                                    <span v-if="record.cardStatus === 0 || record.cardStatus === 1 || record.cardStatus === 7 || record.cardStatus === 8" class="card-status-gray">{{record.cardStatusName}}</span>
+                                    <span v-if="record.cardStatus !== 0 && record.cardStatus !== 1 && record.cardStatus !== 7 && record.cardStatus !== 8" class="card-status">{{record.cardStatusName}}</span>
                                 </div>
                                 <div >ICCID：{{record.iccid19Format}}</div>
                                 <div >IMEI：{{record.ufiImeiFormat}}</div>
@@ -98,7 +98,8 @@
                         </td>
                     </tr>
                 </table>
-                <!-- <div class="to-cert" v-if="record.cardStatus === 0" @click="toCert(record.iccid19Format)">去实名认证</div> -->
+                <div class="to-cert" v-if="record.cardStatus === 0 && record.cardType === 0" @click="toCert(record.iccid19Format)">去实名认证</div>
+                <div class="to-cert" v-if="record.cardStatus === 0 && record.cardType === 1" @click="toCertCt(record.iccid19Format)">去实名认证</div>
                 <!-- <table class="card-titile">
                     <tr>
                         <td class="card-titile-name">设备名称：</td>
