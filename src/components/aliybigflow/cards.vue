@@ -70,7 +70,7 @@
                 </div>
                 </div>
                 <div v-if="record.currentMeal !== ''">
-                    <table class="card-infos" @click="toCardDetails(record.iccid, record.iccid19Format, record.ufiImeiFormat)">
+                    <table class="card-infos" @click="toCardDetails(record.iccid, record.iccid19Format, record.ufiImeiFormat,record.cardName)">
                     <tr>
                         <td>
                             <van-circle v-model="record.currentUsageRate" :rate="record.usedPercent" speed="100" layer-color="#fa7000" color="gray" size="120px" :stroke-width="90" >
@@ -83,7 +83,7 @@
                         </td>
                         <td>
                             <div class="card-infos-pkgs">
-                                <div ><span class="device-name">昵称：{{record.cardName}}</span>
+                                <div><span class="device-name">昵称：{{record.cardName}}</span>
                                     <span v-if="record.cardStatus === 0 || record.cardStatus === 1 || record.cardStatus === 7 || record.cardStatus === 8" class="card-status-gray">{{record.cardStatusName}}</span>
                                     <span v-if="record.cardStatus !== 0 && record.cardStatus !== 1 && record.cardStatus !== 7 && record.cardStatus !== 8" class="card-status">{{record.cardStatusName}}</span>
                                 </div>
@@ -168,14 +168,15 @@ export default {
             }
         })
     },
-    toCardDetails: function(iccid, iccid19, imei) {
+    toCardDetails: function(iccid, iccid19, imei, cardName) {
         console.log('sss')
         this.$router.push({
             path: '/aliy/cardDetail',
             query: {
                 iccid: iccid,
                 iccid19: iccid19,
-                imei: imei
+                imei: imei,
+                cardName: cardName
             }
         })
     },

@@ -28,6 +28,10 @@
         </table>
         <table class="usage_detail-contents">
             <tr>
+                <td >昵称：</td>
+                <td class="usage-detail-content">{{cardName}}</td>
+            </tr>
+            <tr>
                 <td >ICCID：</td>
                 <td class="usage-detail-content">{{iccid19}}</td>
             </tr>
@@ -129,13 +133,15 @@ export default {
         usage: 0,
         bodyColor: '#fa7000',
         imei: '',
-        iccid19: ''
+        iccid19: '',
+        cardName: ''
     }
   },
   created() {
     this.iccid = this.$route.query.iccid
     this.iccid19 = this.$route.query.iccid19
     this.imei = this.$route.query.imei
+    this.cardName = this.$route.query.cardName
     if (this.iccid.length > 20) {
         this.iccid = this.iccid.substring(0, 20)
     }
