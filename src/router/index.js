@@ -385,6 +385,12 @@ const routes = [
     name: '订单',
     component: () => import('components/zopCard/orderSubmit.vue'),
     meta: { zopCard: true }
+  },
+  {
+    path: '/alert/bind',
+    name: '告警用户绑定',
+    component: () => import('components/alert/bind.vue'),
+    meta: { alert: true }
   }
 ]
 
@@ -700,6 +706,57 @@ router.beforeEach((to, from, next) => {
         next()
       }
       sessionStorage.setItem('token', token)
+    }
+  } else if (to.meta.alert) {
+    console.log('22')
+    console.log('process.env.VUE_APP_CURRENTMODE:' + process.env.VUE_APP_CURRENTMODE)
+    // 群控 登录之外的页面
+    if (process.env.VUE_APP_CURRENTMODE === 'production') {
+      const token = sessionStorage.getItem('token')
+    // if (!process.env.VUE_APP_CURRENTMODE) {
+    //   const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvd21FODZXV3JCcWNzYkw3S3UxQUptc0p1Z0tJIiwidHlwZSI6IjQifQ.51XSrf6b3wCP8AsSjG1vTadJ73OlHEG_7oAEXL3U5s9nWECAjd6iUf5xlMFnzZXurbl19sA29vo6kNPNXuZeoQ'
+    //   sessionStorage.setItem('token', token)
+      console.log('token:' + token)
+      if (token === null || token === '' || token === undefined || token === 'null') {
+        const code = getUrlKey('code')
+        console.log('222code')
+        // const code = '1111'
+        if (code === null || code === '') {
+          const urlNow = encodeURIComponent(window.location.href)
+          // const appid = 'wx7dc1d69cc672844c'
+          const appid = getUrlKey('appId')
+          const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${urlNow}&response_type=code&scope=snsapi_base&state=123#wechat_redirect`
+          window.location.href = url
+        } else {
+          console.log('111apiZxLogin:' + code)
+          console.log(code)
+          const appId = getUrlKey('appId')
+          const params = code + ' ' + appId
+          WxAPI.apiBigflowLogin(params).then(res => {
+            const loginInfo = res.data
+            console.log(JSON.stringify(to))
+            sessionStorage.setItem('token', loginInfo.token)
+            next()
+            // if (!loginInfo.logined && to.path !== '/SalerUnBind' && to.path !== '/SalerBind') {
+            //   next('/SalerUnBind')
+            // } else {
+            //   next()
+            // }
+          })
+        }
+      } else {
+        next()
+      }
+    } else {
+      console.log('32')
+      const token = 'eyJhbGciOiJIUzUxMiJ9.eyJvcGVuSWQiOiJvejdJRzFxa2hpQlBkWGNma3J1SmxycTZyLU5ZIiwidHlwZSI6IjQifQ.i0pJIHY63utUpREQg3KRGFTOHzFHoL9HfatgHOISQjHuj7WvfuO6xaZDK5yB_Clvlj4Xxi1RUU6J-fpPQj2uPQ'
+      const userName = '测试'
+      sessionStorage.setItem('token', token)
+      if (token && userName) {
+        next()
+      } else {
+        next('/QKLogin')
+      }
     }
   } else {
     // 家长登录
